@@ -1,0 +1,37 @@
+#:kivy 2.0.0
+
+<WindowManager>:
+    LogInScreen:
+    MainScreen:
+    CameraScreen:
+    EditScreen:
+
+
+<MainScreen>:
+    name: "main_screen"
+    on_leave: app.previous_screen = self.name
+    on_enter: app.current_screen = self.name
+    MainPage:
+        id: main_page
+
+
+<LogInScreen>:
+    on_leave: app.previous_screen = self.name
+    on_enter: app.current_screen = self.name
+    name: "log_in_screen"
+    LogInPage:
+
+
+<CameraScreen>:
+    on_leave: app.previous_screen = self.name
+    on_enter: app.current_screen = self.name
+    name: "camera_screen"
+    CameraPage:
+        id: camera_page
+
+<EditScreen>:
+    on_leave: app.previous_screen = self.name
+    on_enter: app.current_screen = self.name
+    name: "edit_screen"
+    EditPage:
+        id: edit_page

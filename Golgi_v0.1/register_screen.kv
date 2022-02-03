@@ -1,0 +1,95 @@
+#:kivy 2.0.0
+#:import NoTransition kivy.uix.screenmanager.NoTransition
+
+<RegisterPage>:
+    cols:2
+    MDTextField:
+        id: nome
+        size_hint_y: 1
+        hint_text: "Nome"
+        required: True
+        on_text_validate: root.nome = self.text
+    
+    MDTextField:
+        id: id
+        size_hint_y: 1
+        hint_text: "ID"
+        required: True
+        on_text_validate: root.id = self.text
+    
+    MDTextField:
+        id: dose
+        size_hint_y: 1
+        hint_text: "Dosagem"
+        required: True
+        on_text_validate: root.dose = self.text
+    
+    MDTextField:
+        id: fabricante
+        size_hint_y: 1
+        hint_text: "Fabricante"
+        required: True
+        on_text_validate: root.fabricante = self.text
+
+    MDTextField:
+        id: position
+        size_hint_y: 1
+        hint_text: "Posição"
+        required: True
+        max_text_length: 5
+        on_text_validate: root.position = self.text
+    
+    MDBoxLayout:
+        orientation: "vertical"
+        MDLabel:
+            text:"Imagem"
+            size_hint: 1, 0.3
+        
+        MDBoxLayout:
+            orientation: "horizontal"
+            Image:
+                id: imagem_remedio
+                source: root.photo_path
+                size_hint_x: 2
+            MDBoxLayout:
+                orientation: "vertical"
+                MDRoundFlatIconButton:
+                    icon: root.photo_icon
+                    text: "Mudar Foto"
+                    on_release: 
+                        app.root.current = "camera_screen"
+
+
+                MDRoundFlatIconButton:
+                    icon: root.register_icon
+                    text: "Registrar"
+                    on_press: root.submit_item()
+
+
+<CameraPage>:
+    MDBoxLayout:
+        id: main_layout
+        orientation:"vertical"
+        Camera:
+            id:camera
+            resolution: -1, -1
+            play: False
+        
+        MDRelativeLayout:
+            id: buttons_layout
+            size_hint_y: 0.2
+            MDIconButton:
+                id: cam_btn
+                icon: "camera"
+                pos_hint: {"center_x": .5, "center_y": .5}
+                on_release:
+                    root.take_photo()
+                    app.root.transition = NoTransition()
+                    app.root.current = app.previous_screen
+            MDIconButton:
+                id: cancel_btn
+                icon: "cancel"
+                pos_hint: {"center_x": .9, "center_y": .5} 
+                on_release:
+                    app.root.transition = NoTransition()
+                    app.root.current = app.previous_screen

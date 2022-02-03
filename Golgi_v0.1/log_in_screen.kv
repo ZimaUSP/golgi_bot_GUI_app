@@ -1,0 +1,55 @@
+#:kivy 2.0.0
+
+<LogInPage>:
+    orientation: "vertical"
+    MDBottomNavigation:
+        #color stuff
+        #panel_color: 0, 0, 1, .8
+        MDBottomNavigationItem:
+            name: "login"
+            text: "Log-In"
+            icon:'login'
+            FloatLayout:
+
+                ActualLogIn:
+                    size_hint:0.5, 0.6
+                    pos_hint: {'center_x':.5, 'center_y': .5}
+
+        MDBottomNavigationItem:
+            name: "help"
+            text: "Ajuda"
+            icon:'help'
+            HelpPage:
+
+
+
+<ActualLogIn@MDBoxLayout>:
+    orientation:"vertical"
+    
+    MDTextField:
+        hint_text: "Usuário"
+        required: True
+        size_hint: 1, 1
+        font_size: '25sp'
+        
+    MDTextField:
+        hint_text: "Senha"
+        required: True
+        size_hint: 1, 1
+        font_size: '25sp'
+        password: True
+    MDTextButton:
+        text:"Esqueci minha senha"
+        size_hint: 1, 0.5
+        halign: 'right'
+
+    MDFillRoundFlatIconButton:
+        text:"Entrar"
+        icon:"login"
+        size_hint: 1, 0.4
+        on_release:
+            app.root.current = "main_screen"
+
+<HelpPage@MDBoxLayout>:
+    MDLabel:
+        text: "Texto da página de ajuda"

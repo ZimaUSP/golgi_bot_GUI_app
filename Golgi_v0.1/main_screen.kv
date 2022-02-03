@@ -1,0 +1,63 @@
+#:kivy 2.0.0
+
+
+<MainPage>:
+    orientation:"vertical"
+    #adaptive_size: True
+    MDBottomNavigation:
+        #color stuff
+        panel_color: 0.0/256, 168.0/256, 251.0/256, 1
+        MDBottomNavigationItem:
+            name: "collect"
+            text: "Coletar"
+            icon:'chart-box-plus-outline'
+            on_enter: root.on_collect_enter()
+
+            CollectPage:
+                id: collect_page
+            #MDLabel:
+            #    text:"python"
+            #    halign: 'center'
+
+
+        MDBottomNavigationItem:
+            name: "register"
+            text: "Registrar"
+            icon:'plus'
+
+            RegisterPage:
+                id: register_page
+
+
+        MDBottomNavigationItem:
+            name: "edit"
+            text: "Editar"
+            icon:'pencil'
+
+            SearchEditPage:
+                id: search_edit_page
+
+
+        MDBottomNavigationItem:
+            name: "delete"
+            text: "Apagar"
+            icon:'delete'
+
+            DeletePage:
+                id: delete_page
+            
+        
+        MDBottomNavigationItem:
+            name: "config"
+            text: "Configurações"
+            icon:'wrench'
+
+            MDRoundFlatIconButton:
+                icon: "logout"
+                text: "Log Out"
+                pos_hint: {"center_x": .5, "center_y": .5}
+                #text:"Log in"
+                on_release:
+                    app.root.current = "log_in_screen"
+            
+

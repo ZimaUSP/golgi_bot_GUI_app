@@ -1,0 +1,105 @@
+#:kivy 2.0.0
+
+
+<CollectPage>:
+    orientation:"vertical"
+    
+    MDBoxLayout:
+        id:main_layout
+        orientation: "horizontal"
+        Busca:
+            id:busca
+        Resultados:
+            id:resultados
+
+    MDBoxLayout:
+        id:buttons_layout
+        orientation: "horizontal"
+        size_hint_y: 0.1
+        Button:
+            id:submit_button
+            background_normal: ''
+            background_color:252.0/256, 83.0/256, 94.0/256, 1
+            size_hint_x:1
+            font_size: '25sp'
+            text:"Submit"
+            on_release: root.on_submit()
+            
+        Button:
+            id:collect_button
+            background_normal: ''
+            background_color:252.0/256, 83.0/256, 94.0/256, 1
+            size_hint_x:1
+            font_size: '25sp'
+            on_release: root.collect_release()
+            text:"Collect"
+            
+
+<Busca>:
+    orientation:"vertical"
+    MDTextField:
+        id: nome
+        size_hint_y: 1
+        hint_text: "Nome"
+    
+    MDTextField:
+        id: id
+        size_hint_y: 1
+        hint_text: "ID"
+    
+    MDTextField:
+        id: dose
+        size_hint_y: 1
+        hint_text: "Dosagem"
+    
+    MDTextField:
+        id: fabricante
+        size_hint_y: 1
+        hint_text: "Fabricante"
+
+
+    
+
+<Resultados>:
+    do_scroll_x: False
+    do_scroll_y: True
+    size_hint: 1, 1
+    MDGridLayout:
+        size_hint: 1, None
+        height: self.minimum_height
+        id:main_layout
+        cols:1
+
+    
+
+<Resultado>:
+    orientation: "horizontal"
+    cols:3
+    size_hint: 1, None
+    Image:
+        id:imagem
+        size_hint: .5, 1
+        source: root.photo_path
+    
+    MDBoxLayout:
+        orientation: "vertical"
+        cols:1
+        MDLabel:
+            id: nome
+            text: "Nome: " + str(root.nome)
+
+        MDLabel:
+            id: id
+            text: "ID: " + str(root.id)
+
+        MDLabel:
+            id: dose
+            text: "Dosagem: " + str(root.dose)
+
+        MDLabel:
+            id: fabricante
+            text: "Fabricante: " + str(root.fabricante)
+        
+    CheckBox:
+        id: check_box
+        size_hint: 0.2, 1

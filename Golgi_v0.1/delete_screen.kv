@@ -1,0 +1,36 @@
+#:kivy 2.0.0
+
+
+<DeletePage>:
+    orientation:"vertical"
+    
+    MDBoxLayout:
+        id:main_layout
+        orientation: "horizontal"
+        Busca:
+            id:busca
+        Resultados:
+            id:resultados
+
+    MDBoxLayout:
+        id:buttons_layout
+        orientation: "horizontal"
+        size_hint_y: 0.1
+        Button:
+            id:submit_button
+            background_normal: ''
+            background_color:252.0/256, 83.0/256, 94.0/256, 1
+            size_hint_x:1
+            font_size: '25sp'
+            text:"Submit"
+            on_release: root.on_submit()
+            
+        Button:
+            id:delete_button
+            background_normal: ''
+            background_color:252.0/256, 83.0/256, 94.0/256, 1
+            size_hint_x:1
+            font_size: '25sp'
+            on_release: root.delete_release()
+            text:"Delete"
+            
