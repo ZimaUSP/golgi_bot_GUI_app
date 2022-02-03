@@ -1,3 +1,11 @@
+"""
+    File:
+        delete_screen.py
+    Description:
+        Page to delete medications from dataset
+    Author:
+        Pedro Croso <pedrocroso@usp.br>
+"""
 from kivymd.uix.boxlayout import MDBoxLayout
 from collect_screen import Resultado
 
@@ -6,10 +14,19 @@ from dataframe import *
 import os
 
 class DeletePage(MDBoxLayout):
+    """Page to delete item
+
+    Args:
+        MDBoxLayout: BoxLayout from MDKivy
+    """
     def __init__(self, **kwargs):
+        """Initialisation method
+        """
         super().__init__(**kwargs)
     
     def on_submit(self):
+        """Callback function to search for results
+        """
         data = golgi_data.get_items(id = self.ids.busca.ids.id.text, nome = self.ids.busca.ids.nome.text, dosagem=self.ids.busca.ids.dose.text, fabricante=self.ids.busca.ids.fabricante.text)
         self.ids.resultados.ids.main_layout.clear_widgets()
         self.ids.busca.ids.nome.text = ""
@@ -27,16 +44,10 @@ class DeletePage(MDBoxLayout):
             new_item.set_position(str(data['position'][index]))
             new_item.generate()
             self.ids.resultados.ids.main_layout.add_widget(new_item)
-        '''for i in range(2):
-            new_item = Resultado()
-            new_item.set_nome("Nome " + str(i))
-            new_item.set_id("ID " + str(i))
-            new_item.set_dose("Dose " + str(i))
-            new_item.set_fabricante("Fabricante " + str(i))
-            new_item.generate()
-            self.ids.resultados.ids.main_layout.add_widget(new_item)'''
-
+        
     def delete_release(self):
+        """Callback function to delete the selected items
+        """
         for item in self.ids.resultados.ids.main_layout.children:
             print("Check: ")
             print(item.ids.check_box.active)

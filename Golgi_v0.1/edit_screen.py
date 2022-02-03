@@ -1,3 +1,11 @@
+"""
+    File:
+        edit_screen.py
+    Description:
+        Page to etid medications from dataset
+    Author:
+        Pedro Croso <pedrocroso@usp.br>
+"""
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.gridlayout import MDGridLayout
 from collect_screen import Resultado
@@ -6,7 +14,14 @@ from dataframe import *
 import os
 
 class SearchEditPage(MDBoxLayout):
+    """Page to search items to edit
+
+    Args:
+        MDBoxLayout: BoxLayout from KivyMD
+    """
     def __init__(self, **kwargs):
+        """Initialisation function
+        """
         self.nome_item = ""
         self.id_item = ""
         self.dose_item = ""
@@ -17,6 +32,8 @@ class SearchEditPage(MDBoxLayout):
 
     
     def edit_release(self):
+        """Callback function for release of edit button
+        """
         try:
             golgi_data.delete_item(int(float(self.id_item)))
         except:
@@ -25,6 +42,8 @@ class SearchEditPage(MDBoxLayout):
             print("Error deleting item from dataset")
 
     def edit_press(self):
+        """Callback function for pressing edit button
+        """
         for item in self.ids.resultados.ids.main_layout.children:
             print("Check: ")
             print(item.ids.check_box.active)
@@ -41,6 +60,8 @@ class SearchEditPage(MDBoxLayout):
                 return
 
     def on_submit(self):
+        """Callback function to search for items to edit
+        """
         data = golgi_data.get_items(id = self.ids.busca.ids.id.text, nome = self.ids.busca.ids.nome.text, dosagem=self.ids.busca.ids.dose.text, fabricante=self.ids.busca.ids.fabricante.text)
         self.ids.resultados.ids.main_layout.clear_widgets()
         self.ids.busca.ids.nome.text = ""
@@ -60,21 +81,21 @@ class SearchEditPage(MDBoxLayout):
             new_item.set_position(str(data['position'][index]))
             new_item.generate()
             self.ids.resultados.ids.main_layout.add_widget(new_item)
-        '''for i in range(2):
-            new_item = Resultado()
-            new_item.set_nome("Nome " + str(i))
-            new_item.set_id("ID " + str(i))
-            new_item.set_dose("Dose " + str(i))
-            new_item.set_fabricante("Fabricante " + str(i))
-            new_item.generate()
-            self.ids.resultados.ids.main_layout.add_widget(new_item)'''
+
 
 
 class EditPage(MDGridLayout):
+    """Page where edition is actually made
+
+    Args:
+        MDGridLayout: GridLayout from KivyMD
+    """
     photo_icon = "camera"
     register_icon = "plus"
 
     def __init__(self, **kwargs):
+        """Initialisation method
+        """
         self.photo_path = "foto_remedio\paracetamol_500mg.jpg"
         self.nome = ""
         self.id = ""
@@ -85,6 +106,11 @@ class EditPage(MDGridLayout):
         super().__init__(**kwargs)
 
     def submit_item(self):
+        """Callback function to register edited item
+
+        Returns:
+            bool: True if all fields are completed
+        """
         self.id = self.ids.id.text
         self.nome = self.ids.nome.text
         self.dose = self.ids.dose.text

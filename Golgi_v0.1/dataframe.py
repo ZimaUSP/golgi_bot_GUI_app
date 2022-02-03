@@ -1,7 +1,18 @@
+"""
+    File:
+        dataframe.py
+    Description:
+        Declaration of dataset used in GolgiBot
+    Author:
+        Pedro Croso <pedrocroso@usp.br>
+"""
+
 import pandas as pd
 
 
 class GolgiDataFrame():
+    """Class for the DataSet
+    """
     columns = ['id', 'nome', 'dosagem', 'fabricante', 'position', 'photo_path']
     def __init__(self) -> None:
         self.df = pd.read_csv("Golgi_v0.1\dados\drug_data.csv")

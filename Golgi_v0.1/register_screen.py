@@ -1,3 +1,11 @@
+"""
+    File:
+        register_screen.py
+    Description:
+       Register page for Golgibot application.
+    Author:
+        Pedro Croso <pedrocroso@usp.br>
+"""
 from kivymd.uix.gridlayout import MDGridLayout
 from kivymd.uix.boxlayout import MDBoxLayout
 import os
@@ -6,10 +14,17 @@ import time
 from dataframe import *
 
 class RegisterPage(MDGridLayout):
+    """Register Page definition
+
+    Args:
+        MDGridLayout: GridLayout from kivyMD
+    """
     photo_icon = "camera"
     register_icon = "plus"
 
     def __init__(self, **kwargs):
+        """Initialisation method
+        """
         self.photo_path = "foto_remedio\paracetamol_500mg.jpg"
         self.nome = ""
         self.id = ""
@@ -20,6 +35,11 @@ class RegisterPage(MDGridLayout):
         super().__init__(**kwargs)
     
     def submit_item(self):
+        """Callback function to register new item in dataset
+
+        Returns:
+            bool: True if all fields were completed
+        """
         self.id = self.ids.id.text
         self.nome = self.ids.nome.text
         self.dose = self.ids.dose.text
@@ -69,11 +89,20 @@ class RegisterPage(MDGridLayout):
 
 
 class CameraPage(MDBoxLayout):
+    """Camera page definition
+
+    Args:
+        MDBoxLayout: BoxLayout from KivyMD
+    """
     def __init__(self, **kwargs):
+        """Initialisation method
+        """
         self.last_img_name = "foto_remedio\paracetamol_500mg.jpg"
         super().__init__(**kwargs)
 
     def take_photo(self):
+        """Callback function to take a picture from camera
+        """
         print(self.ids.camera.play)
         if(self.ids.camera.play):
             try:

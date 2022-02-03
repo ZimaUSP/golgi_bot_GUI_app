@@ -15,13 +15,23 @@ import os
 from dataframe import *
 
 class CollectPage(MDBoxLayout):
+    """Page Layout for the CollectScreen
+
+    Args:
+        MDBoxLayout (): BoxLayout from MDKivy
+    """
     def __init__(self, **kwargs):
+        """Initialise CollectPage
+        """
         super().__init__(**kwargs)
     
     def collect_release(self):
+
         print (self.ids.resultados.ids)
     
     def on_submit(self):
+        """Callback function so search itens from Pandas dataset
+        """
         data = golgi_data.get_items(id = self.ids.busca.ids.id.text, nome = self.ids.busca.ids.nome.text, dosagem=self.ids.busca.ids.dose.text, fabricante=self.ids.busca.ids.fabricante.text)
         self.ids.resultados.ids.main_layout.clear_widgets()
         self.ids.busca.ids.nome.text = ""
@@ -39,20 +49,23 @@ class CollectPage(MDBoxLayout):
             new_item.set_position(str(data['position'][index]))
             new_item.generate()
             self.ids.resultados.ids.main_layout.add_widget(new_item)
-        '''for i in range(2):
-            new_item = Resultado()
-            new_item.set_nome("Nome " + str(i))
-            new_item.set_id("ID " + str(i))
-            new_item.set_dose("Dose " + str(i))
-            new_item.set_fabricante("Fabricante " + str(i))
-            new_item.generate()
-            self.ids.resultados.ids.main_layout.add_widget(new_item)'''
+        
         
 
 class Busca(MDBoxLayout):
+    """Definition for the search layout used in CollectPage
+
+    Args:
+        MDBoxLayout: BoxLayout from MDKivy
+    """
     pass
 
 class Resultados(ScrollView):
+    """Layout where results show up
+
+    Args:
+        ScrollView ([type]): [description]
+    """
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         #print(self.ids)
@@ -60,8 +73,15 @@ class Resultados(ScrollView):
         #    self.ids.main_layout.add_widget(Button())
 
 class Resultado(MDBoxLayout):
+    """Each individual search result layout
+
+    Args:
+        MDBoxLayout: BoxLayout from MDKivy
+    """
 
     def __init__(self):
+        """Initialisation method
+        """
         self.nome = "Nome!"
         self.id = "0"
         self.dose = "Dosagem!"
@@ -71,39 +91,88 @@ class Resultado(MDBoxLayout):
         
         
     def generate(self, **kwargs):
+        """Generates the actual widget
+        """
         super().__init__(**kwargs)
 
     def set_nome(self, nome):
+        """Set the name on search item
+
+        Args:
+            nome (str): The name
+
+        Returns:
+            [bool]: true if a string is passed as parameter
+        """
         if (isinstance(nome, str)):
             self.nome = nome
             return True
         return False
     
     def set_id(self, id):
+        """Set the ID on search item
+
+        Args:
+            id (str): the unique identification of item
+
+        Returns:
+            [bool]: true if a string is passed
+        """
         if (isinstance(id, str)):
             self.id = id
             return True
         return False
 
     def set_dose(self, dose):
+        """Set the dose on search item
+
+        Args:
+            dose (str): dose of the item
+
+        Returns:
+            [bool]: true if a string is passed
+        """
         if (isinstance(dose, str)):
             self.dose = dose
             return True
         return False
 
     def set_fabricante(self, fabricante):
+        """Set the manufacturer on search item
+
+        Args:
+            fabricante ([str): manufactorer of the item
+
+        Returns:
+            [bool]: true if a string is passed
+        """
         if (isinstance(fabricante, str)):
             self.fabricante = fabricante
             return True
         return False
 
     def set_photo_path(self, photo_path):
+        """Set the photo path on search item
+
+        Args:
+            photo_path (str): relative path to photo on item
+        Returns:
+            [bool]: true if a string is passed
+        """
         if (os.path.exists(photo_path)):
             self.photo_path = photo_path
             return True
         return False
 
     def set_position(self, position):
+        """Set the position of search item
+
+        Args:
+            position (str): position on robot of the item
+
+        Returns:
+            [bool]: true if a string is passed
+        """
         if (isinstance(position, str)):
             self.position = position
             return True

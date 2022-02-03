@@ -36,13 +36,27 @@ Builder.load_file('main.kv')
 #Screen Definitions
 
 class LogInScreen(MDScreen):
+    """Declaration of Log In screen
+
+    Args:
+        MDScreen
+    """
     pass
 
 class EditScreen(MDScreen):
+    """Declaration of edit screen
+
+    Args:
+        MDScreen
+    """
     def __init__(self, **kw):
+        """Initialisation method
+        """
         super().__init__(**kw)
     
     def on_pre_enter(self, *args):
+        """Callback funtion called before entering the screen. Sets text fields and variables
+        """
 
         nome = self.manager.get_screen("main_screen").ids.main_page.ids.search_edit_page.nome_item
         id = self.manager.get_screen("main_screen").ids.main_page.ids.search_edit_page.id_item
@@ -81,10 +95,19 @@ class EditScreen(MDScreen):
         return super().on_pre_enter(*args)
 
 class MainScreen(MDScreen):
+    """Declaration of main screen
+
+    Args:
+        MDScreen: Screen from KivyMD
+    """
     def __init__(self, **kw):
+        """Initialisation method
+        """
         super().__init__(**kw)
     
     def on_enter(self, *args):
+        """Callback function for entering the screen. Configures some Text Inputs and images.
+        """
 
         
         self.ids.main_page.ids.register_page.photo_path = self.manager.get_screen("camera_screen").ids.camera_page.last_img_name
@@ -96,14 +119,25 @@ class MainScreen(MDScreen):
         return super().on_enter(*args)
 
 class CameraScreen(MDScreen):
+    """Declaration of Camera Screen
+
+    Args:
+        MDScreen: Screen from KivyMD
+    """
     def __init__(self, **kw):
+        """Initialisation method
+        """
         super().__init__(**kw)
     
     def on_enter(self, *args):
+        """Callback function to enter Camera Screen. Enables camera.
+        """
         self.ids.camera_page.ids.camera.play = True
         return super().on_enter(*args)
     
     def on_leave(self, *args):
+        """Callback function to exit Camera Screen. Disables Camera
+        """
         self.ids.camera_page.ids.camera.play = False
 
         return super().on_leave(*args)
@@ -115,11 +149,23 @@ class WindowManager(ScreenManager):
 
 
 class GolgiApp(MDApp):
+    """Main App declaration
+
+    Args:
+        MDApp: App from KivyMD
+    """
     def __init__(self, **kwargs):
+        """Initialisation method
+        """
         super().__init__(**kwargs)
         self.previous_screen = ""
         self.current_screen = ""
+
+
     def build(self):
+        """Build method
+
+        """
         self.icon = 'images\logo-gradient.png'
         self.theme_cls.theme_style = "Dark"
         self.theme_cls.primary_palette = "Pink"
