@@ -10,10 +10,12 @@
 import pandas as pd
 
 
+
+
 class GolgiDataFrame():
     """Class for the DataSet
     """
-    columns = ['id', 'nome', 'dosagem', 'fabricante', 'position', 'photo_path']
+    columns = ['id', 'nome', 'dosagem', 'apresentacao', 'position', 'photo_path']
     def __init__(self) -> None:
         self.df = pd.read_csv("Golgi_v0.1\dados\drug_data.csv")
         self.df = self.df.set_index('id')
@@ -28,7 +30,7 @@ class GolgiDataFrame():
                 "id": "TheID",
                 "nome": "TheName", 
                 "dosagem": "TheDose",
-                "fabricante": "TheProducer",
+                "apresentacao": "TheProducer",
                 "position": "ThePosition",
                 "photo_path": "ThePath"
                 }
@@ -58,7 +60,7 @@ class GolgiDataFrame():
                 "id": "TheID",
                 "nome": "TheName", 
                 "dosagem": "TheDose",
-                "fabricante": "TheProducer",
+                "apresentacao": "TheProducer",
                 "position": "ThePosition",
                 "photo_path": "ThePath"
                 }
@@ -68,14 +70,14 @@ class GolgiDataFrame():
         self.df = self.df.append(new_item)
 
 
-    def get_items(self, id = "0", nome = "", dosagem = "", fabricante = ""):
+    def get_items(self, id = "0", nome = "", dosagem = "", apresentacao = ""):
         """
         Description: Search the dataframe to look for matches
         Params: 
             id = ""
             nome = ""
             dosagem = ""
-            fabricante = ""
+            apresentacao = ""
         
         Return: A pandas dataset with match items
         """
@@ -83,31 +85,62 @@ class GolgiDataFrame():
         df_search = self.df
         df_search =  df_search.reset_index()
         print(self.df)
-        id = int(float(id))
+        try:
+            id = int(float(id))
+        except:
+            if (id == ""):
+                pass
+            else:
+                print("Invalid ID")
         
+        if (id == ""):
+            id = "NO ID"
+        if (nome == ""):
+            nome = "NO NOME"
+        if (dosagem == ""):
+            dosagem = "NO DOSE"
+        if (apresentacao == ""):
+            apresentacao = "NO APRES"
+        
+
+        print("Search parameters: ")
+        print("Nome: ")
+        print((df_search['nome'].str.contains(nome)))
+        print("Dosagem: ")
+        print(df_search['dosagem'].str.contains(dosagem))
+        print("Apresentação: ")
+        print(df_search['apresentacao'].str.contains(apresentacao))
+
         # Full Match
-        selected_items = df_search[(df_search['nome'] == nome) & (df_search['id'] == id) & (df_search['dosagem']) & (df_search['fabricante'] == fabricante) & (df_search['dosagem'] == dosagem)]
+        selected_items = df_search[(df_search['nome'].str.contains(nome)) & (df_search['id'] == id) & (df_search['dosagem'].str.contains(dosagem)) & (df_search['apresentacao'].str.contains(apresentacao))]
+        print("Full match")
+        print(selected_items)
 
         # 3/4 Match
-        selected_items = selected_items.append(df_search[(df_search['id'] == id) & (df_search['nome'] == nome) & (df_search['dosagem']) & (df_search['fabricante'] == fabricante) & (df_search['dosagem'] != dosagem)])
-        selected_items = selected_items.append(df_search[(df_search['id'] == id) & (df_search['nome'] == nome) & (df_search['dosagem']) & (df_search['fabricante'] != fabricante) & (df_search['dosagem'] == dosagem)])
-        selected_items = selected_items.append(df_search[(df_search['id'] == id) & (df_search['nome'] != nome) & (df_search['dosagem']) & (df_search['fabricante'] == fabricante) & (df_search['dosagem'] == dosagem)])
-        selected_items = selected_items.append(df_search[(df_search['id'] != id) & (df_search['nome'] == nome) & (df_search['dosagem']) & (df_search['fabricante'] == fabricante) & (df_search['dosagem'] == dosagem)])
+        selected_items = selected_items.append(df_search[(df_search['id'] == id) &   (df_search['nome'].str.contains(nome))  & (~(df_search['dosagem'].str.contains(dosagem))) &   (df_search['apresentacao'].str.contains(apresentacao)) ])
+        selected_items = selected_items.append(df_search[(df_search['id'] == id) &   (df_search['nome'].str.contains(nome))  &   (df_search['dosagem'].str.contains(dosagem))  & (~(df_search['apresentacao'].str.contains(apresentacao)))])
+        selected_items = selected_items.append(df_search[(df_search['id'] == id) & (~(df_search['nome'].str.contains(nome))) &   (df_search['dosagem'].str.contains(dosagem))  &   (df_search['apresentacao'].str.contains(apresentacao)) ])
+        selected_items = selected_items.append(df_search[(df_search['id'] != id) &   (df_search['nome'].str.contains(nome))  &   (df_search['dosagem'].str.contains(dosagem))  &   (df_search['apresentacao'].str.contains(apresentacao)) ])
+        print("3/4 match")
+        print(selected_items)
 
         # 2/4 match
-        selected_items = selected_items.append(df_search[(df_search['id'] == id) & (df_search['nome'] == nome) & (df_search['dosagem']) & (df_search['fabricante'] != fabricante) & (df_search['dosagem'] != dosagem)])
-        selected_items = selected_items.append(df_search[(df_search['id'] == id) & (df_search['nome'] != nome) & (df_search['dosagem']) & (df_search['fabricante'] == fabricante) & (df_search['dosagem'] != dosagem)])
-        selected_items = selected_items.append(df_search[(df_search['id'] != id) & (df_search['nome'] == nome) & (df_search['dosagem']) & (df_search['fabricante'] == fabricante) & (df_search['dosagem'] != dosagem)])
-        selected_items = selected_items.append(df_search[(df_search['id'] == id) & (df_search['nome'] != nome) & (df_search['dosagem']) & (df_search['fabricante'] != fabricante) & (df_search['dosagem'] == dosagem)])
-        selected_items = selected_items.append(df_search[(df_search['id'] != id) & (df_search['nome'] == nome) & (df_search['dosagem']) & (df_search['fabricante'] != fabricante) & (df_search['dosagem'] == dosagem)])
-        selected_items = selected_items.append(df_search[(df_search['id'] != id) & (df_search['nome'] != nome) & (df_search['dosagem']) & (df_search['fabricante'] == fabricante) & (df_search['dosagem'] == dosagem)])
+        selected_items = selected_items.append(df_search[(df_search['id'] == id) &   (df_search['nome'].str.contains(nome))  & (~(df_search['dosagem'].str.contains(dosagem))) & (~(df_search['apresentacao'].str.contains(apresentacao)))])
+        selected_items = selected_items.append(df_search[(df_search['id'] == id) & (~(df_search['nome'].str.contains(nome))) & (~(df_search['dosagem'].str.contains(dosagem))) &   (df_search['apresentacao'].str.contains(apresentacao)) ])
+        selected_items = selected_items.append(df_search[(df_search['id'] != id) &   (df_search['nome'].str.contains(nome))  & (~(df_search['dosagem'].str.contains(dosagem))) &   (df_search['apresentacao'].str.contains(apresentacao)) ])
+        selected_items = selected_items.append(df_search[(df_search['id'] == id) & (~(df_search['nome'].str.contains(nome))) &   (df_search['dosagem'].str.contains(dosagem))  & (~(df_search['apresentacao'].str.contains(apresentacao)))])
+        selected_items = selected_items.append(df_search[(df_search['id'] != id) &   (df_search['nome'].str.contains(nome))  &   (df_search['dosagem'].str.contains(dosagem))  & (~(df_search['apresentacao'].str.contains(apresentacao)))])
+        selected_items = selected_items.append(df_search[(df_search['id'] != id) & (~(df_search['nome'].str.contains(nome))) &   (df_search['dosagem'].str.contains(dosagem))  &   (df_search['apresentacao'].str.contains(apresentacao)) ])
+        print("2/4 match")
+        print(selected_items)
 
         # 1/4 match
-        selected_items = selected_items.append(df_search[(df_search['id'] == id) & (df_search['nome'] != nome) & (df_search['dosagem']) & (df_search['fabricante'] != fabricante) & (df_search['dosagem'] != dosagem)])
-        selected_items = selected_items.append(df_search[(df_search['id'] != id) & (df_search['nome'] == nome) & (df_search['dosagem']) & (df_search['fabricante'] != fabricante) & (df_search['dosagem'] != dosagem)])
-        selected_items = selected_items.append(df_search[(df_search['id'] != id) & (df_search['nome'] != nome) & (df_search['dosagem']) & (df_search['fabricante'] == fabricante) & (df_search['dosagem'] != dosagem)])
-        selected_items = selected_items.append(df_search[(df_search['id'] != id) & (df_search['nome'] != nome) & (df_search['dosagem']) & (df_search['fabricante'] != fabricante) & (df_search['dosagem'] == dosagem)])
-        
+        selected_items = selected_items.append(df_search[(df_search['id'] == id) & (~(df_search['nome'].str.contains(nome))) & (~(df_search['dosagem'].str.contains(dosagem))) & (~(df_search['apresentacao'].str.contains(apresentacao)))])
+        selected_items = selected_items.append(df_search[(df_search['id'] != id) &   (df_search['nome'].str.contains(nome))  & (~(df_search['dosagem'].str.contains(dosagem))) & (~(df_search['apresentacao'].str.contains(apresentacao)))])
+        print((df_search['nome'].str.contains(nome)))
+        selected_items = selected_items.append(df_search[(df_search['id'] != id) & (~(df_search['nome'].str.contains(nome))) & (~(df_search['dosagem'].str.contains(dosagem))) &   (df_search['apresentacao'].str.contains(apresentacao)) ])
+        selected_items = selected_items.append(df_search[(df_search['id'] != id) & (~(df_search['nome'].str.contains(nome))) &   (df_search['dosagem'].str.contains(dosagem))  & (~(df_search['apresentacao'].str.contains(apresentacao)))])
+        print("1/4 match")
         print (selected_items)
         selected_items = selected_items.set_index('id')
 
@@ -126,7 +159,7 @@ golgi_data = GolgiDataFrame()
         "id": ["00000"],
         "nome": ["TheName"], 
         "dosagem": ["TheDose"],
-        "fabricante": ["TheProducer"],
+        "apresentacao": ["TheProducer"],
         "position": ["ThePosition"],
         "photo_path": ["ThePath"]
         }
