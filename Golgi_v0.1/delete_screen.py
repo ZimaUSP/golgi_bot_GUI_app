@@ -7,7 +7,7 @@
         Pedro Croso <pedrocroso@usp.br>
 """
 from kivymd.uix.boxlayout import MDBoxLayout
-from collect_screen import Resultado
+from edit_screen import ResultadoBinario
 
 from dataframe import *
 
@@ -35,7 +35,7 @@ class DeletePage(MDBoxLayout):
         self.ids.busca.ids.apresentacao.text = ""
         data = data.reset_index()
         for index in data.index:
-            new_item = Resultado()
+            new_item = ResultadoBinario()
             new_item.set_nome(str(data['nome'][index]))
             new_item.set_id(str(data['id'][index]))
             new_item.set_dose(str(data['dosagem'][index]))
