@@ -61,7 +61,7 @@ class EditScreen(MDScreen):
         nome = self.manager.get_screen("main_screen").ids.main_page.ids.search_edit_page.nome_item
         id = self.manager.get_screen("main_screen").ids.main_page.ids.search_edit_page.id_item
         dose = self.manager.get_screen("main_screen").ids.main_page.ids.search_edit_page.dose_item
-        fabricante = self.manager.get_screen("main_screen").ids.main_page.ids.search_edit_page.fabricante_item
+        apresentacao = self.manager.get_screen("main_screen").ids.main_page.ids.search_edit_page.apresentacao_item
         position = self.manager.get_screen("main_screen").ids.main_page.ids.search_edit_page.pos_item
         photo_path = ""
         if app.current_screen == "camera_screen":
@@ -76,14 +76,14 @@ class EditScreen(MDScreen):
         self.ids.edit_page.nome = nome
         self.ids.edit_page.id = id
         self.ids.edit_page.dose = dose
-        self.ids.edit_page.fabricante = fabricante
+        self.ids.edit_page.apresentacao = apresentacao
         self.ids.edit_page.position = position
         self.ids.edit_page.photo_path = photo_path
 
         self.ids.edit_page.ids.nome.text = nome
         self.ids.edit_page.ids.id.text = id
         self.ids.edit_page.ids.dose.text = dose
-        self.ids.edit_page.ids.fabricante.text = fabricante
+        self.ids.edit_page.ids.apresentacao.text = apresentacao
         self.ids.edit_page.ids.position.text = position
         self.ids.edit_page.ids.imagem_remedio.source = photo_path
 

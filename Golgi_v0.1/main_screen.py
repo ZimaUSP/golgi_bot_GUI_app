@@ -18,7 +18,7 @@ class MainPage(MDBoxLayout):
         self.ids.collect_page.ids.busca.ids.nome.text = ""
         self.ids.collect_page.ids.busca.ids.id.text = ""
         self.ids.collect_page.ids.busca.ids.dose.text = ""
-        self.ids.collect_page.ids.busca.ids.fabricante.text = ""
+        self.ids.collect_page.ids.busca.ids.apresentacao.text = ""
 
 
 

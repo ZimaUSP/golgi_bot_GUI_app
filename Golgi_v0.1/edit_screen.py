@@ -25,7 +25,7 @@ class SearchEditPage(MDBoxLayout):
         self.nome_item = ""
         self.id_item = ""
         self.dose_item = ""
-        self.fabricante_item = ""
+        self.apresentacao_item = ""
         self.photo_path_item = ""
         self.pos_item = ""
         super().__init__(**kwargs)
@@ -52,7 +52,7 @@ class SearchEditPage(MDBoxLayout):
                 self.nome_item = item.nome
                 self.id_item = item.id
                 self.dose_item = item.dose
-                self.fabricante_item = item.fabricante
+                self.apresentacao_item = item.apresentacao
                 self.photo_path_item = item.photo_path
                 self.pos_item = item.position
                 print(item.nome)
@@ -62,12 +62,12 @@ class SearchEditPage(MDBoxLayout):
     def on_submit(self):
         """Callback function to search for items to edit
         """
-        data = golgi_data.get_items(id = self.ids.busca.ids.id.text, nome = self.ids.busca.ids.nome.text, dosagem=self.ids.busca.ids.dose.text, fabricante=self.ids.busca.ids.fabricante.text)
+        data = golgi_data.get_items(id = self.ids.busca.ids.id.text, nome = self.ids.busca.ids.nome.text, dosagem=self.ids.busca.ids.dose.text, apresentacao=self.ids.busca.ids.apresentacao.text)
         self.ids.resultados.ids.main_layout.clear_widgets()
         self.ids.busca.ids.nome.text = ""
         self.ids.busca.ids.id.text = ""
         self.ids.busca.ids.dose.text = ""
-        self.ids.busca.ids.fabricante.text = ""
+        self.ids.busca.ids.apresentacao.text = ""
         print(data)
 
         for index in data.index:
@@ -76,7 +76,7 @@ class SearchEditPage(MDBoxLayout):
             new_item.set_nome(str(data['nome'][index]))
             new_item.set_id(str(index))
             new_item.set_dose(str(data['dosagem'][index]))
-            new_item.set_fabricante(str(data['fabricante'][index]))
+            new_item.set_apresentacao(str(data['apresentacao'][index]))
             new_item.set_photo_path(str(data['photo_path'][index]))
             new_item.set_position(str(data['position'][index]))
             new_item.generate()
@@ -100,7 +100,7 @@ class EditPage(MDGridLayout):
         self.nome = ""
         self.id = ""
         self.dose = ""
-        self.fabricante = ""
+        self.apresentacao = ""
         self.position = ""
         
         super().__init__(**kwargs)
@@ -114,7 +114,7 @@ class EditPage(MDGridLayout):
         self.id = self.ids.id.text
         self.nome = self.ids.nome.text
         self.dose = self.ids.dose.text
-        self.fabricante = self.ids.fabricante.text
+        self.apresentacao = self.ids.apresentacao.text
         self.position = self.ids.position.text
 
         new_path = ""
@@ -128,14 +128,14 @@ class EditPage(MDGridLayout):
         
         
         
-        if (self.nome == "" or self.id == "" or self.dose == "" or self.fabricante == "" or self.position == ""):
+        if (self.nome == "" or self.id == "" or self.dose == "" or self.apresentacao == "" or self.position == ""):
             print("Complete form!\n")
             print(self.photo_path + "\n")
             print(self.nome + "\n")
             print(self.id + "\n")
             print(self.position + "\n")
             print(self.dose + "\n")
-            print(self.fabricante + "\n")
+            print(self.apresentacao + "\n")
             return False
         else:
             #golgi_data.delete_item(int(float(self.id)))
@@ -146,7 +146,7 @@ class EditPage(MDGridLayout):
                 "id": self.id,
                 "nome": self.nome, 
                 "dosagem": self.dose,
-                "fabricante": self.fabricante,
+                "apresentacao": self.apresentacao,
                 "position": self.position,
                 "photo_path": self.photo_path
                 }]
@@ -155,7 +155,7 @@ class EditPage(MDGridLayout):
             self.ids.nome.text = ""
             self.ids.id.text = ""
             self.ids.dose.text = ""
-            self.ids.fabricante.text = ""
+            self.ids.apresentacao.text = ""
             self.ids.position.text = ""
             self.photo_path = "foto_remedio\paracetamol_500mg.jpg"
             self.ids.imagem_remedio.source = self.photo_path

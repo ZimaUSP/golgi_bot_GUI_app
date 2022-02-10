@@ -29,7 +29,7 @@ class RegisterPage(MDGridLayout):
         self.nome = ""
         self.id = ""
         self.dose = ""
-        self.fabricante = ""
+        self.apresentacao = ""
         self.position = ""
         
         super().__init__(**kwargs)
@@ -43,21 +43,21 @@ class RegisterPage(MDGridLayout):
         self.id = self.ids.id.text
         self.nome = self.ids.nome.text
         self.dose = self.ids.dose.text
-        self.fabricante = self.ids.fabricante.text
+        self.apresentacao = self.ids.apresentacao.text
         self.position = self.ids.position.text
     
         new_path = self.photo_path[23:]
         new_path = "Golgi_v0.1\dados\images" + new_path
         #self.photo_path = new_path
 
-        if (self.nome == "" or self.id == "" or self.dose == "" or self.fabricante == "" or self.position == ""):
+        if (self.nome == "" or self.id == "" or self.dose == "" or self.apresentacao == "" or self.position == ""):
             print("Complete form!\n")
             print(self.photo_path + "\n")
             print(self.nome + "\n")
             print(self.id + "\n")
             print(self.position + "\n")
             print(self.dose + "\n")
-            print(self.fabricante + "\n")
+            print(self.apresentacao + "\n")
 
             return False
         else:
@@ -69,7 +69,7 @@ class RegisterPage(MDGridLayout):
                 "id": self.id,
                 "nome": self.nome, 
                 "dosagem": self.dose,
-                "fabricante": self.fabricante,
+                "apresentacao": self.apresentacao,
                 "position": self.position,
                 "photo_path": self.photo_path
                 }]
@@ -78,7 +78,7 @@ class RegisterPage(MDGridLayout):
             self.ids.nome.text = ""
             self.ids.id.text = ""
             self.ids.dose.text = ""
-            self.ids.fabricante.text = ""
+            self.ids.apresentacao.text = ""
             self.ids.position.text = ""
             self.photo_path = "foto_remedio\paracetamol_500mg.jpg"
             self.ids.imagem_remedio.source = self.photo_path

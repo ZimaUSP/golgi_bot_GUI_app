@@ -32,19 +32,19 @@ class CollectPage(MDBoxLayout):
     def on_submit(self):
         """Callback function so search itens from Pandas dataset
         """
-        data = golgi_data.get_items(id = self.ids.busca.ids.id.text, nome = self.ids.busca.ids.nome.text, dosagem=self.ids.busca.ids.dose.text, fabricante=self.ids.busca.ids.fabricante.text)
+        data = golgi_data.get_items(id = self.ids.busca.ids.id.text, nome = self.ids.busca.ids.nome.text, dosagem=self.ids.busca.ids.dose.text, apresentacao=self.ids.busca.ids.apresentacao.text)
         self.ids.resultados.ids.main_layout.clear_widgets()
         self.ids.busca.ids.nome.text = ""
         self.ids.busca.ids.id.text = ""
         self.ids.busca.ids.dose.text = ""
-        self.ids.busca.ids.fabricante.text = ""
+        self.ids.busca.ids.apresentacao.text = ""
         data = data.reset_index()
         for index in data.index:
             new_item = Resultado()
             new_item.set_nome(str(data['nome'][index]))
             new_item.set_id(str(data['id'][index]))
             new_item.set_dose(str(data['dosagem'][index]))
-            new_item.set_fabricante(str(data['fabricante'][index]))
+            new_item.set_apresentacao(str(data['apresentacao'][index]))
             new_item.set_photo_path(str(data['photo_path'][index]))
             new_item.set_position(str(data['position'][index]))
             new_item.generate()
@@ -85,7 +85,7 @@ class Resultado(MDBoxLayout):
         self.nome = "Nome!"
         self.id = "0"
         self.dose = "Dosagem!"
-        self.fabricante = "Fabricante!"
+        self.apresentacao = "apresentacao!"
         self.photo_path = "images\paracetamol_500mg.jpg"
         self.position = ""
         
@@ -137,17 +137,17 @@ class Resultado(MDBoxLayout):
             return True
         return False
 
-    def set_fabricante(self, fabricante):
+    def set_apresentacao(self, apresentacao):
         """Set the manufacturer on search item
 
         Args:
-            fabricante ([str): manufactorer of the item
+            apresentacao ([str): manufactorer of the item
 
         Returns:
             [bool]: true if a string is passed
         """
-        if (isinstance(fabricante, str)):
-            self.fabricante = fabricante
+        if (isinstance(apresentacao, str)):
+            self.apresentacao = apresentacao
             return True
         return False
 
