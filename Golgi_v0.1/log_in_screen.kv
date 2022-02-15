@@ -9,6 +9,8 @@
             name: "login"
             text: "Log-In"
             icon:'login'
+            active_font_size: app.BUTTON_FONT
+            inactive_font_size: app.BUTTON_FONT
             FloatLayout:
 
                 ActualLogIn:
@@ -19,6 +21,8 @@
             name: "help"
             text: "Ajuda"
             icon:'help'
+            active_font_size: app.BUTTON_FONT
+            inactive_font_size: app.BUTTON_FONT
             HelpPage:
 
 
@@ -30,7 +34,8 @@
         hint_text: "Usuário"
         required: True
         size_hint: 1, 1
-        font_size: '25sp'
+        font_size: app.TEXT_FILL_SIZE
+        hint_font_size: app.TEXT_SIZE
         
     MDTextField:
         hint_text: "Senha"
@@ -38,18 +43,24 @@
         size_hint: 1, 1
         font_size: '25sp'
         password: True
+        font_size: app.TEXT_FILL_SIZE
+        hint_font_size: app.TEXT_SIZE
+
     MDTextButton:
         text:"Esqueci minha senha"
         size_hint: 1, 0.5
         halign: 'right'
+        font_size: app.BUTTON_FONT
 
     MDFillRoundFlatIconButton:
         text:"Entrar"
         icon:"login"
         size_hint: 1, 0.4
+        font_size: app.BUTTON_FONT
         on_release:
             app.root.current = "main_screen"
 
 <HelpPage@MDBoxLayout>:
     MDLabel:
         text: "Texto da página de ajuda"
+        font_size: app.TEXT_SIZE

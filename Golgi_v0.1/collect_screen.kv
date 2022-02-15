@@ -21,7 +21,7 @@
             background_normal: ''
             background_color:252.0/256, 83.0/256, 94.0/256, 1
             size_hint_x:1
-            font_size: '25sp'
+            font_size: app.TEXT_SIZE
             text:"Submit"
             on_release: root.on_submit()
             
@@ -30,7 +30,7 @@
             background_normal: ''
             background_color:252.0/256, 83.0/256, 94.0/256, 1
             size_hint_x:1
-            font_size: '25sp'
+            font_size: app.TEXT_SIZE
             on_release: root.collect_release()
             text:"Collect"
             
@@ -41,21 +41,29 @@
         id: nome
         size_hint_y: 1
         hint_text: "Nome"
+        font_size: app.TEXT_FILL_SIZE
+        hint_font_size: app.TEXT_SIZE
     
     MDTextField:
         id: id
         size_hint_y: 1
         hint_text: "ID"
+        font_size: app.TEXT_FILL_SIZE
+        hint_font_size: app.TEXT_SIZE
     
     MDTextField:
         id: dose
         size_hint_y: 1
         hint_text: "Dosagem"
+        font_size: app.TEXT_FILL_SIZE
+        hint_font_size: app.TEXT_SIZE
     
     MDTextField:
         id: apresentacao
         size_hint_y: 1
         hint_text: "apresentacao"
+        font_size: app.TEXT_FILL_SIZE
+        hint_font_size: app.TEXT_SIZE
 
 
     
@@ -65,6 +73,8 @@
     do_scroll_y: True
     size_hint: 1, 1
     MDGridLayout:
+        padding: [0,'10dp',0,'10dp']
+        spacing: '10dp'
         size_hint: 1, None
         height: self.minimum_height
         id:main_layout
@@ -76,6 +86,7 @@
     orientation: "horizontal"
     cols:3
     size_hint: 1, None
+    spacing: '5dp'
     Image:
         id:imagem
         size_hint: .5, 1
@@ -84,6 +95,7 @@
     MDBoxLayout:
         orientation: "vertical"
         cols:1
+        spacing: '5dp'
         MDLabel:
             id: nome
             text: "Nome: " + str(root.nome)
@@ -98,8 +110,32 @@
 
         MDLabel:
             id: apresentacao
-            text: "apresentacao: " + str(root.apresentacao)
+            text: "Apresentação: " + str(root.apresentacao)
         
-    CheckBox:
-        id: check_box
-        size_hint: 0.2, 1
+    Contador:
+        id:check_box
+        size_hint: 0.4, 1
+    #CheckBox:
+    #    id: check_box
+    #    size_hint: 0.2, 1
+
+<Contador>:
+    orientation: "horizontal"
+
+    MDIconButton:
+        icon: 'minus'
+        pos_hint: {"center_x": .5, "center_y": .5}
+        on_press: root.on_minus()
+
+
+    MDLabel:
+        id: number
+        text: "0"
+        halign: 'center'
+
+    
+    MDIconButton:
+        icon: 'plus'
+        pos_hint: {"center_x": .5, "center_y": .5}
+        on_press: root.on_plus()
+

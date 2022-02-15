@@ -154,6 +154,11 @@ class GolgiApp(MDApp):
     Args:
         MDApp: App from KivyMD
     """
+
+    BUTTON_FONT = '30dp'
+    TEXT_SIZE = '30dp'
+    TEXT_FILL_SIZE = '30dp'
+    
     def __init__(self, **kwargs):
         """Initialisation method
         """

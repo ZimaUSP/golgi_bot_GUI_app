@@ -20,7 +20,7 @@
             background_normal: ''
             background_color:252.0/256, 83.0/256, 94.0/256, 1
             size_hint_x:1
-            font_size: '25sp'
+            font_size: app.BUTTON_FONT
             text:"Submit"
             on_release: root.on_submit()
             
@@ -29,7 +29,7 @@
             background_normal: ''
             background_color:252.0/256, 83.0/256, 94.0/256, 1
             size_hint_x:1
-            font_size: '25sp'
+            font_size: app.BUTTON_FONT
             on_press: root.edit_press()
             on_release:
                 root.edit_release()
@@ -45,6 +45,8 @@
         required: True
         on_text_validate: root.nome = self.text
         text: root.nome
+        font_size: app.TEXT_FILL_SIZE
+        hint_font_size: app.TEXT_SIZE
     
     MDTextField:
         id: id
@@ -52,6 +54,8 @@
         hint_text: "ID"
         required: True
         on_text_validate: root.id = self.text
+        font_size: app.TEXT_FILL_SIZE
+        hint_font_size: app.TEXT_SIZE
     
     MDTextField:
         id: dose
@@ -59,6 +63,8 @@
         hint_text: "Dosagem"
         required: True
         on_text_validate: root.dose = self.text
+        font_size: app.TEXT_FILL_SIZE
+        hint_font_size: app.TEXT_SIZE
     
     MDTextField:
         id: apresentacao
@@ -66,6 +72,8 @@
         hint_text: "apresentacao"
         required: True
         on_text_validate: root.apresentacao = self.text
+        font_size: app.TEXT_FILL_SIZE
+        hint_font_size: app.TEXT_SIZE
 
     MDTextField:
         id: position
@@ -74,6 +82,8 @@
         required: True
         max_text_length: 5
         on_text_validate: root.position = self.text
+        font_size: app.TEXT_FILL_SIZE
+        hint_font_size: app.TEXT_SIZE
     
     MDBoxLayout:
         orientation: "vertical"
@@ -92,6 +102,7 @@
                 MDRoundFlatIconButton:
                     icon: root.photo_icon
                     text: "Mudar Foto"
+                    font_size: app.BUTTON_FONT
                     on_release:
                         app.root.current = "camera_screen"
 
@@ -99,6 +110,7 @@
                 MDRoundFlatIconButton:
                     icon: root.register_icon
                     text: "Registrar"
+                    font_size: app.BUTTON_FONT
                     on_press:
                         root.submit_item()
                         app.root.current = "main_screen"
@@ -119,18 +131,22 @@
         MDLabel:
             id: nome
             text: "Nome: " + str(root.nome)
+            font_size: app.TEXT_SIZE
 
         MDLabel:
             id: id
             text: "ID: " + str(root.id)
+            font_size: app.TEXT_SIZE
 
         MDLabel:
             id: dose
             text: "Dosagem: " + str(root.dose)
+            font_size: app.TEXT_SIZE
 
         MDLabel:
             id: apresentacao
             text: "apresentacao: " + str(root.apresentacao)
+            font_size: app.TEXT_SIZE
         
 
     CheckBox:
