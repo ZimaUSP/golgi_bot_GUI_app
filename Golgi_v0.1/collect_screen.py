@@ -179,3 +179,20 @@ class Resultado(MDBoxLayout):
         return False
 
         
+class Contador(MDBoxLayout):
+    def __init__(self, **kwargs):
+        self.quantity = 0
+        super().__init__(**kwargs)
+    
+    def on_plus(self):
+        self.quantity +=1
+        self.ids.number.text = str(self.quantity)
+        pass
+
+    def on_minus(self):
+        if (self.quantity <= 0):
+            pass
+        else:
+            self.quantity -= 1
+            self.ids.number.text = str(self.quantity)
+        pass
