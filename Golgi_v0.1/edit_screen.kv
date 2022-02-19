@@ -8,8 +8,52 @@
         orientation: "horizontal"
         Busca:
             id:busca
-        Resultados:
+        ScrollView:
             id:resultados
+            do_scroll_x: False
+            do_scroll_y: True
+            size_hint: 1, 1
+            MDGridLayout:
+                cols:1
+                size_hint: 1, None
+                height: self.minimum_height
+                MDGridLayout:
+                    padding: [0,'10dp',0,'10dp']
+                    spacing: '10dp'
+                    size_hint: 1, None
+                    height: self.minimum_height
+                    id:main_layout_resultados
+                    cols:1
+                
+                MDBoxLayout:
+                    orientation: "horizontal"
+                    size_hint: 1, None
+                    height: self.minimum_height
+                    id: nav_buttons
+                    MDTextButton:
+                        text: "1"
+                        id: go_to_first
+                        on_release: root.on_go_to_first()
+
+                    MDIconButton:
+                        icon:"arrow-left"
+                        id: go_to_previous
+                        on_release: root.on_go_to_previous()
+                    
+                    MDLabel:
+                        text:str(root.current_page)
+                        id: current_page
+                        size_hint_x: 1
+                    
+                    MDIconButton:
+                        icon:"arrow-right"
+                        id: go_to_next
+                        on_release: root.on_go_to_next()
+                    
+                    MDTextButton:
+                        text: "1"
+                        id: go_to_last
+                        on_release: root.on_go_to_last()
 
     MDBoxLayout:
         id:buttons_layout
@@ -122,10 +166,6 @@
     orientation: "horizontal"
     cols:3
     size_hint: 1, None
-    #Image:
-    #    id:imagem
-    #    size_hint: .5, 1
-    #    source: root.photo_path
     
     MDBoxLayout:
         orientation: "vertical"
