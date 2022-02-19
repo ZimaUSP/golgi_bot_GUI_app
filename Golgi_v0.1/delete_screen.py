@@ -40,7 +40,6 @@ class DeletePage(MDBoxLayout):
             new_item.set_id(str(data['id'][index]))
             new_item.set_dose(str(data['dosagem'][index]))
             new_item.set_apresentacao(str(data['apresentacao'][index]))
-            new_item.set_photo_path(str(data['photo_path'][index]))
             new_item.set_position(str(data['position'][index]))
             new_item.generate()
             self.ids.resultados.ids.main_layout.add_widget(new_item)
@@ -53,7 +52,6 @@ class DeletePage(MDBoxLayout):
             print(item.ids.check_box.active)
             if item.ids.check_box.active == True:
                 print("On if")
-                os.remove(item.photo_path)
                 golgi_data.delete_item(item.id)#int(float(item.id)))
                 golgi_data.save_to_disk()
                 self.ids.resultados.ids.main_layout.remove_widget(item)

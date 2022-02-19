@@ -39,41 +39,40 @@
         max_text_length: 5
         on_text_validate: root.position = self.text
     
-    MDBoxLayout:
-        orientation: "vertical"
-        MDLabel:
-            text:"Imagem"
-            size_hint: 1, 0.3
+    MDRoundFlatIconButton:
+        icon: root.register_icon
+        text: "Registrar"
+        on_press: root.submit_item()
         
-        MDBoxLayout:
-            orientation: "horizontal"
-            Image:
-                id: imagem_remedio
-                source: root.photo_path
-                size_hint_x: 2
-            MDBoxLayout:
-                orientation: "vertical"
-                MDRoundFlatIconButton:
-                    icon: root.photo_icon
-                    text: "Mudar Foto"
-                    on_release: 
-                        app.root.current = "camera_screen"
+        #MDBoxLayout:
+        #    orientation: "horizontal"
+        #    Image:
+        #        id: imagem_remedio
+        #        source: root.photo_path
+        #        size_hint_x: 2
+        #    MDBoxLayout:
+        #        orientation: "vertical"
+        #        MDRoundFlatIconButton:
+        #            icon: root.photo_icon
+        #            text: "Mudar Foto"
+        #            on_release: 
+        #                app.root.current = "camera_screen"
 
 
-                MDRoundFlatIconButton:
-                    icon: root.register_icon
-                    text: "Registrar"
-                    on_press: root.submit_item()
+        #        MDRoundFlatIconButton:
+        #            icon: root.register_icon
+        #            text: "Registrar"
+        #            on_press: root.submit_item()
 
 
 <CameraPage>:
     MDBoxLayout:
         id: main_layout
         orientation:"vertical"
-        Camera:
-            id:camera
-            resolution: -1, -1
-            play: False
+        #Camera:
+        #    id:camera
+        #    resolution: -1, -1
+        #    play: False
         
         MDRelativeLayout:
             id: buttons_layout

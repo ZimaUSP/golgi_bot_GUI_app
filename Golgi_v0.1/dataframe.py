@@ -15,7 +15,7 @@ import pandas as pd
 class GolgiDataFrame():
     """Class for the DataSet
     """
-    columns = ['id', 'nome', 'dosagem', 'apresentacao', 'position', 'photo_path']
+    columns = ['id', 'nome', 'dosagem', 'apresentacao', 'position']
     def __init__(self) -> None:
         self.df = pd.read_csv("Golgi_v0.1\dados\drug_data.csv")
         self.df = self.df.set_index('id')
@@ -31,8 +31,7 @@ class GolgiDataFrame():
                 "nome": "TheName", 
                 "dosagem": "TheDose",
                 "apresentacao": "TheProducer",
-                "position": "ThePosition",
-                "photo_path": "ThePath"
+                "position": "ThePosition"
                 }
 
         """
@@ -61,8 +60,7 @@ class GolgiDataFrame():
                 "nome": "TheName", 
                 "dosagem": "TheDose",
                 "apresentacao": "TheProducer",
-                "position": "ThePosition",
-                "photo_path": "ThePath"
+                "position": "ThePosition"
                 }
         """
         self.df = self.df.drop(key)
@@ -160,8 +158,7 @@ golgi_data = GolgiDataFrame()
         "nome": ["TheName"], 
         "dosagem": ["TheDose"],
         "apresentacao": ["TheProducer"],
-        "position": ["ThePosition"],
-        "photo_path": ["ThePath"]
+        "position": ["ThePosition"]
         }
 
 df = pd.DataFrame(item)

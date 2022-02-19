@@ -63,14 +63,7 @@ class EditScreen(MDScreen):
         dose = self.manager.get_screen("main_screen").ids.main_page.ids.search_edit_page.dose_item
         apresentacao = self.manager.get_screen("main_screen").ids.main_page.ids.search_edit_page.apresentacao_item
         position = self.manager.get_screen("main_screen").ids.main_page.ids.search_edit_page.pos_item
-        photo_path = ""
-        if app.current_screen == "camera_screen":
-            print("Returning from camera")
-            os.remove(self.manager.get_screen("main_screen").ids.main_page.ids.search_edit_page.photo_path_item)
-            photo_path = self.manager.get_screen("camera_screen").ids.camera_page.last_img_name
-        else:
-            photo_path = self.manager.get_screen("main_screen").ids.main_page.ids.search_edit_page.photo_path_item
-
+        
 
 
         self.ids.edit_page.nome = nome
@@ -78,14 +71,12 @@ class EditScreen(MDScreen):
         self.ids.edit_page.dose = dose
         self.ids.edit_page.apresentacao = apresentacao
         self.ids.edit_page.position = position
-        self.ids.edit_page.photo_path = photo_path
 
         self.ids.edit_page.ids.nome.text = nome
         self.ids.edit_page.ids.id.text = id
         self.ids.edit_page.ids.dose.text = dose
         self.ids.edit_page.ids.apresentacao.text = apresentacao
         self.ids.edit_page.ids.position.text = position
-        self.ids.edit_page.ids.imagem_remedio.source = photo_path
 
 
         print("Nome na main: " + self.manager.get_screen("main_screen").ids.main_page.ids.search_edit_page.nome_item)
@@ -110,12 +101,7 @@ class MainScreen(MDScreen):
         """
 
         
-        self.ids.main_page.ids.register_page.photo_path = self.manager.get_screen("camera_screen").ids.camera_page.last_img_name
 
-        print(self.manager.get_screen("camera_screen").ids.camera_page.last_img_name)
-        print(self.ids.main_page.ids.register_page.photo_path)
-        self.ids.main_page.ids.register_page.ids.imagem_remedio.source = self.manager.get_screen("camera_screen").ids.camera_page.last_img_name
-        self.ids.main_page.ids.register_page.ids.imagem_remedio.reload()
         return super().on_enter(*args)
 
 class CameraScreen(MDScreen):
@@ -132,13 +118,13 @@ class CameraScreen(MDScreen):
     def on_enter(self, *args):
         """Callback function to enter Camera Screen. Enables camera.
         """
-        self.ids.camera_page.ids.camera.play = True
+        #self.ids.camera_page.ids.camera.play = True
         return super().on_enter(*args)
     
     def on_leave(self, *args):
         """Callback function to exit Camera Screen. Disables Camera
         """
-        self.ids.camera_page.ids.camera.play = False
+        #self.ids.camera_page.ids.camera.play = False
 
         return super().on_leave(*args)
 

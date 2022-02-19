@@ -3,7 +3,7 @@
 <WindowManager>:
     LogInScreen:
     MainScreen:
-    CameraScreen:
+    #CameraScreen:
     EditScreen:
 
 
@@ -22,12 +22,7 @@
     LogInPage:
 
 
-<CameraScreen>:
-    on_leave: app.previous_screen = self.name
-    on_enter: app.current_screen = self.name
-    name: "camera_screen"
-    CameraPage:
-        id: camera_page
+
 
 <EditScreen>:
     on_leave: app.previous_screen = self.name

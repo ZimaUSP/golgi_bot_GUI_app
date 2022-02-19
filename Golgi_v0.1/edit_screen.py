@@ -26,7 +26,6 @@ class SearchEditPage(MDBoxLayout):
         self.id_item = ""
         self.dose_item = ""
         self.apresentacao_item = ""
-        self.photo_path_item = ""
         self.pos_item = ""
         super().__init__(**kwargs)
 
@@ -53,7 +52,6 @@ class SearchEditPage(MDBoxLayout):
                 self.id_item = item.id
                 self.dose_item = item.dose
                 self.apresentacao_item = item.apresentacao
-                self.photo_path_item = item.photo_path
                 self.pos_item = item.position
                 print(item.nome)
                 print("Pos: " + item.position)
@@ -77,7 +75,6 @@ class SearchEditPage(MDBoxLayout):
             new_item.set_id(str(index))
             new_item.set_dose(str(data['dosagem'][index]))
             new_item.set_apresentacao(str(data['apresentacao'][index]))
-            new_item.set_photo_path(str(data['photo_path'][index]))
             new_item.set_position(str(data['position'][index]))
             new_item.generate()
             self.ids.resultados.ids.main_layout.add_widget(new_item)
@@ -96,7 +93,6 @@ class EditPage(MDGridLayout):
     def __init__(self, **kwargs):
         """Initialisation method
         """
-        self.photo_path = "foto_remedio\paracetamol_500mg.jpg"
         self.nome = ""
         self.id = ""
         self.dose = ""
@@ -119,18 +115,11 @@ class EditPage(MDGridLayout):
 
         new_path = ""
 
-        if self.photo_path[:23] != "Golgi_v0.1\dados\images":
-            print("Current path: " + self.photo_path)
-            new_path = self.photo_path[23:]
-            new_path = "Golgi_v0.1\dados\images" + new_path
-            print("New path: " + new_path)
-
         
         
         
         if (self.nome == "" or self.id == "" or self.dose == "" or self.apresentacao == "" or self.position == ""):
             print("Complete form!\n")
-            print(self.photo_path + "\n")
             print(self.nome + "\n")
             print(self.id + "\n")
             print(self.position + "\n")
@@ -139,16 +128,12 @@ class EditPage(MDGridLayout):
             return False
         else:
             #golgi_data.delete_item(int(float(self.id)))
-            if new_path != "":
-                os.rename(self.photo_path, new_path)
-                self.photo_path = new_path
             item =  [{
                 "id": self.id,
                 "nome": self.nome, 
                 "dosagem": self.dose,
                 "apresentacao": self.apresentacao,
                 "position": self.position,
-                "photo_path": self.photo_path
                 }]
             golgi_data.add_item(item)
             golgi_data.save_to_disk()
@@ -157,8 +142,6 @@ class EditPage(MDGridLayout):
             self.ids.dose.text = ""
             self.ids.apresentacao.text = ""
             self.ids.position.text = ""
-            self.photo_path = "foto_remedio\paracetamol_500mg.jpg"
-            self.ids.imagem_remedio.source = self.photo_path
 
             return True
 
@@ -176,7 +159,6 @@ class ResultadoBinario(MDBoxLayout):
         self.id = "0"
         self.dose = "Dosagem!"
         self.apresentacao = "apresentacao!"
-        self.photo_path = "images\paracetamol_500mg.jpg"
         self.position = ""
         
         
@@ -241,18 +223,7 @@ class ResultadoBinario(MDBoxLayout):
             return True
         return False
 
-    def set_photo_path(self, photo_path):
-        """Set the photo path on search item
-
-        Args:
-            photo_path (str): relative path to photo on item
-        Returns:
-            [bool]: true if a string is passed
-        """
-        if (os.path.exists(photo_path)):
-            self.photo_path = photo_path
-            return True
-        return False
+  
 
     def set_position(self, position):
         """Set the position of search item

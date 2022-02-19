@@ -85,45 +85,47 @@
         font_size: app.TEXT_FILL_SIZE
         hint_font_size: app.TEXT_SIZE
     
-    MDBoxLayout:
-        orientation: "vertical"
-        MDLabel:
-            text:"Imagem"
-            size_hint: 1, 0.3
+    MDRoundFlatIconButton:
+        icon: root.register_icon
+        text: "Registrar"
+        font_size: app.BUTTON_FONT
+        on_press:
+            root.submit_item()
+            app.root.current = "main_screen"
         
-        MDBoxLayout:
-            orientation: "horizontal"
-            Image:
-                id: imagem_remedio
-                source: root.photo_path
-                size_hint_x: 2
-            MDBoxLayout:
-                orientation: "vertical"
-                MDRoundFlatIconButton:
-                    icon: root.photo_icon
-                    text: "Mudar Foto"
-                    font_size: app.BUTTON_FONT
-                    on_release:
-                        app.root.current = "camera_screen"
+        #MDBoxLayout:
+        #    orientation: "horizontal"
+            #Image:
+            #    id: imagem_remedio
+            #    source: root.photo_path
+            #    size_hint_x: 2
+        #    MDBoxLayout:
+        #        orientation: "vertical"
+        #        MDRoundFlatIconButton:
+        #            icon: root.photo_icon
+        #            text: "Mudar Foto"
+        #            font_size: app.BUTTON_FONT
+        #            on_release:
+        #                app.root.current = "camera_screen"
 
 
-                MDRoundFlatIconButton:
-                    icon: root.register_icon
-                    text: "Registrar"
-                    font_size: app.BUTTON_FONT
-                    on_press:
-                        root.submit_item()
-                        app.root.current = "main_screen"
+        #        MDRoundFlatIconButton:
+        #            icon: root.register_icon
+        #            text: "Registrar"
+        #            font_size: app.BUTTON_FONT
+        #            on_press:
+        #                root.submit_item()
+        #                app.root.current = "main_screen"
 
 
 <ResultadoBinario>:
     orientation: "horizontal"
     cols:3
     size_hint: 1, None
-    Image:
-        id:imagem
-        size_hint: .5, 1
-        source: root.photo_path
+    #Image:
+    #    id:imagem
+    #    size_hint: .5, 1
+    #    source: root.photo_path
     
     MDBoxLayout:
         orientation: "vertical"

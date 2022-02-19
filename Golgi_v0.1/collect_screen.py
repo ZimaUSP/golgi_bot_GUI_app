@@ -45,7 +45,6 @@ class CollectPage(MDBoxLayout):
             new_item.set_id(str(data['id'][index]))
             new_item.set_dose(str(data['dosagem'][index]))
             new_item.set_apresentacao(str(data['apresentacao'][index]))
-            new_item.set_photo_path(str(data['photo_path'][index]))
             new_item.set_position(str(data['position'][index]))
             new_item.generate()
             self.ids.resultados.ids.main_layout.add_widget(new_item)
@@ -86,7 +85,6 @@ class Resultado(MDBoxLayout):
         self.id = "0"
         self.dose = "Dosagem!"
         self.apresentacao = "apresentacao!"
-        self.photo_path = "images\paracetamol_500mg.jpg"
         self.position = ""
         
         
@@ -151,18 +149,6 @@ class Resultado(MDBoxLayout):
             return True
         return False
 
-    def set_photo_path(self, photo_path):
-        """Set the photo path on search item
-
-        Args:
-            photo_path (str): relative path to photo on item
-        Returns:
-            [bool]: true if a string is passed
-        """
-        if (os.path.exists(photo_path)):
-            self.photo_path = photo_path
-            return True
-        return False
 
     def set_position(self, position):
         """Set the position of search item
