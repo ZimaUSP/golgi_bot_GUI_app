@@ -45,7 +45,12 @@ class GolgiDataFrame():
         Params:
             key(int): id of item to be removed
         """
-        self.df = self.df.drop(key)
+        try:
+            self.df = self.df.drop(key)
+        except:
+            self.df = self.df.drop(int(float(key)))
+        finally:
+            print(f"Item number %d not found", key)
 
 
 

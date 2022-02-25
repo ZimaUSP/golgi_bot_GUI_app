@@ -86,11 +86,11 @@ class DeletePage(MDBoxLayout):
     def delete_release(self):
         """Callback function to delete the selected items
         """
-        for item in self.ids.resultados.ids.main_layout.children:
+        for item in self.ids.main_layout_resultados.children:
             print("Check: ")
             print(item.ids.check_box.active)
             if item.ids.check_box.active == True:
                 print("On if")
                 golgi_data.delete_item(item.id)#int(float(item.id)))
                 golgi_data.save_to_disk()
-                self.ids.resultados.ids.main_layout.remove_widget(item)
+                self.ids.main_layout_resultados.remove_widget(item)

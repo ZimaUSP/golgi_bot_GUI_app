@@ -49,7 +49,7 @@ class SearchEditPage(MDBoxLayout):
     def edit_press(self):
         """Callback function for pressing edit button
         """
-        for item in self.ids.resultados.ids.main_layout.children:
+        for item in self.ids.main_layout_resultados.children:
             print("Check: ")
             print(item.ids.check_box.active)
             if item.ids.check_box.active == True:
