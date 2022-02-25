@@ -18,6 +18,8 @@ from log_in_screen import *
 from register_screen import *
 from delete_screen import *
 from edit_screen import *
+from visual_components.busca import *
+from visual_components.resultado_busca import *
 
 from dataframe import *
 
@@ -30,6 +32,8 @@ Builder.load_file('log_in_screen.kv')
 Builder.load_file('register_screen.kv')
 Builder.load_file('delete_screen.kv')
 Builder.load_file('edit_screen.kv')
+Builder.load_file('visual_components\\busca.kv')
+Builder.load_file('visual_components\\resultado_busca.kv')
 
 Builder.load_file('main.kv')
 

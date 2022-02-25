@@ -162,35 +162,3 @@
         #                app.root.current = "main_screen"
 
 
-<ResultadoBinario>:
-    orientation: "horizontal"
-    cols:3
-    size_hint: 1, None
-    
-    MDBoxLayout:
-        orientation: "vertical"
-        cols:1
-        MDLabel:
-            id: nome
-            text: "Nome: " + str(root.nome)
-            font_size: app.TEXT_SIZE
-
-        MDLabel:
-            id: id
-            text: "ID: " + str(root.id)
-            font_size: app.TEXT_SIZE
-
-        MDLabel:
-            id: dose
-            text: "Dosagem: " + str(root.dose)
-            font_size: app.TEXT_SIZE
-
-        MDLabel:
-            id: apresentacao
-            text: "apresentacao: " + str(root.apresentacao)
-            font_size: app.TEXT_SIZE
-        
-
-    CheckBox:
-        id: check_box
-        size_hint: 0.2, 1

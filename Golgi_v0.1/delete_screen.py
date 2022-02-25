@@ -11,6 +11,9 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from edit_screen import ResultadoBinario
 
 from dataframe import *
+from visual_components.busca import *
+from visual_components.resultado_busca import *
+
 
 
 class DeletePage(MDBoxLayout):

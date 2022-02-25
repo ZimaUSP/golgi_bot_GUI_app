@@ -78,38 +78,6 @@
             on_release: root.collect_release()
             text:"Collect"
             
-
-<Busca>:
-    orientation:"vertical"
-    MDTextField:
-        id: nome
-        size_hint_y: 1
-        hint_text: "Nome"
-        font_size: app.TEXT_FILL_SIZE
-        hint_font_size: app.TEXT_SIZE
-    
-    MDTextField:
-        id: id
-        size_hint_y: 1
-        hint_text: "ID"
-        font_size: app.TEXT_FILL_SIZE
-        hint_font_size: app.TEXT_SIZE
-    
-    MDTextField:
-        id: dose
-        size_hint_y: 1
-        hint_text: "Dosagem"
-        font_size: app.TEXT_FILL_SIZE
-        hint_font_size: app.TEXT_SIZE
-    
-    MDTextField:
-        id: apresentacao
-        size_hint_y: 1
-        hint_text: "apresentacao"
-        font_size: app.TEXT_FILL_SIZE
-        hint_font_size: app.TEXT_SIZE
-
-
     
 
 <Resultados>:
@@ -153,57 +121,4 @@
 
 
     
-
-<Resultado>:
-    orientation: "horizontal"
-    cols:3
-    size_hint: 1, None
-    spacing: '5dp'
-    
-    MDBoxLayout:
-        orientation: "vertical"
-        cols:1
-        spacing: '5dp'
-        MDLabel:
-            id: nome
-            text: "Nome: " + str(root.nome)
-
-        MDLabel:
-            id: id
-            text: "ID: " + str(root.id)
-
-        MDLabel:
-            id: dose
-            text: "Dosagem: " + str(root.dose)
-
-        MDLabel:
-            id: apresentacao
-            text: "Apresentação: " + str(root.apresentacao)
-        
-    Contador:
-        id:check_box
-        size_hint: 0.4, 1
-    #CheckBox:
-    #    id: check_box
-    #    size_hint: 0.2, 1
-
-<Contador>:
-    orientation: "horizontal"
-
-    MDIconButton:
-        icon: 'minus'
-        pos_hint: {"center_x": .5, "center_y": .5}
-        on_press: root.on_minus()
-
-
-    MDLabel:
-        id: number
-        text: "0"
-        halign: 'center'
-
-    
-    MDIconButton:
-        icon: 'plus'
-        pos_hint: {"center_x": .5, "center_y": .5}
-        on_press: root.on_plus()
 
