@@ -9,8 +9,52 @@
         orientation: "horizontal"
         Busca:
             id:busca
-        Resultados:
+        ScrollView:
             id:resultados
+            do_scroll_x: False
+            do_scroll_y: True
+            size_hint: 1, 1
+            MDGridLayout:
+                cols:1
+                size_hint: 1, None
+                height: self.minimum_height
+                MDGridLayout:
+                    padding: [0,'10dp',0,'10dp']
+                    spacing: '10dp'
+                    size_hint: 1, None
+                    height: self.minimum_height
+                    id:main_layout_resultados
+                    cols:1
+                
+                MDBoxLayout:
+                    orientation: "horizontal"
+                    size_hint: 1, None
+                    height: self.minimum_height
+                    id: nav_buttons
+                    MDTextButton:
+                        text: "1"
+                        id: go_to_first
+                        on_release: root.on_go_to_first()
+
+                    MDIconButton:
+                        icon:"arrow-left"
+                        id: go_to_previous
+                        on_release: root.on_go_to_previous()
+                    
+                    MDLabel:
+                        text:str(root.current_page)
+                        id: current_page
+                        size_hint_x: 1
+                    
+                    MDIconButton:
+                        icon:"arrow-right"
+                        id: go_to_next
+                        on_release: root.on_go_to_next()
+                    
+                    MDTextButton:
+                        text: "1"
+                        id: go_to_last
+                        on_release: root.on_go_to_last()
 
     MDBoxLayout:
         id:buttons_layout
@@ -34,108 +78,47 @@
             on_release: root.collect_release()
             text:"Collect"
             
-
-<Busca>:
-    orientation:"vertical"
-    MDTextField:
-        id: nome
-        size_hint_y: 1
-        hint_text: "Nome"
-        font_size: app.TEXT_FILL_SIZE
-        hint_font_size: app.TEXT_SIZE
-    
-    MDTextField:
-        id: id
-        size_hint_y: 1
-        hint_text: "ID"
-        font_size: app.TEXT_FILL_SIZE
-        hint_font_size: app.TEXT_SIZE
-    
-    MDTextField:
-        id: dose
-        size_hint_y: 1
-        hint_text: "Dosagem"
-        font_size: app.TEXT_FILL_SIZE
-        hint_font_size: app.TEXT_SIZE
-    
-    MDTextField:
-        id: apresentacao
-        size_hint_y: 1
-        hint_text: "apresentacao"
-        font_size: app.TEXT_FILL_SIZE
-        hint_font_size: app.TEXT_SIZE
-
-
     
 
 <Resultados>:
     do_scroll_x: False
     do_scroll_y: True
     size_hint: 1, 1
-    MDGridLayout:
-        padding: [0,'10dp',0,'10dp']
-        spacing: '10dp'
-        size_hint: 1, None
-        height: self.minimum_height
-        id:main_layout
-        cols:1
-
-    
-
-<Resultado>:
-    orientation: "horizontal"
-    cols:3
-    size_hint: 1, None
-    spacing: '5dp'
-    Image:
-        id:imagem
-        size_hint: .5, 1
-        source: root.photo_path
-    
     MDBoxLayout:
         orientation: "vertical"
-        cols:1
-        spacing: '5dp'
-        MDLabel:
-            id: nome
-            text: "Nome: " + str(root.nome)
-
-        MDLabel:
-            id: id
-            text: "ID: " + str(root.id)
-
-        MDLabel:
-            id: dose
-            text: "Dosagem: " + str(root.dose)
-
-        MDLabel:
-            id: apresentacao
-            text: "Apresentação: " + str(root.apresentacao)
+        MDGridLayout:
+            padding: [0,'10dp',0,'10dp']
+            spacing: '10dp'
+            size_hint: 1, None
+            height: self.minimum_height
+            id:main_layout_resultados
+            cols:1
         
-    Contador:
-        id:check_box
-        size_hint: 0.4, 1
-    #CheckBox:
-    #    id: check_box
-    #    size_hint: 0.2, 1
+        MDBoxLayout:
+            orientation: "horizontal"
+            size_hint: 1, None
+            height: self.minimum_height
+            id: nav_buttons
+            MDTextButton:
+                text: "1"
+                #on_release: root.on_go_to_first()
 
-<Contador>:
-    orientation: "horizontal"
+            MDIconButton:
+                icon:"arrow-left"
+                #on_release: root.on_go_to_previous()
+            
+            MDLabel:
+                text:"1"
+                size_hint_x: 1
+            
+            MDIconButton:
+                icon:"arrow-right"
+                #on_release: root.on_go_to_next()
+            
+            MDTextButton:
+                text: "1"
+                #on_release: root.on_go_to_last()
 
-    MDIconButton:
-        icon: 'minus'
-        pos_hint: {"center_x": .5, "center_y": .5}
-        on_press: root.on_minus()
-
-
-    MDLabel:
-        id: number
-        text: "0"
-        halign: 'center'
 
     
-    MDIconButton:
-        icon: 'plus'
-        pos_hint: {"center_x": .5, "center_y": .5}
-        on_press: root.on_plus()
 

@@ -1,0 +1,62 @@
+#:kivy 2.0.0
+
+<Resultado>:
+    orientation: "horizontal"
+    cols:3
+    size_hint: 1, None
+    spacing: '5dp'
+    
+    MDBoxLayout:
+        orientation: "vertical"
+        cols:1
+        spacing: '5dp'
+        MDLabel:
+            id: nome
+            text: "Nome: " + str(root.nome)
+
+        MDLabel:
+            id: id
+            text: "ID: " + str(root.id)
+
+        MDLabel:
+            id: dose
+            text: "Dosagem: " + str(root.dose)
+
+        MDLabel:
+            id: apresentacao
+            text: "Apresentação: " + str(root.apresentacao)
+        
+
+
+<ResultadoMultiplo>:
+    Contador:
+        id:check_box
+        size_hint: 0.4, 1
+
+
+<ResultadoBinario>:
+    CheckBox:
+        id: check_box
+        size_hint: 0.2, 1
+    
+
+<Contador>:
+    orientation: "horizontal"
+
+    MDIconButton:
+        icon: 'minus'
+        pos_hint: {"center_x": .5, "center_y": .5}
+        on_press: root.on_minus()
+
+
+    MDLabel:
+        id: number
+        text: "0"
+        halign: 'center'
+
+    
+    MDIconButton:
+        icon: 'plus'
+        pos_hint: {"center_x": .5, "center_y": .5}
+        on_press: root.on_plus()
+
