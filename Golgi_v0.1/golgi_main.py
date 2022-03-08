@@ -18,6 +18,10 @@ from log_in_screen import *
 from register_screen import *
 from delete_screen import *
 from edit_screen import *
+from admin_main_screen import *
+from add_user_screen import *
+
+
 from visual_components.busca import *
 from visual_components.resultado_busca import *
 
@@ -27,11 +31,16 @@ from dataframe import *
 
 
 Builder.load_file('main_screen.kv')
+Builder.load_file('admin_main_screen.kv')
 Builder.load_file('collect_screen.kv')
 Builder.load_file('log_in_screen.kv')
 Builder.load_file('register_screen.kv')
 Builder.load_file('delete_screen.kv')
 Builder.load_file('edit_screen.kv')
+Builder.load_file('add_user_screen.kv')
+
+
+
 Builder.load_file('visual_components\\busca.kv')
 Builder.load_file('visual_components\\resultado_busca.kv')
 
@@ -102,35 +111,26 @@ class MainScreen(MDScreen):
     
     def on_enter(self, *args):
         """Callback function for entering the screen. Configures some Text Inputs and images.
-        """
-
-        
+        """       
 
         return super().on_enter(*args)
 
-class CameraScreen(MDScreen):
-    """Declaration of Camera Screen
 
-    Args:
-        MDScreen: Screen from KivyMD
+class AdminMainScreen(MDScreen):
+    pass
+
+
+
+class CollectScreen(MDScreen):
+    """Declration of Collect Screen
     """
-    def __init__(self, **kw):
-        """Initialisation method
+    def on_enter(self):
+        """Callback function to entering collect section
         """
-        super().__init__(**kw)
-    
-    def on_enter(self, *args):
-        """Callback function to enter Camera Screen. Enables camera.
-        """
-        #self.ids.camera_page.ids.camera.play = True
-        return super().on_enter(*args)
-    
-    def on_leave(self, *args):
-        """Callback function to exit Camera Screen. Disables Camera
-        """
-        #self.ids.camera_page.ids.camera.play = False
-
-        return super().on_leave(*args)
+        self.ids.collect_page.ids.busca.ids.nome.text = ""
+        self.ids.collect_page.ids.busca.ids.id.text = ""
+        self.ids.collect_page.ids.busca.ids.dose.text = ""
+        self.ids.collect_page.ids.busca.ids.apresentacao.text = ""
 
 
 class WindowManager(ScreenManager):

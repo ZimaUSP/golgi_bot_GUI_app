@@ -1,8 +1,8 @@
+from main_screen import *
 from kivymd.uix.boxlayout import MDBoxLayout
 
-
-class MainPage(MDBoxLayout):
-    """Main Screen declaration
+class AdminMainPage(MDBoxLayout):
+    """Main Admin Screen declaration
 
     Args:
         MDBoxLayout: BoxLayout from KivyMD
@@ -11,9 +11,3 @@ class MainPage(MDBoxLayout):
         """Initialisation method
         """
         super().__init__(**kwargs)
-    
-    
-
-
-
-

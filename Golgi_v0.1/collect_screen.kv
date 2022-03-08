@@ -1,5 +1,38 @@
 #:kivy 2.0.0
 
+<CollectLogIn@MDBoxLayout>:
+    orientation:"vertical"
+    
+    MDTextField:
+        hint_text: "Paciente"
+        required: True
+        size_hint: 1, 1
+        font_size: app.TEXT_FILL_SIZE
+        hint_font_size: app.TEXT_SIZE
+        
+    MDTextField:
+        hint_text: "ID"
+        required: True
+        size_hint: 1, 1
+        font_size: '25sp'
+        password: False
+        font_size: app.TEXT_FILL_SIZE
+        hint_font_size: app.TEXT_SIZE
+
+    MDTextButton:
+        text:"Esqueci minha senha"
+        size_hint: 1, 0.5
+        halign: 'right'
+        font_size: app.BUTTON_FONT
+
+    MDFillRoundFlatIconButton:
+        text:"Entrar"
+        icon:"login"
+        size_hint: 1, 0.4
+        font_size: app.BUTTON_FONT
+        on_release:
+            app.root.current = "collect_screen"
+
 
 <CollectPage>:
     orientation:"vertical"
@@ -77,6 +110,15 @@
             font_size: app.TEXT_SIZE
             on_release: root.collect_release()
             text:"Collect"
+        
+        Button:
+            id:exit_button
+            background_normal: ''
+            background_color:252.0/256, 83.0/256, 94.0/256, 1
+            size_hint_x:1
+            font_size: app.TEXT_SIZE
+            on_release: app.root.current = "main_screen"
+            text:"Sair"
             
     
 
