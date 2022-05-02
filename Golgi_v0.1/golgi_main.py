@@ -64,12 +64,7 @@ class LogInScreen(MDScreen):
         """
         super().__init__(**kw)
         
-    #Limpar campos ao entrar e ao sair da tela
-    def on_pre_enter(self, *args):
-        self.ids.log_in_main_page.ids.actual_log_in.ids.user.text = ""
-        self.ids.log_in_main_page.ids.actual_log_in.ids.password.text = ""
-        return super().on_enter(*args)
-    
+    #Limpar campos ao sair da tela
     def on_leave(self, *args):
         self.ids.log_in_main_page.ids.actual_log_in.ids.user.text = ""
         self.ids.log_in_main_page.ids.actual_log_in.ids.password.text = ""
@@ -85,6 +80,7 @@ class EditScreen(MDScreen):
     def __init__(self, **kw):
         """Initialisation method
         """
+        print(self)
         super().__init__(**kw)
     
     def on_pre_enter(self, *args):
