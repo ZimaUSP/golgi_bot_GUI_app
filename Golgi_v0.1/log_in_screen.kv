@@ -14,6 +14,7 @@
             FloatLayout:
 
                 ActualLogIn:
+                    id:actual_log_in
                     size_hint:0.5, 0.6
                     pos_hint: {'center_x':.5, 'center_y': .5}
 
@@ -28,6 +29,7 @@
 
 
 <ActualLogIn>:
+    id: actual_login
     orientation:"vertical"
     
     MDTextField:
@@ -39,6 +41,7 @@
         hint_font_size: app.TEXT_SIZE
         
     MDTextField:
+        id: password
         hint_text: "Senha"
         required: True
         size_hint: 1, 1

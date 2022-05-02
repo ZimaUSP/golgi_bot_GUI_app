@@ -20,13 +20,14 @@
     on_leave: app.previous_screen = self.name
     on_enter: app.current_screen = self.name
     AdminMainPage:
-        id: admin_main_ppage
+        id: admin_main_page
 
 <LogInScreen>:
+    name: "log_in_screen"
     on_leave: app.previous_screen = self.name
     on_enter: app.current_screen = self.name
-    name: "log_in_screen"
     LogInPage:
+        id:log_in_main_page
 
 
 <EditScreen>:
