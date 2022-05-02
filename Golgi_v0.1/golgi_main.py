@@ -24,6 +24,7 @@ from add_user_screen import *
 
 from visual_components.busca import *
 from visual_components.resultado_busca import *
+from config import *
 
 from dataframe import *
 
@@ -40,7 +41,6 @@ Builder.load_file('edit_screen.kv')
 Builder.load_file('add_user_screen.kv')
 
 
-in_linux = False
 
 if in_linux:
     Builder.load_file('visual_components/busca.kv')
@@ -181,7 +181,10 @@ class GolgiApp(MDApp):
         """Build method
 
         """
-        self.icon = 'images\logo-gradient.png'
+        if in_linux:
+            self.icon = 'images/logo-gradient.png'
+        else:
+            self.icon = 'images\logo-gradient.png'
         self.theme_cls.theme_style = "Dark"
         self.theme_cls.primary_palette = "Pink"
         return WindowManager()

@@ -7,7 +7,7 @@
         Pedro Croso <pedrocroso@usp.br>
 """
 from kivymd.uix.gridlayout import MDGridLayout
-
+from data_users import *
 
 from dataframe import *
 
@@ -31,8 +31,8 @@ class AddUserPage(MDGridLayout):
         
         super().__init__(**kwargs)
     
-    def submit_item(self):
-        """Callback function to register new item in dataset
+    def submit_user(self):
+        """Callback function to register new user in dataset
 
         Returns:
             bool: True if all fields were completed
@@ -66,6 +66,9 @@ class AddUserPage(MDGridLayout):
                 "senha": self.senha,
                 "admin": self.is_new_user_admin,
                 }]
+            
+            golgi_users.add_user(user)
+            golgi_users.save_to_disk()
             
             '''golgi_data.add_item(item)
             golgi_data.save_to_disk()
