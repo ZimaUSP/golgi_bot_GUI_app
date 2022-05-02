@@ -40,9 +40,14 @@ Builder.load_file('edit_screen.kv')
 Builder.load_file('add_user_screen.kv')
 
 
+in_linux = False
 
-Builder.load_file('visual_components\\busca.kv')
-Builder.load_file('visual_components\\resultado_busca.kv')
+if in_linux:
+    Builder.load_file('visual_components/busca.kv')
+    Builder.load_file('visual_components/resultado_busca.kv')
+else:
+    Builder.load_file('visual_components\\busca.kv')
+    Builder.load_file('visual_components\\resultado_busca.kv')
 
 Builder.load_file('main.kv')
 
@@ -54,7 +59,22 @@ class LogInScreen(MDScreen):
     Args:
         MDScreen
     """
-    pass
+    def __init__(self, **kw):
+        """Initialisation method
+        """
+        super().__init__(**kw)
+        
+    #Limpar campos ao entrar e ao sair da tela
+    def on_pre_enter(self, *args):
+        self.ids.log_in_main_page.ids.actual_log_in.ids.user.text = ""
+        self.ids.log_in_main_page.ids.actual_log_in.ids.password.text = ""
+        return super().on_enter(*args)
+    
+    def on_leave(self, *args):
+        self.ids.log_in_main_page.ids.actual_log_in.ids.user.text = ""
+        self.ids.log_in_main_page.ids.actual_log_in.ids.password.text = ""
+        return super().on_leave(*args)
+
 
 class EditScreen(MDScreen):
     """Declaration of edit screen
