@@ -126,7 +126,7 @@ class AdminCollect1(tk.Frame):
         self.button5.grid(row=5, column=2)
 
         self.button6 = ttk.Button(self, text="Apagar",
-                            command=lambda: controller.show_frame(AdminRegister))
+                            command=lambda: controller.show_frame(AdminDelete))
         self.button6.grid(row=5, column=3)
 
         self.button7 = ttk.Button(self, text="Adicionar Usuário",
@@ -140,32 +140,43 @@ class AdminCollect1(tk.Frame):
 
 class AdminCollect2(tk.Frame):
 
-    def on_submit(self):
-        """Callback function to search itens from Pandas dataset
-        """
-
-        self.id = self.entry2.get()
-        self.nome = self.entry1.get()
-        self.dose = self.entry3.get()
-        self.apresentacao = self.entry4.get()
-
-        self.data = golgi_data.get_items(id = self.id, nome = self.nome, dosagem=self.dose, apresentacao=self.apresentacao)
-        #self.ids.resultados.ids.main_layout_resultados.clear_widgets()
+    def display(self, event):
         self.entry2.delete(0, "end")
         self.entry1.delete(0, "end")
         self.entry3.delete(0, "end")
         self.entry4.delete(0, "end")
+        #self.entry5.delete(0, "end")
 
-        self.entry2.insert(0, "ID")
-        self.entry1.insert(0, "Nome")
-        self.entry3.insert(0, "Dosagem")
-        self.entry4.insert(0, "Apresentação")
-
-        self.data = self.data.reset_index()
-        self.n_items  = len(self.data.index)
-        self.n_pages = ceil(self.n_items/15.0)
+        self.id = ""
+        self.dose = ""
+        self.apresentacao = ""
+        self.nome = self.listbox.get("anchor")
+        #self.nome = self.listbox.get(self.listbox.curselection())
         
-        print(self.n_items)
+        #print(self.nome)
+
+        self.data = golgi_data.get_items(id = self.id, nome = self.nome, dosagem=self.dose, apresentacao=self.apresentacao)
+        self.data = self.data.reset_index()
+
+        self.id = self.data.id[0]
+        self.nome = self.data.nome[0]
+        self.dose = self.data.dosagem[0]
+        self.apresentacao = self.data.apresentacao[0]
+        #self.position = self.data.position[0]
+
+        #print(self.id, self.nome, self.dose, self.apresentacao, self.position)
+
+        self.entry2.insert(0, str(self.id))
+        self.entry1.insert(0, str(self.nome))
+        self.entry3.insert(0, str(self.dose))
+        self.entry4.insert(0, str(self.apresentacao))
+        #self.entry5.insert(0, str(self.position))
+
+        if self.id in self.collect_list.keys():
+            self.lbl_value["text"] = str(int(self.collect_list[self.id]))
+
+        else:
+            self.lbl_value["text"] = "0"
 
     # update listbox
     def update_listbox(self):
@@ -192,12 +203,45 @@ class AdminCollect2(tk.Frame):
 
         for item in self.data.nome:
             self.listbox.insert("end", item)
+
+    def increase(self):
+        value = int(self.lbl_value["text"])
+        self.lbl_value["text"] = f"{value + 1}"
+
+    def decrease(self):
+        value = int(self.lbl_value["text"])
+        if value > 0:
+            self.lbl_value["text"] = f"{value - 1}"
+
+    def add_to_list(self):
+        if self.listbox.get("anchor") is None:
+            print("Escolha um medicamento!")
+            return False
+        
+        elif int(self.lbl_value.cget("text")) == 0:
+            print("Quantidade inválida!")
+
+        else:
+            self.collect_list[self.id] = int(self.lbl_value.cget("text"))
+            self.listbox.selection_clear(0, "end")
+            self.lbl_value["text"] = "0"
+
+            print(self.collect_list)
+            
+
+        return self.collect_list
+
+    def collect(self):
+        print(self.collect_list)
+        return self.collect_list
         
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
         self.configure(bg='#303030')
+
+        self.collect_list = {}
 
         # 'Nome' entry
         self.entry1 = tk.Entry(self) 
@@ -221,10 +265,27 @@ class AdminCollect2(tk.Frame):
 
         self.button1 = ttk.Button(self, text="Submit",
                             command=self.update_listbox)
-        self.button1.grid(row=5, column=0, columnspan=3)
+        self.button1.grid(row=5, column=1, columnspan=1)
+
+        self.button2 = ttk.Button(self, text="Coletar", command=self.collect)
+        self.button2.grid(row=5, column=2, columnspan=1)
 
         self.listbox = tk.Listbox(self, width=50)
         self.listbox.grid(row=0, column=1, columnspan=4, rowspan=4)
+
+        self.listbox.bind("<<ListboxSelect>>", self.display)
+
+        self.btn_decrease = ttk.Button(master=self, text="-", command=self.decrease)
+        self.btn_decrease.grid(row=2, column=5)
+
+        self.lbl_value = ttk.Label(master=self, text="0")
+        self.lbl_value.grid(row=2, column=6)
+
+        self.btn_increase = ttk.Button(master=self, text="+", command=self.increase)
+        self.btn_increase.grid(row=2, column=7)
+
+        self.add_button = ttk.Button(self, text="Adicionar", command=self.add_to_list)
+        self.add_button.grid(row=3, column=5)
 
         self.button3 = ttk.Button(self, text="Coletar", 
                             command=lambda: controller.show_frame(AdminCollect1))
@@ -239,7 +300,7 @@ class AdminCollect2(tk.Frame):
         self.button5.grid(row=6, column=2)
 
         self.button6 = ttk.Button(self, text="Apagar",
-                            command=lambda: controller.show_frame(AdminRegister))
+                            command=lambda: controller.show_frame(AdminDelete))
         self.button6.grid(row=6, column=3)
 
         self.button7 = ttk.Button(self, text="Adicionar Usuário",
@@ -348,7 +409,7 @@ class AdminRegister(tk.Frame):
         self.button5.grid(row=6, column=2)
 
         self.button6 = ttk.Button(self, text="Apagar",
-                            command=lambda: controller.show_frame(AdminRegister))
+                            command=lambda: controller.show_frame(AdminDelete))
         self.button6.grid(row=6, column=3)
 
         self.button7 = ttk.Button(self, text="Adicionar Usuário",
@@ -367,15 +428,15 @@ class AdminEdit(tk.Frame):
         self.entry1.delete(0, "end")
         self.entry3.delete(0, "end")
         self.entry4.delete(0, "end")
-        #self.entry5.delete(0, "end")
+        self.entry5.delete(0, "end")
 
-        # self.id = ""
-        # self.dose = ""
-        # self.apresentacao = ""
+        self.id = ""
+        self.dose = ""
+        self.apresentacao = ""
         self.nome = self.listbox.get("anchor")
         #self.nome = self.listbox.get(self.listbox.curselection())
         
-        print(self.nome)
+        #print(self.nome)
 
         self.data = golgi_data.get_items(id = self.id, nome = self.nome, dosagem=self.dose, apresentacao=self.apresentacao)
         self.data = self.data.reset_index()
@@ -386,12 +447,13 @@ class AdminEdit(tk.Frame):
         self.apresentacao = self.data.apresentacao[0]
         self.position = self.data.position[0]
 
-        print(self.nome)
+        #print(self.id, self.nome, self.dose, self.apresentacao, self.position)
+
         self.entry2.insert(0, str(self.id))
         self.entry1.insert(0, str(self.nome))
         self.entry3.insert(0, str(self.dose))
         self.entry4.insert(0, str(self.apresentacao))
-        #self.entry5.insert(0, str(self.position))
+        self.entry5.insert(0, str(self.position))
 
 
     # update listbox
@@ -402,6 +464,7 @@ class AdminEdit(tk.Frame):
         self.nome = self.entry1.get()
         self.dose = self.entry3.get()
         self.apresentacao = self.entry4.get()
+        self.posicao = self.entry5.get()
 
         if self.id == "ID":
             self.id = ""
@@ -434,8 +497,7 @@ class AdminEdit(tk.Frame):
         self.apresentacao = self.entry4.get()
         self.position = self.entry5.get()
 
-
-        new_path = ""
+        print(self.id, self.nome, self.dose, self.apresentacao, self.position)
 
         if (self.nome == "" or self.id == "" or self.dose == "" or self.apresentacao == "" or self.position == ""):
             print("Complete form!\n")
@@ -446,7 +508,6 @@ class AdminEdit(tk.Frame):
             print(self.apresentacao + "\n")
             return False
         else:
-            #golgi_data.delete_item(int(float(self.id)))
             item =  [{
                 "id": self.id,
                 "nome": self.nome, 
@@ -455,7 +516,9 @@ class AdminEdit(tk.Frame):
                 "position": self.position,
                 }]
 
-            golgi_data.add_item(item)
+            print(item)
+
+            golgi_data.modify_item(self.id, item)
             golgi_data.save_to_disk()
             self.entry2.delete(0, "end")
             self.entry1.delete(0, "end")
@@ -481,22 +544,27 @@ class AdminEdit(tk.Frame):
         # 'Nome' entry
         self.entry1 = tk.Entry(self) 
         self.entry1.insert(0, "Nome")
-        self.entry1.grid(row=0, column=0, columnspan=5, sticky='w')
+        self.entry1.grid(row=0, column=0, columnspan=4, sticky='w')
 
         # 'ID' entry
         self.entry2 = tk.Entry(self) 
         self.entry2.insert(0, "ID")
-        self.entry2.grid(row=1, column=0, columnspan=5, sticky='w')
+        self.entry2.grid(row=1, column=0, columnspan=4, sticky='w')
 
         # 'Dosagem' entry
         self.entry3 = tk.Entry(self) 
         self.entry3.insert(0, "Dosagem")
-        self.entry3.grid(row=2, column=0, columnspan=5, sticky='w')
+        self.entry3.grid(row=2, column=0, columnspan=4, sticky='w')
 
         # 'Apresentação' entry
         self.entry4 = tk.Entry(self) 
         self.entry4.insert(0, "Apresentação")
-        self.entry4.grid(row=3, column=0, columnspan=5, sticky='w')
+        self.entry4.grid(row=3, column=0, columnspan=4, sticky='w')
+
+        # 'Position' entry
+        self.entry5 = tk.Entry(self) 
+        self.entry5.insert(0, "Posição")
+        self.entry5.grid(row=4, column=0, columnspan=4, sticky='w')
 
         self.button1 = ttk.Button(self, text="Submit",
                             command=self.update_listbox)
@@ -507,7 +575,7 @@ class AdminEdit(tk.Frame):
         self.button2.grid(row=5, column=1, columnspan=3)
 
         self.listbox = tk.Listbox(self, width=50)
-        self.listbox.grid(row=0, column=1, columnspan=4, rowspan=4)
+        self.listbox.grid(row=0, column=2, columnspan=4, rowspan=5)
 
         self.listbox.bind("<<ListboxSelect>>", self.edit)
 
@@ -523,7 +591,174 @@ class AdminEdit(tk.Frame):
         self.button5.grid(row=6, column=2)
 
         self.button6 = ttk.Button(self, text="Apagar",
+                            command=lambda: controller.show_frame(AdminDelete))
+        self.button6.grid(row=6, column=3)
+
+        self.button7 = ttk.Button(self, text="Adicionar Usuário",
+                        command=lambda: controller.show_frame(AddUser))
+        self.button7.grid(row=6, column=4)
+
+        self.button8 = ttk.Button(self, text="Configurações",
                             command=lambda: controller.show_frame(AdminRegister))
+        self.button8.grid(row=6, column=5)
+
+
+class AdminDelete(tk.Frame):
+
+    def edit(self, event):
+        self.entry2.delete(0, "end")
+        self.entry1.delete(0, "end")
+        self.entry3.delete(0, "end")
+        self.entry4.delete(0, "end")
+        self.entry5.delete(0, "end")
+
+        self.id = ""
+        self.dose = ""
+        self.apresentacao = ""
+        self.nome = self.listbox.get("anchor")
+        #self.nome = self.listbox.get(self.listbox.curselection())
+        
+        print(self.nome)
+
+        self.data = golgi_data.get_items(id = self.id, nome = self.nome, dosagem=self.dose, apresentacao=self.apresentacao)
+        self.data = self.data.reset_index()
+
+        self.id = self.data.id[0]
+        self.nome = self.data.nome[0]
+        self.dose = self.data.dosagem[0]
+        self.apresentacao = self.data.apresentacao[0]
+        self.position = self.data.position[0]
+
+        print(self.nome)
+        self.entry2.insert(0, str(self.id))
+        self.entry1.insert(0, str(self.nome))
+        self.entry3.insert(0, str(self.dose))
+        self.entry4.insert(0, str(self.apresentacao))
+        self.entry5.insert(0, str(self.position))
+
+
+    # update listbox
+    def update_listbox(self):
+        self.listbox.delete(0, "end")
+
+        self.id = self.entry2.get()
+        self.nome = self.entry1.get()
+        self.dose = self.entry3.get()
+        self.apresentacao = self.entry4.get()
+        self.posicao = self.entry5.get()
+
+        if self.id == "ID":
+            self.id = ""
+
+        if self.nome == "Nome":
+            self.nome = ""
+
+        if self.dose == "Dose":
+            self.dose = ""
+
+        if self.apresentacao == "Apresentação":
+            self.apresentacao = ""
+
+        self.data = golgi_data.get_items(id = self.id, nome = self.nome, dosagem=self.dose, apresentacao=self.apresentacao)
+
+        for item in self.data.nome:
+            self.listbox.insert("end", item)
+
+
+
+    def delete(self):
+        """Callback function to delete registered item
+
+        Returns:
+            bool: True if all fields are completed
+        """
+        self.id = ""
+        self.dose = ""
+        self.apresentacao = ""
+        self.nome = self.listbox.get("anchor")
+
+        self.data = golgi_data.get_items(id = self.id, nome = self.nome, dosagem=self.dose, apresentacao=self.apresentacao)
+        self.data = self.data.reset_index()
+
+        self.id = self.data.id[0]
+        self.nome = self.data.nome[0]
+        self.dose = self.data.dosagem[0]
+        self.apresentacao = self.data.apresentacao[0]
+        self.position = self.data.position[0]
+
+
+        golgi_data.delete_item(self.id)#int(float(item.id)))
+        golgi_data.save_to_disk()
+
+        self.entry2.delete(0, "end")
+        self.entry1.delete(0, "end")
+        self.entry3.delete(0, "end")
+        self.entry4.delete(0, "end")
+        self.entry5.delete(0, "end")
+
+        self.entry2.insert(0, "ID")
+        self.entry1.insert(0, "Nome")
+        self.entry3.insert(0, "Dosagem")
+        self.entry4.insert(0, "Apresentação")
+        self.entry5.insert(0, "Posição")
+
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+
+        self.configure(bg='#303030')
+
+        # 'Nome' entry
+        self.entry1 = tk.Entry(self) 
+        self.entry1.insert(0, "Nome")
+        self.entry1.grid(row=0, column=0, columnspan=4, sticky='w')
+
+        # 'ID' entry
+        self.entry2 = tk.Entry(self) 
+        self.entry2.insert(0, "ID")
+        self.entry2.grid(row=1, column=0, columnspan=4, sticky='w')
+
+        # 'Dosagem' entry
+        self.entry3 = tk.Entry(self) 
+        self.entry3.insert(0, "Dosagem")
+        self.entry3.grid(row=2, column=0, columnspan=4, sticky='w')
+
+        # 'Apresentação' entry
+        self.entry4 = tk.Entry(self) 
+        self.entry4.insert(0, "Apresentação")
+        self.entry4.grid(row=3, column=0, columnspan=4, sticky='w')
+
+        # 'Position' entry
+        self.entry5 = tk.Entry(self) 
+        self.entry5.insert(0, "Posição")
+        self.entry5.grid(row=4, column=0, columnspan=4, sticky='w')
+
+        self.button1 = ttk.Button(self, text="Submit",
+                            command=self.update_listbox)
+        self.button1.grid(row=5, column=0, columnspan=3)
+
+        self.button2 = ttk.Button(self, text="Confirm Delete",
+                            command=self.delete)
+        self.button2.grid(row=5, column=1, columnspan=3)
+
+        self.listbox = tk.Listbox(self, width=50)
+        self.listbox.grid(row=0, column=2, columnspan=4, rowspan=5)
+
+        #self.listbox.bind("<<ListboxSelect>>", self.edit)
+
+        self.button3 = ttk.Button(self, text="Coletar", 
+                            command=lambda: controller.show_frame(AdminCollect1))
+        self.button3.grid(row=6, column=0)
+
+        self.button4 = ttk.Button(self, text="Registrar",
+                            command=lambda: controller.show_frame(AdminRegister))
+        self.button4.grid(row=6, column=1)
+
+        self.button5 = ttk.Button(self, text="Editar", 
+                            command=lambda: controller.show_frame(AdminEdit))
+        self.button5.grid(row=6, column=2)
+
+        self.button6 = ttk.Button(self, text="Apagar",state='disabled')
         self.button6.grid(row=6, column=3)
 
         self.button7 = ttk.Button(self, text="Adicionar Usuário",
@@ -557,59 +792,119 @@ class Help(tk.Frame):
 
 class AddUser(tk.Frame):
 
+    def submit_user(self):
+        """Callback function to register new user in dataset
+
+        Returns:
+            bool: True if all fields were completed
+        """
+        self.nome = self.entry1.get()
+        self.nusp = self.entry2.get()
+        self.rfid = self.entry3.get()
+        self.senha = self.entry4.get()
+        self.senha_verify = self.entry5.get()
+        self.is_new_user_admin = self.isAdm.get()
+    
+
+        if (self.nome == "" or self.nusp == "" or self.rfid == "" or self.senha == "" or self.senha_verify == ""):
+            print("Complete form!\n")
+            print(self.nome + "\n")
+            print(self.nusp + "\n")
+            print(self.rfid + "\n")
+            print(self.senha + "\n")
+            print(self.senha_verify + "\n")
+
+            return False
+
+        elif self.senha != self.senha_verify:
+            print("Senha não corresponde! ")
+
+        else:
+            user =  [{
+                "nusp": self.nusp,
+                "nome": self.nome, 
+                "rfid": self.rfid,
+                "senha": self.senha,
+                "admin": self.is_new_user_admin,
+                }]
+            
+            golgi_users.add_user(user)
+            golgi_users.save_to_disk()
+            
+            '''golgi_data.add_item(item)
+            golgi_data.save_to_disk()
+            self.ids.nome.text = ""
+            self.ids.nusp.text = ""
+            self.ids.dose.text = ""
+            self.ids.apresentacao.text = ""
+            self.ids.position.text = ""'''
+
+            return True
+
+
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
 
         self.configure(bg='#303030')
 
         # 'Nome' entry
-        entry1 = tk.Entry(self) 
-        entry1.insert(0, "Nome")
-        entry1.grid(row=0, column=0, sticky='w')
+        self.entry1 = tk.Entry(self) 
+        self.entry1.insert(0, "Nome")
+        self.entry1.grid(row=0, column=0, sticky='w')
 
         # 'NUSP' entry
-        entry2 = tk.Entry(self) 
-        entry2.insert(0, "ID")
-        entry2.grid(row=0, column=1, sticky='w')
+        self.entry2 = tk.Entry(self) 
+        self.entry2.insert(0, "ID")
+        self.entry2.grid(row=0, column=1, sticky='w')
 
         # 'Card ID (RFID)' entry
-        entry3 = tk.Entry(self) 
-        entry3.insert(0, "Card ID (RFID)")
-        entry3.grid(row=1, column=0,  sticky='w')
+        self.entry3 = tk.Entry(self) 
+        self.entry3.insert(0, "Card ID (RFID)")
+        self.entry3.grid(row=1, column=0,  sticky='w')
 
         # 'Senha' entry
-        entry4 = tk.Entry(self) 
-        entry4.insert(0, "Senha")
-        entry4.grid(row=1, column=1, sticky='w')
+        self.entry4 = tk.Entry(self) 
+        self.entry4.insert(0, "Senha")
+        self.entry4.grid(row=1, column=1, sticky='w')
 
         # 'Confirmar senha' entry
-        entry4 = tk.Entry(self) 
-        entry4.insert(0, "Confirmar senha")
-        entry4.grid(row=2, column=0, sticky='w')
+        self.entry5 = tk.Entry(self) 
+        self.entry5.insert(0, "Confirmar senha")
+        self.entry5.grid(row=2, column=0, sticky='w')
 
-        admBox = tk.Checkbutton(self, text = "Administrador(a)")
-        admBox.grid(row=2, column=1, sticky='w')
+        self.isAdm = tk.IntVar()
+        self.admBox = tk.Checkbutton(self, text = "Administrador(a)", relief="sunken", variable=self.isAdm)
+        self.admBox.grid(row=2, column=1, sticky='w')
 
-        button3 = ttk.Button(self, text="Coletar",
+        self.button1 = ttk.Button(self, text="Adicionar",
+                            command=self.submit_user)
+        self.button1.grid(row=3, column=0)
+
+        self.button3 = ttk.Button(self, text="Coletar",
+                            command=lambda: controller.show_frame(AdminCollect1))
+        self.button3.grid(row=5, column=0)
+
+        self.button4 = ttk.Button(self, text="Registrar",
                             command=lambda: controller.show_frame(AdminRegister))
-        button3.grid(row=5, column=0)
+        self.button4.grid(row=5, column=1)
 
-        button4 = ttk.Button(self, text="Registrar",
-                            command=lambda: controller.show_frame(AdminRegister))
-        button4.grid(row=5, column=1)
+        self.button5 = ttk.Button(self, text="Editar",
+                            command=lambda: controller.show_frame(AdminEdit))
+        self.button5.grid(row=5, column=2)
 
-        button5 = ttk.Button(self, text="Editar",
-                            command=lambda: controller.show_frame(AdminRegister))
-        button5.grid(row=5, column=2)
+        self.button6 = ttk.Button(self, text="Apagar",
+                            command=lambda: controller.show_frame(AdminDelete))
+        self.button6.grid(row=5, column=3)
 
-        button6 = ttk.Button(self, text="Apagar",
-                            command=lambda: controller.show_frame(AdminRegister))
-        button6.grid(row=5, column=3)
+        self.button7 = ttk.Button(self, text="Adicionar Usuário", state='disabled')
+        self.button7.grid(row=5, column=4)
 
-        button6 = ttk.Button(self, text="Adicionar Usuário",
-                            command=lambda: controller.show_frame(AdminRegister))
-        button6.grid(row=5, column=4)
+        self.button8 = ttk.Button(self, text="Configurações",
+                            command=lambda: controller.show_frame(Help))
+        self.button8.grid(row=5, column=5)
 
-        button7 = ttk.Button(self, text="Configurações",
-                            command=lambda: controller.show_frame(AdminRegister))
-        button7.grid(row=5, column=5)
+
+if __name__ == "__main__":
+    from golgi_class import GolgiApp
+    app = GolgiApp()
+    app.mainloop()

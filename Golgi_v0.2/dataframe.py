@@ -48,18 +48,17 @@ class GolgiDataFrame():
         Params:
             key(int): id of item to be removed
         """
+        print("teste")
         try:
             self.df = self.df.drop(key)
         except:
             self.df = self.df.drop(int(float(key)))
-        finally:
-            print(f"Item number %d not found", key)
-
+        #raise print(f"Item number {key} not found")
 
 
     def modify_item(self, key, item):
         """
-        Description: Modify an drug item from the dataset
+        Description: Modify a drug item from the dataset
         Params:
             key(int): key for the item id
             item(dictionary): 
@@ -74,7 +73,9 @@ class GolgiDataFrame():
         self.delete_item(key)
         #self.df = self.df.drop(key)
         new_item = pd.DataFrame(item)
-        self.df = self.df.append(new_item)
+        new_item = new_item.set_index('id')
+        self.df = pd.concat([self.df, new_item], axis=0)
+        #self.df = self.df.merge(new_item, on='id')
 
 
     def get_items(self, id = "0", nome = "", dosagem = "", apresentacao = ""):
@@ -158,9 +159,9 @@ class GolgiDataFrame():
         Description: saves the dataset to a .csv file
         """
         if in_linux:
-            self.df.to_csv('Golgi_v0.1/dados/drug_data.csv')#, index=False)
+            self.df.to_csv('Golgi_v0.2/dados/drug_data.csv')#, index=False)
         else:
-            self.df.to_csv('Golgi_v0.1\dados\drug_data.csv')#, index=False)
+            self.df.to_csv('Golgi_v0.2\dados\drug_data.csv')#, index=False)
 
 
 golgi_data = GolgiDataFrame()

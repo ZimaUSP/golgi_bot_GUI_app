@@ -3,7 +3,7 @@ from tkinter import ttk
 from data_users import golgi_users
 from dataframe import *
 from math import ceil
-from admin import StartPage, ResetPassword, AdminRegister, Help, AddUser, AdminCollect1, AdminEdit, AdminCollect2
+from admin import *
 
 
 LARGE_FONT= ("Verdana", 12)
@@ -49,7 +49,7 @@ class GolgiApp(tk.Tk):
 
         self.frames = {}
 
-        for F in (StartPage, ResetPassword, AdminRegister, Help, AddUser, AdminCollect1, AdminEdit, AdminCollect2):
+        for F in (StartPage, ResetPassword, AdminRegister, Help, AddUser, AdminCollect1, AdminEdit, AdminCollect2, AdminDelete):
 
             frame = F(container, self)
 

@@ -128,8 +128,8 @@ class GolgiUsers():
         Description: saves the dataset to a .csv file
         """
         if in_linux:
-            self.df.to_csv('Golgi_v0.1/dados/login_data.csv')#, index=False)
+            self.df.to_csv('Golgi_v0.2/dados/login_data.csv')#, index=False)
         else:
-            self.df.to_csv('Golgi_v0.1\dados\login_data.csv')#, index=False)
+            self.df.to_csv('Golgi_v0.2\dados\login_data.csv')#, index=False)
         
 golgi_users = GolgiUsers()
