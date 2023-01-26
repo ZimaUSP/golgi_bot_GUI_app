@@ -4,11 +4,14 @@ https://techtutorialsx.com/2017/12/02/esp32-esp8266-arduino-serial-communication
 
 import serial
 import time
-from queue import Queue
+try:
+    from queue import Queue
+except:
+    import Queue
 
 def communication(values):
     BAUDRATE = 115200
-    PORT = 'COM4'
+    PORT = '/dev/ttyUSB0'
 
     ser = serial.Serial()
 
@@ -21,7 +24,8 @@ def communication(values):
     #values = [1, 2, 3, 4, 5, 6, 7, 8]
     
     for i in values:
-        ser.write(bytes(str(i), 'utf-8'))
+        print(i)
+        ser.write(bytes(i))
         time.sleep(2)
         print(ser.readline())
 
