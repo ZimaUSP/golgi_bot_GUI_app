@@ -8,6 +8,7 @@ from request import list_to_queue, communication
 
 LARGE_FONT= ("Verdana", 12)
 
+# Define button functions
 def reset_password(controller):
     controller.show_frame(ResetPassword)
     return
@@ -41,6 +42,7 @@ class StartPage(tk.Frame): #Done
         # 'Usuário' entry
         self.entry1 = tk.Entry(self) 
         self.entry1.grid(row=1, column=0, columnspan=3, sticky='w')
+        self.entry1.delete(0)
 
         # Empty label, skip line
         self.emptyLabel = tk.Label(self, text=' ', bg='#303030')
@@ -66,11 +68,8 @@ class StartPage(tk.Frame): #Done
         self.button2.grid(row=6, column=0, columnspan=3)
 
         # # 'Ajuda' button 
-        # self.button3 = ttk.Button(self, text='Ajuda', command= lambda: help(controller))
+        # self.button3 = ttk.Button(self, text='Ajuda', command= lambda: Config(controller))
         # self.button3.grid(row=7, column=1, columnspan=3)
-
-        
-
 
 class ResetPassword(tk.Frame):
 
@@ -133,7 +132,7 @@ class AdminCollect1(tk.Frame):
         self.button7.grid(row=5, column=4)
 
         self.button8 = ttk.Button(self, text="Configurações",
-                            command=lambda: controller.show_frame(AdminRegister))
+                            command=lambda: controller.show_frame(AdminConfig))
         self.button8.grid(row=5, column=5)
 
 
@@ -316,7 +315,7 @@ class AdminCollect2(tk.Frame):
         self.button7.grid(row=6, column=4)
 
         self.button8 = ttk.Button(self, text="Configurações",
-                            command=lambda: controller.show_frame(AdminRegister))
+                            command=lambda: controller.show_frame(AdminConfig))
         self.button8.grid(row=6, column=5)
 
 
@@ -425,7 +424,7 @@ class AdminRegister(tk.Frame):
         self.button7.grid(row=6, column=4)
 
         self.button8 = ttk.Button(self, text="Configurações",
-                            command=lambda: controller.show_frame(AdminRegister))
+                            command=lambda: controller.show_frame(AdminConfig))
         self.button8.grid(row=6, column=5)
         
 
@@ -607,7 +606,7 @@ class AdminEdit(tk.Frame):
         self.button7.grid(row=6, column=4)
 
         self.button8 = ttk.Button(self, text="Configurações",
-                            command=lambda: controller.show_frame(AdminRegister))
+                            command=lambda: controller.show_frame(AdminConfig))
         self.button8.grid(row=6, column=5)
 
 
@@ -774,29 +773,8 @@ class AdminDelete(tk.Frame):
         self.button7.grid(row=6, column=4)
 
         self.button8 = ttk.Button(self, text="Configurações",
-                            command=lambda: controller.show_frame(AdminRegister))
+                            command=lambda: controller.show_frame(AdminConfig))
         self.button8.grid(row=6, column=5)
-
-
-class Help(tk.Frame):
-
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
-
-        self.configure(bg='#303030')
-
-
-        self.label = tk.Label(self, text="Texto Página de Ajuda", font=LARGE_FONT)
-        self.label.grid(row=0, column=0, columnspan=3)
-
-        # 'Log-in' button 
-        self.button = ttk.Button(self, text='Log-in', command=lambda: controller.show_frame(StartPage))
-        self.button.grid(row=1, column=0, columnspan=3)
-
-        # 'Ajuda' button 
-        self.button2 = ttk.Button(self, text='Ajuda', state='disabled')
-        self.button2.grid(row=1, column=2, columnspan=3)
-
 
 class AddUser(tk.Frame):
 
@@ -908,8 +886,47 @@ class AddUser(tk.Frame):
         self.button7.grid(row=5, column=4)
 
         self.button8 = ttk.Button(self, text="Configurações",
-                            command=lambda: controller.show_frame(Help))
+                            command=lambda: controller.show_frame(AdminConfig))
         self.button8.grid(row=5, column=5)
+
+class AdminConfig(tk.Frame):
+
+    def logout(self, controller):
+        controller.frames[StartPage].entry1.delete(0, 'end')
+        controller.frames[StartPage].entry2.delete(0, 'end')
+        controller.show_frame(StartPage)
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+
+        self.configure(bg='#303030')
+
+        # 'Log-in' button 
+        self.button = ttk.Button(self, text='Log-out', command=lambda: self.logout(controller))
+        self.button.grid(row=1, column=0)
+
+        self.button3 = ttk.Button(self, text="Coletar", 
+                            command=lambda: controller.show_frame(AdminCollect1))
+        self.button3.grid(row=2, column=0)
+
+        self.button4 = ttk.Button(self, text="Registrar",
+                            command=lambda: controller.show_frame(AdminRegister))
+        self.button4.grid(row=2, column=1)
+
+        self.button5 = ttk.Button(self, text="Editar", 
+                            command=lambda: controller.show_frame(AdminEdit))
+        self.button5.grid(row=2, column=2)
+
+        self.button6 = ttk.Button(self, text="Apagar", 
+                            command=lambda: controller.show_frame(AdminDelete))
+        self.button6.grid(row=2, column=3)
+
+        self.button7 = ttk.Button(self, text="Adicionar Usuário",
+                        command=lambda: controller.show_frame(AddUser))
+        self.button7.grid(row=2, column=4)
+
+        self.button8 = ttk.Button(self, text="Configurações", state='disabled')
+        self.button8.grid(row=2, column=5)
 
 
 if __name__ == "__main__":
