@@ -3,8 +3,8 @@ from tkinter import ttk
 from data_users import golgi_users
 from dataframe import *
 from math import ceil
-
-
+from queue import Queue
+from request import list_to_queue, communication
 
 LARGE_FONT= ("Verdana", 12)
 
@@ -59,15 +59,15 @@ class StartPage(tk.Frame): #Done
 
         # 'Esqueci minha senha' button
         self.button1 = ttk.Button(self, text='Esqueci minha senha', command= lambda: reset_password(controller))
-        self.button1.grid(row=5, column=3)
+        self.button1.grid(row=6, column=3)
 
         # 'Entrar' button 
         self.button2 = ttk.Button(self, text='Entrar', command=lambda: login(self.entry1.get(), self.entry2.get(), controller))
         self.button2.grid(row=6, column=0, columnspan=3)
 
-        # 'Ajuda' button 
-        self.button3 = ttk.Button(self, text='Ajuda', command= lambda: help(controller))
-        self.button3.grid(row=7, column=1, columnspan=3)
+        # # 'Ajuda' button 
+        # self.button3 = ttk.Button(self, text='Ajuda', command= lambda: help(controller))
+        # self.button3.grid(row=7, column=1, columnspan=3)
 
         
 
@@ -79,16 +79,15 @@ class ResetPassword(tk.Frame):
 
         self.configure(bg='#303030')
 
-        self.label = tk.Label(self, text="Esqueci a Senha!!!", font=LARGE_FONT)
+        self.label = tk.Label(self, text="Esqueci minha senha", font=LARGE_FONT)
         self.label.pack(pady=10,padx=10)
 
-        self.button1 = ttk.Button(self, text="Back to Home",
+        self.label1 = tk.Label(self, text="Por favor, entre em contato com a organização\npor meio do número: (99) 99999-9999")
+        self.label1.pack(pady=20,padx=10)
+
+        self.button1 = ttk.Button(self, text="Retornar ao menu principal",
                             command=lambda: controller.show_frame(StartPage))
         self.button1.pack()
-
-        self.button2 = ttk.Button(self, text="ENTRAR",
-                            command=lambda: controller.show_frame(AdminRegister))
-        self.button2.pack()
 
 class AdminCollect1(tk.Frame):
 
@@ -172,11 +171,14 @@ class AdminCollect2(tk.Frame):
         self.entry4.insert(0, str(self.apresentacao))
         #self.entry5.insert(0, str(self.position))
 
+        """
         if self.id in self.collect_list.keys():
             self.lbl_value["text"] = str(int(self.collect_list[self.id]))
 
         else:
             self.lbl_value["text"] = "0"
+
+        """
 
     # update listbox
     def update_listbox(self):
@@ -213,7 +215,7 @@ class AdminCollect2(tk.Frame):
         if value > 0:
             self.lbl_value["text"] = f"{value - 1}"
 
-    def add_to_list(self):
+    def add_to_queue(self):
         if self.listbox.get("anchor") is None:
             print("Escolha um medicamento!")
             return False
@@ -222,18 +224,22 @@ class AdminCollect2(tk.Frame):
             print("Quantidade inválida!")
 
         else:
-            self.collect_list[self.id] = int(self.lbl_value.cget("text"))
+            #self.collect_list[self.id] = int(self.lbl_value.cget("text"))
+            for i in range(int(self.lbl_value.cget("text"))):
+                self.collect_list.put(self.id)
             self.listbox.selection_clear(0, "end")
             self.lbl_value["text"] = "0"
 
-            print(self.collect_list)
+            print(self.collect_list.queue)
             
 
         return self.collect_list
 
     def collect(self):
-        print(self.collect_list)
-        return self.collect_list
+        # queue = list_to_queue(self.collect_list)
+        communication(self.collect_list)
+
+        return True
         
 
     def __init__(self, parent, controller):
@@ -241,7 +247,9 @@ class AdminCollect2(tk.Frame):
 
         self.configure(bg='#303030')
 
-        self.collect_list = {}
+        #self.collect_list = {}
+
+        self.collect_list = Queue(maxsize = 0)
 
         # 'Nome' entry
         self.entry1 = tk.Entry(self) 
@@ -284,7 +292,7 @@ class AdminCollect2(tk.Frame):
         self.btn_increase = ttk.Button(master=self, text="+", command=self.increase)
         self.btn_increase.grid(row=2, column=7)
 
-        self.add_button = ttk.Button(self, text="Adicionar", command=self.add_to_list)
+        self.add_button = ttk.Button(self, text="Adicionar", command=self.add_to_queue)
         self.add_button.grid(row=3, column=5)
 
         self.button3 = ttk.Button(self, text="Coletar", 
@@ -848,32 +856,32 @@ class AddUser(tk.Frame):
         self.configure(bg='#303030')
 
         # 'Nome' entry
-        self.entry1 = tk.Entry(self) 
+        self.entry1 = ttk.Entry(self) 
         self.entry1.insert(0, "Nome")
         self.entry1.grid(row=0, column=0, sticky='w')
 
         # 'NUSP' entry
-        self.entry2 = tk.Entry(self) 
+        self.entry2 = ttk.Entry(self) 
         self.entry2.insert(0, "ID")
         self.entry2.grid(row=0, column=1, sticky='w')
 
         # 'Card ID (RFID)' entry
-        self.entry3 = tk.Entry(self) 
+        self.entry3 = ttk.Entry(self) 
         self.entry3.insert(0, "Card ID (RFID)")
         self.entry3.grid(row=1, column=0,  sticky='w')
 
         # 'Senha' entry
-        self.entry4 = tk.Entry(self) 
+        self.entry4 = ttk.Entry(self) 
         self.entry4.insert(0, "Senha")
         self.entry4.grid(row=1, column=1, sticky='w')
 
         # 'Confirmar senha' entry
-        self.entry5 = tk.Entry(self) 
+        self.entry5 = ttk.Entry(self) 
         self.entry5.insert(0, "Confirmar senha")
         self.entry5.grid(row=2, column=0, sticky='w')
 
         self.isAdm = tk.IntVar()
-        self.admBox = tk.Checkbutton(self, text = "Administrador(a)", relief="sunken", variable=self.isAdm)
+        self.admBox = ttk.Checkbutton(self, text = "Administrador(a)", variable=self.isAdm)
         self.admBox.grid(row=2, column=1, sticky='w')
 
         self.button1 = ttk.Button(self, text="Adicionar",
@@ -905,6 +913,6 @@ class AddUser(tk.Frame):
 
 
 if __name__ == "__main__":
-    from golgi_class import GolgiApp
+    from golgi_main import GolgiApp
     app = GolgiApp()
     app.mainloop()

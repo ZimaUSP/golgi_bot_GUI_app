@@ -6,7 +6,7 @@ import serial
 import time
 from queue import Queue
 
-def communication():
+def communication(values):
     BAUDRATE = 115200
     PORT = 'COM4'
 
@@ -18,19 +18,23 @@ def communication():
 
     ser.open()
 
-    values = [1, 2, 3, 4, 5, 6, 7, 8]
+    #values = [1, 2, 3, 4, 5, 6, 7, 8]
     
     for i in values:
         ser.write(bytes(str(i), 'utf-8'))
         time.sleep(2)
         print(ser.readline())
+
+    # ser.write(bytes(str(value), 'utf-8'))
+    # time.sleep(2)
+    # print(ser.readline())
     
     ser.close()
 
     return
 
 
-def request(dict):
+def list_to_queue(dict):
     q = Queue(maxsize = 0)
 
     items = dict.items()
@@ -45,8 +49,8 @@ def request(dict):
     """
     Adicionar bloco que salva o dicionário recebido, com códigos pertinentes etc
     """
-    return
+    return 
     
 if __name__ == '__main__':
-    #request({17297: 3, 21393: 2, 17312: 4, 19759: 8, 17342: 1})
-    communication()
+    list_to_queue({17297: 3, 21393: 2, 17312: 4, 19759: 8, 17342: 1})
+    #communication()

@@ -1,52 +1,69 @@
-from tkinter import *
+import tkinter as tk
+from tkinter import ttk
+from data_users import golgi_users
+from dataframe import *
+from math import ceil
+from admin import *
+
+
+LARGE_FONT= ("Verdana", 12)
 
 # Define button functions
-def reset_password():
+def reset_password(controller):
+    controller.show_frame(ResetPassword)
     return
 
-def login():
+def login(user, password, controller):
     #add popup if wrong password
+    checker = golgi_users.validate(user, password)
+    adm = golgi_users.get_admin(user)
+
+    if checker:
+        controller.show_frame(AdminCollect1)
+        # if adm:
+        #     controller.show_frame(Register)
+        # else:
+        #     controller.show_frame(Register)
+
     return
 
-# Create and configure main window
-root = Tk()
 
-root.iconbitmap("Golgi_v0.2/images/logo-gradient.ico")
+class GolgiApp(tk.Tk):
 
-root.title('Golgi v0.2')
+    def __init__(self, *args, **kwargs):
+        
+        tk.Tk.__init__(self, *args, **kwargs)
 
-root.geometry("600x600")
+        self.iconbitmap("Golgi_v0.2/images/logo-gradient.ico")
 
-root.configure(bg='#303030')
+        self.title('Golgi v0.2')
 
-# 'Usuário' label
-label1 = Label(root, text='Usuário: ')
-label1.config(font=('helvetica', 14), bg='#303030', fg='#999999')
-label1.grid(row=0, column=0, sticky='w')
+        self.geometry("600x600")
 
-# 'Usuário' entry
-entry1 = Entry(root) 
-entry1.grid(row=1, column=0, columnspan=3, sticky='w')
+        container = tk.Frame(self)
 
-# Empty label, skip line
-emptyLabel = Label(root, text=' ', bg='#303030')
-emptyLabel.grid(row=2, column=0)
+        container.pack(side="top", fill="both", expand = True)
 
-# 'Senha' label
-label2 = Label(root, text='Senha: ')
-label2.config(font=('helvetica', 14), bg='#303030', fg='#999999')
-label2.grid(row=3, column=0, sticky='w')
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
 
-# 'Senha' entry
-entry2 = Entry(root) 
-entry2.grid(row=4, column=0,columnspan=3, sticky='w')
+        self.frames = {}
 
-# 'Esqueci minha senha' button
-button1 = Button(root, text='Esqueci minha senha', command=reset_password)
-button1.grid(row=5, column=3)
+        for F in (StartPage, ResetPassword, AdminRegister, Help, AddUser, AdminCollect1, AdminEdit, AdminCollect2, AdminDelete):
 
-# 'Entrar' button 
-button2 = Button(root, text='Entrar', command=login)
-button2.grid(row=6, column=0, columnspan=3)
+            frame = F(container, self)
 
-root.mainloop()
+            self.frames[F] = frame
+
+            frame.grid(row=0, column=0, sticky="nsew")
+
+        self.show_frame(StartPage)
+
+    def show_frame(self, cont):
+
+        frame = self.frames[cont]
+        frame.tkraise()
+
+if __name__ == '__main__':
+    app = GolgiApp()
+    app.mainloop()
