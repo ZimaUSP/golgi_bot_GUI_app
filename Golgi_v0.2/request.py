@@ -10,6 +10,7 @@ except:
     import Queue
 
 def communication(values):
+    print(values.queue)
     BAUDRATE = 115200
     PORT = '/dev/ttyUSB0'
 
@@ -53,7 +54,7 @@ def list_to_queue(dict):
     """
     Adicionar bloco que salva o dicionário recebido, com códigos pertinentes etc
     """
-    return 
+    return q
     
 if __name__ == '__main__':
     list_to_queue({17297: 3, 21393: 2, 17312: 4, 19759: 8, 17342: 1})

@@ -170,14 +170,14 @@ class AdminCollect2(tk.Frame):
         self.entry4.insert(0, str(self.apresentacao))
         #self.entry5.insert(0, str(self.position))
 
-        """
+        
         if self.id in self.collect_list.keys():
             self.lbl_value["text"] = str(int(self.collect_list[self.id]))
 
         else:
             self.lbl_value["text"] = "0"
 
-        """
+        
 
     # update listbox
     def update_listbox(self):
@@ -223,20 +223,21 @@ class AdminCollect2(tk.Frame):
             print("Quantidade inválida!")
 
         else:
-            #self.collect_list[self.id] = int(self.lbl_value.cget("text"))
-            for i in range(int(self.lbl_value.cget("text"))):
-                self.collect_list.put(self.id)
+            self.collect_list[self.id] = int(self.lbl_value.cget("text"))
+            # for i in range(int(self.lbl_value.cget("text"))):
+            #     self.collect_list.put(self.id)
             self.listbox.selection_clear(0, "end")
-            self.lbl_value["text"] = "0"
+            #self.lbl_value["text"] = "0"
 
-            print(self.collect_list.queue)
+            #print(self.collect_list.queue)
+            print(self.collect_list)
             
 
         return self.collect_list
 
     def collect(self):
-        # queue = list_to_queue(self.collect_list)
-        communication(self.collect_list)
+        queue = list_to_queue(self.collect_list)
+        communication(queue)
 
         return True
         
@@ -246,9 +247,9 @@ class AdminCollect2(tk.Frame):
 
         self.configure(bg='#303030')
 
-        #self.collect_list = {}
+        self.collect_list = {}
 
-        self.collect_list = Queue(maxsize = 0)
+        #self.collect_list = Queue(maxsize = 0)
 
         # 'Nome' entry
         self.entry1 = tk.Entry(self) 
@@ -270,7 +271,7 @@ class AdminCollect2(tk.Frame):
         self.entry4.insert(0, "Apresentação")
         self.entry4.grid(row=3, column=0, columnspan=5, sticky='w')
 
-        self.button1 = ttk.Button(self, text="Submit",
+        self.button1 = ttk.Button(self, text="Pesquisar",
                             command=self.update_listbox)
         self.button1.grid(row=5, column=1, columnspan=1)
 
@@ -903,7 +904,7 @@ class AdminConfig(tk.Frame):
 
         # 'Log-in' button 
         self.button = ttk.Button(self, text='Log-out', command=lambda: self.logout(controller))
-        self.button.grid(row=1, column=0)
+        self.button.grid(row=1, column=2, columnspan=2)
 
         self.button3 = ttk.Button(self, text="Coletar", 
                             command=lambda: controller.show_frame(AdminCollect1))
