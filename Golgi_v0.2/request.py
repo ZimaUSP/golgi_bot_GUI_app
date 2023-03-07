@@ -11,8 +11,8 @@ except:
 
 def communication(values):
     print(values.queue)
-    BAUDRATE = 115200
-    PORT = '/dev/ttyUSB0'
+    BAUDRATE = 9600
+    PORT = 'COM7'
 
     ser = serial.Serial()
 
@@ -21,18 +21,16 @@ def communication(values):
     ser.timeout = 0.1
 
     ser.open()
-
-    #values = [1, 2, 3, 4, 5, 6, 7, 8]
     
-    for i in values:
+    for i in values.queue:
         print(i)
-        ser.write(bytes(i))
-        time.sleep(2)
-        print(ser.readline())
-
-    # ser.write(bytes(str(value), 'utf-8'))
-    # time.sleep(2)
-    # print(ser.readline())
+        #print(bytes(i))
+        ser.write(bytes(str(i), 'ascii'))
+        # ser.write(i)
+        #ser.write(str(i).encode())
+        #ser.write(bytearray([i]))
+        time.sleep(10)
+        ser.readline()
     
     ser.close()
 
@@ -57,5 +55,7 @@ def list_to_queue(dict):
     return q
     
 if __name__ == '__main__':
-    list_to_queue({17297: 3, 21393: 2, 17312: 4, 19759: 8, 17342: 1})
-    #communication()
+    #list_to_queue({17297: 3, 21393: 2, 17312: 4, 19759: 8, 17342: 1})
+    q = Queue()
+    q.put("2")
+    communication(q)
