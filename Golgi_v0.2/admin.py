@@ -27,49 +27,49 @@ def login(user, password, controller):
 
     return
 
-class StartPage(tk.Frame): #Done
+class StartPage(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self,parent)
 
         self.configure(bg='#303030')
 
+        font = ('Helvetica', 14)
+
         # 'Usuário' label
-        self.label1 = tk.Label(self, text='Usuário: ')
-        self.label1.config(font=('helvetica', 14), bg='#303030', fg='#999999')
-        self.label1.grid(row=0, column=0, sticky='w')
+        self.label1 = tk.Label(self, text='Usuário: ', font=font, bg='#303030', fg='#999999')
+        self.label1.grid(row=0, column=0, sticky='w', padx=10, pady=10)
 
         # 'Usuário' entry
-        self.entry1 = tk.Entry(self) 
-        self.entry1.grid(row=1, column=0, columnspan=3, sticky='w')
+        self.entry1 = tk.Entry(self, font=font) 
+        self.entry1.grid(row=1, column=0, columnspan=3, sticky='w', padx=10, pady=10)
         self.entry1.delete(0)
 
         # Empty label, skip line
         self.emptyLabel = tk.Label(self, text=' ', bg='#303030')
-        self.emptyLabel.grid(row=2, column=0)
+        self.emptyLabel.grid(row=2, column=0, padx=10, pady=10)
 
         # 'Senha' label
-        self.label2 = tk.Label(self, text='Senha: ')
-        self.label2.config(font=('helvetica', 14), bg='#303030', fg='#999999')
-        self.label2.grid(row=3, column=0, sticky='w')
+        self.label2 = tk.Label(self, text='Senha: ', font=font, bg='#303030', fg='#999999')
+        self.label2.grid(row=3, column=0, sticky='w', padx=10, pady=10)
 
         # 'Senha' entry
-        self.entry2 = tk.Entry(self, show="*") 
-        self.entry2.grid(row=4, column=0,columnspan=3, sticky='w')
+        self.entry2 = tk.Entry(self, show="*", font=font) 
+        self.entry2.grid(row=4, column=0,columnspan=3, sticky='w', padx=10, pady=10)
 
         self.entry2.bind('<Return>', (lambda func : login(self.entry1.get(), self.entry2.get(), controller)))
 
         # 'Esqueci minha senha' button
         self.button1 = ttk.Button(self, text='Esqueci minha senha', command= lambda: reset_password(controller))
-        self.button1.grid(row=6, column=3)
+        self.button1.grid(row=6, column=3, padx=10, pady=10)
 
         # 'Entrar' button 
         self.button2 = ttk.Button(self, text='Entrar', command=lambda: login(self.entry1.get(), self.entry2.get(), controller))
-        self.button2.grid(row=6, column=0, columnspan=3)
+        self.button2.grid(row=6, column=0, columnspan=3, padx=10, pady=10)
 
         # # 'Ajuda' button 
-        # self.button3 = ttk.Button(self, text='Ajuda', command= lambda: Config(controller))
-        # self.button3.grid(row=7, column=1, columnspan=3)
+        # self.button3 = ttk.Button(self, text='Ajuda', command= lambda: Config(controller), font=font)
+        # self.button3.grid(row=7, column=1, columnspan=3, padx=10, pady=10)
 
 class ResetPassword(tk.Frame):
 
@@ -78,15 +78,15 @@ class ResetPassword(tk.Frame):
 
         self.configure(bg='#303030')
 
-        self.label = tk.Label(self, text="Esqueci minha senha", font=LARGE_FONT)
-        self.label.pack(pady=10,padx=10)
+        self.label = tk.Label(self, text="Esqueci minha senha", font=("Helvetica", 20), bg='#303030', fg='#999999')
+        self.label.pack(pady=20)
 
-        self.label1 = tk.Label(self, text="Por favor, entre em contato com a organização\npor meio do número: (99) 99999-9999")
-        self.label1.pack(pady=20,padx=10)
+        self.label1 = tk.Label(self, text="Por favor, entre em contato com a organização\npor meio do número: (99) 99999-9999", font=("Helvetica", 14), bg='#303030', fg='#999999')
+        self.label1.pack(pady=20)
 
         self.button1 = ttk.Button(self, text="Retornar ao menu principal",
                             command=lambda: controller.show_frame(StartPage))
-        self.button1.pack()
+        self.button1.pack(pady=20)
 
 class AdminCollect1(tk.Frame):
 
@@ -202,8 +202,11 @@ class AdminCollect2(tk.Frame):
 
         self.data = golgi_data.get_items(id = self.id, nome = self.nome, dosagem=self.dose, apresentacao=self.apresentacao)
 
-        for item in self.data.nome:
-            self.listbox.insert("end", item)
+        # for item in self.data.nome:
+        #     self.listbox.insert("end", item)
+
+        for i in range(len(self.data.nome)-1):
+            self.listbox.insert("end", self.data.nome[i])
 
     def increase(self):
         value = int(self.lbl_value["text"])
@@ -488,8 +491,11 @@ class AdminEdit(tk.Frame):
 
         self.data = golgi_data.get_items(id = self.id, nome = self.nome, dosagem=self.dose, apresentacao=self.apresentacao)
 
-        for item in self.data.nome:
-            self.listbox.insert("end", item)
+        # for item in self.data.nome:
+        #     self.listbox.insert("end", item)
+
+        for i in range(len(self.data.nome)-1):
+            self.listbox.insert("end", self.data.nome[i])
 
 
 
@@ -669,8 +675,11 @@ class AdminDelete(tk.Frame):
 
         self.data = golgi_data.get_items(id = self.id, nome = self.nome, dosagem=self.dose, apresentacao=self.apresentacao)
 
-        for item in self.data.nome:
-            self.listbox.insert("end", item)
+        # for item in self.data.nome:
+        #     self.listbox.insert("end", item)
+
+        for i in range(len(self.data.nome)-1):
+            self.listbox.insert("end", self.data.nome[i])
 
 
 
