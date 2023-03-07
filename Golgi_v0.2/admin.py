@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+import customtkinter as ctk
 from data_users import golgi_users
 from dataframe import *
 from math import ceil
@@ -7,6 +8,8 @@ from queue import Queue
 from request import list_to_queue, communication
 
 LARGE_FONT= ("Verdana", 12)
+
+FONT = ('Helvetica', 14)
 
 # Define button functions
 def reset_password(controller):
@@ -27,73 +30,68 @@ def login(user, password, controller):
 
     return
 
-class StartPage(tk.Frame):
+class StartPage(ctk.CTkFrame):
 
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self,parent)
-
-        self.configure(bg='#303030')
-
-        font = ('Helvetica', 14)
+        ctk.CTkFrame.__init__(self, parent)
 
         # 'Usuário' label
-        self.label1 = tk.Label(self, text='Usuário: ', font=font, bg='#303030', fg='#999999')
-        self.label1.grid(row=0, column=0, sticky='w', padx=10, pady=10)
+        self.label1 = ctk.CTkLabel(self, text='Usuário: ', font=FONT)
+        self.label1.pack()
 
         # 'Usuário' entry
-        self.entry1 = tk.Entry(self, font=font) 
-        self.entry1.grid(row=1, column=0, columnspan=3, sticky='w', padx=10, pady=10)
+        self.entry1 = ctk.CTkEntry(self, font=FONT) 
+        self.entry1.pack()
         self.entry1.delete(0)
 
         # Empty label, skip line
-        self.emptyLabel = tk.Label(self, text=' ', bg='#303030')
-        self.emptyLabel.grid(row=2, column=0, padx=10, pady=10)
+        self.emptyLabel = ctk.CTkLabel(self, text=' ')
+        self.emptyLabel.pack()
 
         # 'Senha' label
-        self.label2 = tk.Label(self, text='Senha: ', font=font, bg='#303030', fg='#999999')
-        self.label2.grid(row=3, column=0, sticky='w', padx=10, pady=10)
+        self.label2 = ctk.CTkLabel(self, text='Senha: ', font=FONT)
+        self.label2.pack()
 
         # 'Senha' entry
-        self.entry2 = tk.Entry(self, show="*", font=font) 
-        self.entry2.grid(row=4, column=0,columnspan=3, sticky='w', padx=10, pady=10)
+        self.entry2 = ctk.CTkEntry(self, show="*", font=FONT) 
+        self.entry2.pack()
 
         self.entry2.bind('<Return>', (lambda func : login(self.entry1.get(), self.entry2.get(), controller)))
 
-        # 'Esqueci minha senha' button
-        self.button1 = ttk.Button(self, text='Esqueci minha senha', command= lambda: reset_password(controller))
-        self.button1.grid(row=6, column=3, padx=10, pady=10)
+        # Empty label, skip line
+        self.emptyLabel = ctk.CTkLabel(self, text=' ')
+        self.emptyLabel.pack()
 
         # 'Entrar' button 
-        self.button2 = ttk.Button(self, text='Entrar', command=lambda: login(self.entry1.get(), self.entry2.get(), controller))
-        self.button2.grid(row=6, column=0, columnspan=3, padx=10, pady=10)
+        self.button2 = ctk.CTkButton(self, text='Entrar', font=FONT, command=lambda: login(self.entry1.get(), self.entry2.get(), controller))
+        self.button2.pack(pady=10)
 
-        # # 'Ajuda' button 
-        # self.button3 = ttk.Button(self, text='Ajuda', command= lambda: Config(controller), font=font)
-        # self.button3.grid(row=7, column=1, columnspan=3, padx=10, pady=10)
+        # 'Esqueci minha senha' button
+        self.button1 = ctk.CTkButton(self, text='Esqueci minha senha', font=FONT, command= lambda: reset_password(controller))
+        self.button1.pack()
 
-class ResetPassword(tk.Frame):
+
+class ResetPassword(ctk.CTkFrame):
 
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
+        ctk.CTkFrame.__init__(self, parent)
 
-        self.configure(bg='#303030')
-
-        self.label = tk.Label(self, text="Esqueci minha senha", font=("Helvetica", 20), bg='#303030', fg='#999999')
+        self.label = ctk.CTkLabel(self, text="Esqueci minha senha", font=ctk.CTkFont(size=20, weight="bold"))
         self.label.pack(pady=20)
 
-        self.label1 = tk.Label(self, text="Por favor, entre em contato com a organização\npor meio do número: (99) 99999-9999", font=("Helvetica", 14), bg='#303030', fg='#999999')
+        self.label1 = ctk.CTkLabel(self, text="Por favor, entre em contato com a organização\npor meio do número: (99) 99999-9999", font=FONT)
         self.label1.pack(pady=20)
 
-        self.button1 = ttk.Button(self, text="Retornar ao menu principal",
+        self.button1 = ctk.CTkButton(self, text="Retornar ao menu principal", font=FONT,
                             command=lambda: controller.show_frame(StartPage))
         self.button1.pack(pady=20)
 
-class AdminCollect1(tk.Frame):
+class AdminCollect1(ctk.CTkFrame):
 
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
+        ctk.CTkFrame.__init__(self, parent)
 
-        self.configure(bg='#303030')
+        
 
 
         self.label1 = tk.Label(self, text="Paciente", font=LARGE_FONT)
@@ -136,7 +134,7 @@ class AdminCollect1(tk.Frame):
         self.button8.grid(row=5, column=5)
 
 
-class AdminCollect2(tk.Frame):
+class AdminCollect2(ctk.CTkFrame):
 
     def display(self, event):
         self.entry2.delete(0, "end")
@@ -246,9 +244,9 @@ class AdminCollect2(tk.Frame):
         
 
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
+        ctk.CTkFrame.__init__(self, parent)
 
-        self.configure(bg='#303030')
+        
 
         self.collect_list = {}
 
@@ -323,7 +321,7 @@ class AdminCollect2(tk.Frame):
         self.button8.grid(row=6, column=5)
 
 
-class AdminRegister(tk.Frame):
+class AdminRegister(ctk.CTkFrame):
 
     def submit_item(self):
         """Callback function to register new item in dataset
@@ -375,9 +373,9 @@ class AdminRegister(tk.Frame):
             return True
 
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
+        ctk.CTkFrame.__init__(self, parent)
 
-        self.configure(bg='#303030')
+        
 
         # 'Nome' entry
         self.entry1 = tk.Entry(self) 
@@ -432,7 +430,7 @@ class AdminRegister(tk.Frame):
         self.button8.grid(row=6, column=5)
         
 
-class AdminEdit(tk.Frame):
+class AdminEdit(ctk.CTkFrame):
 
     def edit(self, event):
         self.entry2.delete(0, "end")
@@ -551,9 +549,9 @@ class AdminEdit(tk.Frame):
 
 
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
+        ctk.CTkFrame.__init__(self, parent)
 
-        self.configure(bg='#303030')
+        
 
         # 'Nome' entry
         self.entry1 = tk.Entry(self) 
@@ -617,7 +615,7 @@ class AdminEdit(tk.Frame):
         self.button8.grid(row=6, column=5)
 
 
-class AdminDelete(tk.Frame):
+class AdminDelete(ctk.CTkFrame):
 
     def edit(self, event):
         self.entry2.delete(0, "end")
@@ -721,9 +719,9 @@ class AdminDelete(tk.Frame):
 
 
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
+        ctk.CTkFrame.__init__(self, parent)
 
-        self.configure(bg='#303030')
+        
 
         # 'Nome' entry
         self.entry1 = tk.Entry(self) 
@@ -786,7 +784,7 @@ class AdminDelete(tk.Frame):
                             command=lambda: controller.show_frame(AdminConfig))
         self.button8.grid(row=6, column=5)
 
-class AddUser(tk.Frame):
+class AddUser(ctk.CTkFrame):
 
     def submit_user(self):
         """Callback function to register new user in dataset
@@ -839,9 +837,9 @@ class AddUser(tk.Frame):
 
 
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
+        ctk.CTkFrame.__init__(self, parent)
 
-        self.configure(bg='#303030')
+        
 
         # 'Nome' entry
         self.entry1 = ttk.Entry(self) 
@@ -899,7 +897,7 @@ class AddUser(tk.Frame):
                             command=lambda: controller.show_frame(AdminConfig))
         self.button8.grid(row=5, column=5)
 
-class AdminConfig(tk.Frame):
+class AdminConfig(ctk.CTkFrame):
 
     def logout(self, controller):
         controller.frames[StartPage].entry1.delete(0, 'end')
@@ -907,9 +905,9 @@ class AdminConfig(tk.Frame):
         controller.show_frame(StartPage)
 
     def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
+        ctk.CTkFrame.__init__(self, parent)
 
-        self.configure(bg='#303030')
+        
 
         # 'Log-in' button 
         self.button = ttk.Button(self, text='Log-out', command=lambda: self.logout(controller))
@@ -941,5 +939,7 @@ class AdminConfig(tk.Frame):
 
 if __name__ == "__main__":
     from golgi_main import GolgiApp
+    ctk.set_appearance_mode("dark")  # Modes: system (default), light, dark
+    ctk.set_default_color_theme("dark-blue")  # Themes: blue (default), dark-blue, green
     app = GolgiApp()
     app.mainloop()

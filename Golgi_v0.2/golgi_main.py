@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+import customtkinter as ctk
 from data_users import golgi_users
 from dataframe import *
 from math import ceil
@@ -7,11 +8,11 @@ from admin import *
 
 LARGE_FONT= ("Verdana", 12)
 
-class GolgiApp(tk.Tk):
+class GolgiApp(ctk.CTk):
 
     def __init__(self, *args, **kwargs):
         
-        tk.Tk.__init__(self, *args, **kwargs)
+        ctk.CTk.__init__(self, *args, **kwargs)
 
         self.iconbitmap("Golgi_v0.2/images/logo-gradient.ico")
 
@@ -19,7 +20,7 @@ class GolgiApp(tk.Tk):
 
         self.geometry("600x600")
 
-        container = tk.Frame(self)
+        container = ctk.CTkFrame(self)
 
         container.pack(side="top", fill="both", expand = True)
 
