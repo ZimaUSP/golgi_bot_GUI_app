@@ -1,5 +1,8 @@
 """
 https://techtutorialsx.com/2017/12/02/esp32-esp8266-arduino-serial-communication-with-python/
+
+https://www.hackster.io/ansh2919/serial-communication-between-python-and-arduino-e7cce0
+
 """
 
 import serial
@@ -23,14 +26,9 @@ def communication(values):
     ser.open()
     
     for i in values.queue:
-        print(i)
-        #print(bytes(i))
         ser.write(bytes(str(i), 'ascii'))
-        # ser.write(i)
-        #ser.write(str(i).encode())
-        #ser.write(bytearray([i]))
-        time.sleep(10)
-        ser.readline()
+        time.sleep(5) # 5 segundos
+        print(ser.readline().decode())
     
     ser.close()
 
@@ -57,5 +55,8 @@ def list_to_queue(dict):
 if __name__ == '__main__':
     #list_to_queue({17297: 3, 21393: 2, 17312: 4, 19759: 8, 17342: 1})
     q = Queue()
-    q.put("2")
+    values = ['2', '3'] 
+    for value in values:
+        q.put(value)
+
     communication(q)

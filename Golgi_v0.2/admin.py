@@ -23,12 +23,8 @@ def login(user, password, controller):
 
     if checker:
         controller.show_frame(AdminCollect1)
-        # if adm:
-        #     controller.show_frame(Register)
-        # else:
-        #     controller.show_frame(Register)
 
-    return
+    return adm
 
 class StartPage(ctk.CTkFrame):
 
@@ -36,39 +32,39 @@ class StartPage(ctk.CTkFrame):
         ctk.CTkFrame.__init__(self, parent)
 
         # 'Usuário' label
-        self.label1 = ctk.CTkLabel(self, text='Usuário: ', font=FONT)
-        self.label1.pack()
+        self.userLabel = ctk.CTkLabel(self, text='Usuário: ', font=FONT)
+        self.userLabel.pack()
 
         # 'Usuário' entry
-        self.entry1 = ctk.CTkEntry(self, font=FONT) 
-        self.entry1.pack()
-        self.entry1.delete(0)
+        self.userEntry = ctk.CTkEntry(self, font=FONT) 
+        self.userEntry.pack()
+        self.userEntry.delete(0)
 
         # Empty label, skip line
         self.emptyLabel = ctk.CTkLabel(self, text=' ')
         self.emptyLabel.pack()
 
         # 'Senha' label
-        self.label2 = ctk.CTkLabel(self, text='Senha: ', font=FONT)
-        self.label2.pack()
+        self.passwordLabel = ctk.CTkLabel(self, text='Senha: ', font=FONT)
+        self.passwordLabel.pack()
 
         # 'Senha' entry
-        self.entry2 = ctk.CTkEntry(self, show="*", font=FONT) 
-        self.entry2.pack()
+        self.passwordEntry = ctk.CTkEntry(self, show="*", font=FONT) 
+        self.passwordEntry.pack()
 
-        self.entry2.bind('<Return>', (lambda func : login(self.entry1.get(), self.entry2.get(), controller)))
+        self.passwordEntry.bind('<Return>', (lambda func : login(self.userEntry.get(), self.passwordEntry.get(), controller)))
 
         # Empty label, skip line
-        self.emptyLabel = ctk.CTkLabel(self, text=' ')
-        self.emptyLabel.pack()
+        self.emptyLabel2 = ctk.CTkLabel(self, text=' ')
+        self.emptyLabel2.pack()
 
         # 'Entrar' button 
-        self.button2 = ctk.CTkButton(self, text='Entrar', font=FONT, command=lambda: login(self.entry1.get(), self.entry2.get(), controller))
-        self.button2.pack(pady=10)
+        self.loginButton = ctk.CTkButton(self, text='Entrar', font=FONT, command=lambda: login(self.userEntry.get(), self.passwordEntry.get(), controller))
+        self.loginButton.pack(pady=10)
 
         # 'Esqueci minha senha' button
-        self.button1 = ctk.CTkButton(self, text='Esqueci minha senha', font=FONT, command= lambda: reset_password(controller))
-        self.button1.pack()
+        self.forgotButton = ctk.CTkButton(self, text='Esqueci minha senha', font=FONT, command= lambda: reset_password(controller))
+        self.forgotButton.pack()
 
 
 class ResetPassword(ctk.CTkFrame):
@@ -79,68 +75,66 @@ class ResetPassword(ctk.CTkFrame):
         self.label = ctk.CTkLabel(self, text="Esqueci minha senha", font=ctk.CTkFont(size=20, weight="bold"))
         self.label.pack(pady=20)
 
-        self.label1 = ctk.CTkLabel(self, text="Por favor, entre em contato com a organização\npor meio do número: (99) 99999-9999", font=FONT)
-        self.label1.pack(pady=20)
+        self.infoLabel = ctk.CTkLabel(self, text="Por favor, entre em contato com a organização\npor meio do número: (99) 99999-9999", font=FONT)
+        self.infoLabel.pack(pady=20)
 
-        self.button1 = ctk.CTkButton(self, text="Retornar ao menu principal", font=FONT,
+        self.menuButton = ctk.CTkButton(self, text="Retornar ao menu principal", font=FONT,
                             command=lambda: controller.show_frame(StartPage))
-        self.button1.pack(pady=20)
+        self.menuButton.pack(pady=20)
 
 class AdminCollect1(ctk.CTkFrame):
 
     def __init__(self, parent, controller):
         ctk.CTkFrame.__init__(self, parent)
 
-        
+        self.pacienteLabel = ctk.CTkLabel(self, text="Paciente", font=LARGE_FONT)
+        self.pacienteLabel.grid(row=0, column=2, columnspan=2, sticky='w')
 
+        self.pacienteEntry = ctk.CTkEntry(self) 
+        self.pacienteEntry.grid(row=1, column=2, columnspan=2, sticky='nsew')
 
-        self.label1 = tk.Label(self, text="Paciente", font=LARGE_FONT)
-        self.label1.grid(row=0, column=0, columnspan=3, sticky='w')
+        self.idLabel = ctk.CTkLabel(self, text="ID", font=LARGE_FONT)
+        self.idLabel.grid(row=2, column=2, columnspan=2, sticky='w')
 
-        self.entry1 = tk.Entry(self) 
-        self.entry1.grid(row=1, column=0, columnspan=3, sticky='w')
+        self.idEntry = ctk.CTkEntry(self) 
+        self.idEntry.grid(row=3, column=2, columnspan=2, sticky='nsew')
 
-        self.label2 = tk.Label(self, text="ID", font=LARGE_FONT)
-        self.label2.grid(row=2, column=0, columnspan=3, sticky='w')
-
-        self.entry2 = tk.Entry(self) 
-        self.entry2.grid(row=3, column=0, columnspan=3, sticky='w')
-
-        self.button1 = ttk.Button(self, text="Submit",
+        self.submitButton = ctk.CTkButton(self, text="Submit",
                             command=lambda: controller.show_frame(AdminCollect2))
-        self.button1.grid(row=4, column=0, columnspan=3)
+        self.submitButton.grid(row=4, column=2, columnspan=2, pady=20) #button1
 
-        self.button3 = ttk.Button(self, text="Coletar", state='disabled')
-        self.button3.grid(row=5, column=0)
+        self.collectMenu = ctk.CTkButton(self, text="Coletar", state='disabled')
+        self.collectMenu.grid(row=5, column=0) #button3
 
-        self.button4 = ttk.Button(self, text="Registrar",
+        self.registerMenu = ctk.CTkButton(self, text="Registrar",
                             command=lambda: controller.show_frame(AdminRegister))
-        self.button4.grid(row=5, column=1)
+        self.registerMenu.grid(row=5, column=1) #button4
 
-        self.button5 = ttk.Button(self, text="Editar",
+        self.editMenu = ctk.CTkButton(self, text="Editar",
                             command=lambda: controller.show_frame(AdminEdit))
-        self.button5.grid(row=5, column=2)
+        self.editMenu.grid(row=5, column=2) #button5
 
-        self.button6 = ttk.Button(self, text="Apagar",
+        self.deleteMenu = ctk.CTkButton(self, text="Apagar",
                             command=lambda: controller.show_frame(AdminDelete))
-        self.button6.grid(row=5, column=3)
+        self.deleteMenu.grid(row=5, column=3) #button6
 
-        self.button7 = ttk.Button(self, text="Adicionar Usuário",
+
+        self.addUserMenu = ctk.CTkButton(self, text="Adicionar Usuário",
                         command=lambda: controller.show_frame(AddUser))
-        self.button7.grid(row=5, column=4)
+        self.addUserMenu.grid(row=5, column=4) #button7
 
-        self.button8 = ttk.Button(self, text="Configurações",
+        self.settingsMenu = ctk.CTkButton(self, text="Configurações",
                             command=lambda: controller.show_frame(AdminConfig))
-        self.button8.grid(row=5, column=5)
+        self.settingsMenu.grid(row=5, column=5) #button8
 
 
 class AdminCollect2(ctk.CTkFrame):
 
     def display(self, event):
-        self.entry2.delete(0, "end")
-        self.entry1.delete(0, "end")
-        self.entry3.delete(0, "end")
-        self.entry4.delete(0, "end")
+        self.idEntry.delete(0, "end")
+        self.nameEntry.delete(0, "end")
+        self.doseEntry.delete(0, "end")
+        self.presentationEntry.delete(0, "end")
         #self.entry5.delete(0, "end")
 
         self.id = ""
@@ -148,8 +142,6 @@ class AdminCollect2(ctk.CTkFrame):
         self.apresentacao = ""
         self.nome = self.listbox.get("anchor")
         #self.nome = self.listbox.get(self.listbox.curselection())
-        
-        #print(self.nome)
 
         self.data = golgi_data.get_items(id = self.id, nome = self.nome, dosagem=self.dose, apresentacao=self.apresentacao)
         self.data = self.data.reset_index()
@@ -160,31 +152,26 @@ class AdminCollect2(ctk.CTkFrame):
         self.apresentacao = self.data.apresentacao[0]
         #self.position = self.data.position[0]
 
-        #print(self.id, self.nome, self.dose, self.apresentacao, self.position)
-
-        self.entry2.insert(0, str(self.id))
-        self.entry1.insert(0, str(self.nome))
-        self.entry3.insert(0, str(self.dose))
-        self.entry4.insert(0, str(self.apresentacao))
+        self.idEntry.insert(0, str(self.id))
+        self.nameEntry.insert(0, str(self.nome))
+        self.doseEntry.insert(0, str(self.dose))
+        self.presentationEntry.insert(0, str(self.apresentacao))
         #self.entry5.insert(0, str(self.position))
 
-        
         if self.id in self.collect_list.keys():
             self.lbl_value["text"] = str(int(self.collect_list[self.id]))
 
         else:
             self.lbl_value["text"] = "0"
 
-        
-
     # update listbox
     def update_listbox(self):
         self.listbox.delete(0, "end")
 
-        self.id = self.entry2.get()
-        self.nome = self.entry1.get()
-        self.dose = self.entry3.get()
-        self.apresentacao = self.entry4.get()
+        self.id = self.idEntry.get()
+        self.nome = self.nameEntry.get()
+        self.dose = self.doseEntry.get()
+        self.apresentacao = self.presentationEntry.get()
 
         if self.id == "ID":
             self.id = ""
@@ -207,13 +194,13 @@ class AdminCollect2(ctk.CTkFrame):
             self.listbox.insert("end", self.data.nome[i])
 
     def increase(self):
-        value = int(self.lbl_value["text"])
-        self.lbl_value["text"] = f"{value + 1}"
+        value = int(self.lbl_value.cget("text"))
+        self.lbl_value.configure(text=f"{value + 1}")
 
     def decrease(self):
-        value = int(self.lbl_value["text"])
+        value = int(self.lbl_value.cget("text"))
         if value > 0:
-            self.lbl_value["text"] = f"{value - 1}"
+            self.lbl_value.configure(text=f"{value - 1}")
 
     def add_to_queue(self):
         if self.listbox.get("anchor") is None:
@@ -244,82 +231,78 @@ class AdminCollect2(ctk.CTkFrame):
         
 
     def __init__(self, parent, controller):
-        ctk.CTkFrame.__init__(self, parent)
 
-        
+        ctk.CTkFrame.__init__(self, parent)
 
         self.collect_list = {}
 
-        #self.collect_list = Queue(maxsize = 0)
+        # 'Nome' entry 1
+        self.nameEntry = ctk.CTkEntry(self) 
+        self.nameEntry.insert(0, "Nome")
+        self.nameEntry.grid(row=0, column=0, columnspan=5, sticky='w')
 
-        # 'Nome' entry
-        self.entry1 = tk.Entry(self) 
-        self.entry1.insert(0, "Nome")
-        self.entry1.grid(row=0, column=0, columnspan=5, sticky='w')
+        # 'ID' entry 2
+        self.idEntry = ctk.CTkEntry(self) 
+        self.idEntry.insert(0, "ID")
+        self.idEntry.grid(row=1, column=0, columnspan=5, sticky='w')
 
-        # 'ID' entry
-        self.entry2 = tk.Entry(self) 
-        self.entry2.insert(0, "ID")
-        self.entry2.grid(row=1, column=0, columnspan=5, sticky='w')
+        # 'Dosagem' entry 3
+        self.doseEntry = ctk.CTkEntry(self) 
+        self.doseEntry.insert(0, "Dosagem")
+        self.doseEntry.grid(row=2, column=0, columnspan=5, sticky='w')
 
-        # 'Dosagem' entry
-        self.entry3 = tk.Entry(self) 
-        self.entry3.insert(0, "Dosagem")
-        self.entry3.grid(row=2, column=0, columnspan=5, sticky='w')
+        # 'Apresentação' entry 4
+        self.presentationEntry = ctk.CTkEntry(self) 
+        self.presentationEntry.insert(0, "Apresentação")
+        self.presentationEntry.grid(row=3, column=0, columnspan=5, sticky='w')
 
-        # 'Apresentação' entry
-        self.entry4 = tk.Entry(self) 
-        self.entry4.insert(0, "Apresentação")
-        self.entry4.grid(row=3, column=0, columnspan=5, sticky='w')
-
-        self.button1 = ttk.Button(self, text="Pesquisar",
+        self.searchButton = ctk.CTkButton(self, text="Pesquisar",
                             command=self.update_listbox)
-        self.button1.grid(row=5, column=1, columnspan=1)
+        self.searchButton.grid(row=5, column=1, columnspan=2, pady=10)
 
-        self.button2 = ttk.Button(self, text="Coletar", command=self.collect)
-        self.button2.grid(row=5, column=2, columnspan=1)
+        self.collectButton = ctk.CTkButton(self, text="Coletar", command=self.collect)
+        self.collectButton.grid(row=5, column=3, columnspan=2)
 
-        self.listbox = tk.Listbox(self, width=50)
-        self.listbox.grid(row=0, column=1, columnspan=4, rowspan=4)
+        self.listbox = tk.Listbox(self, width=60)
+        self.listbox.grid(row=0, column=1, columnspan=4, rowspan=4, sticky='w', padx=10)
 
         self.listbox.bind("<<ListboxSelect>>", self.display)
 
-        self.btn_decrease = ttk.Button(master=self, text="-", command=self.decrease)
-        self.btn_decrease.grid(row=2, column=5)
+        self.btn_decrease = ctk.CTkButton(master=self, text="-", width=15, command=self.decrease)
+        self.btn_decrease.grid(row=2, column=4, sticky='w')
 
-        self.lbl_value = ttk.Label(master=self, text="0")
-        self.lbl_value.grid(row=2, column=6)
+        self.lbl_value = ctk.CTkLabel(master=self, text="0", font=FONT)
+        self.lbl_value.grid(row=2, column=4)
 
-        self.btn_increase = ttk.Button(master=self, text="+", command=self.increase)
-        self.btn_increase.grid(row=2, column=7)
+        self.btn_increase = ctk.CTkButton(master=self, text="+", width=15, command=self.increase)
+        self.btn_increase.grid(row=2, column=4, sticky='e')
 
-        self.add_button = ttk.Button(self, text="Adicionar", command=self.add_to_queue)
-        self.add_button.grid(row=3, column=5)
+        self.add_button = ctk.CTkButton(self, text="Adicionar", command=self.add_to_queue)
+        self.add_button.grid(row=3, column=4)
 
-        self.button3 = ttk.Button(self, text="Coletar", 
+        self.collectMenu = ctk.CTkButton(self, text="Coletar", 
                             command=lambda: controller.show_frame(AdminCollect1))
-        self.button3.grid(row=6, column=0)
+        self.collectMenu.grid(row=6, column=0)
 
-        self.button4 = ttk.Button(self, text="Registrar",
+        self.registerMenu = ctk.CTkButton(self, text="Registrar",
                             command=lambda: controller.show_frame(AdminRegister))
-        self.button4.grid(row=6, column=1)
+        self.registerMenu.grid(row=6, column=1) #button4
 
-        self.button5 = ttk.Button(self, text="Editar",
+        self.editMenu = ctk.CTkButton(self, text="Editar",
                             command=lambda: controller.show_frame(AdminEdit))
-        self.button5.grid(row=6, column=2)
+        self.editMenu.grid(row=6, column=2) #button5
 
-        self.button6 = ttk.Button(self, text="Apagar",
+        self.deleteMenu = ctk.CTkButton(self, text="Apagar",
                             command=lambda: controller.show_frame(AdminDelete))
-        self.button6.grid(row=6, column=3)
+        self.deleteMenu.grid(row=6, column=3) #button6
 
-        self.button7 = ttk.Button(self, text="Adicionar Usuário",
+        self.addUserMenu = ctk.CTkButton(self, text="Adicionar Usuário",
                         command=lambda: controller.show_frame(AddUser))
-        self.button7.grid(row=6, column=4)
+        self.addUserMenu.grid(row=6, column=4) #button7
 
-        self.button8 = ttk.Button(self, text="Configurações",
+        self.settingsMenu = ctk.CTkButton(self, text="Configurações",
                             command=lambda: controller.show_frame(AdminConfig))
-        self.button8.grid(row=6, column=5)
-
+        self.settingsMenu.grid(row=6, column=5) #button8
 
 class AdminRegister(ctk.CTkFrame):
 
@@ -378,54 +361,54 @@ class AdminRegister(ctk.CTkFrame):
         
 
         # 'Nome' entry
-        self.entry1 = tk.Entry(self) 
+        self.entry1 = ctk.CTkEntry(self) 
         self.entry1.insert(0, "Nome")
         self.entry1.grid(row=0, column=0, columnspan=5, sticky='w')
 
         # 'ID' entry
-        self.entry2 = tk.Entry(self) 
+        self.entry2 = ctk.CTkEntry(self) 
         self.entry2.insert(0, "ID")
         self.entry2.grid(row=1, column=0, columnspan=5, sticky='w')
 
         # 'Dosagem' entry
-        self.entry3 = tk.Entry(self) 
+        self.entry3 = ctk.CTkEntry(self) 
         self.entry3.insert(0, "Dosagem")
         self.entry3.grid(row=2, column=0, columnspan=5, sticky='w')
 
         # 'Apresentação' entry
-        self.entry4 = tk.Entry(self) 
+        self.entry4 = ctk.CTkEntry(self) 
         self.entry4.insert(0, "Apresentação")
         self.entry4.grid(row=3, column=0, columnspan=5, sticky='w')
 
         # 'Position' entry
-        self.entry5 = tk.Entry(self) 
+        self.entry5 = ctk.CTkEntry(self) 
         self.entry5.insert(0, "Posição")
         self.entry5.grid(row=4, column=0, columnspan=5, sticky='w')
 
-        self.button1 = ttk.Button(self, text="Registrar",
+        self.button1 = ctk.CTkButton(self, text="Registrar",
                             command=lambda: self.submit_item())
         self.button1.grid(row=5, column=0, columnspan=3)
 
-        self.button3 = ttk.Button(self, text="Coletar", 
+        self.button3 = ctk.CTkButton(self, text="Coletar", 
                             command=lambda: controller.show_frame(AdminCollect1))
         self.button3.grid(row=6, column=0)
 
-        self.button4 = ttk.Button(self, text="Registrar", state='disabled')
+        self.button4 = ctk.CTkButton(self, text="Registrar", state='disabled')
         self.button4.grid(row=6, column=1)
 
-        self.button5 = ttk.Button(self, text="Editar",
+        self.button5 = ctk.CTkButton(self, text="Editar",
                             command=lambda: controller.show_frame(AdminEdit))
         self.button5.grid(row=6, column=2)
 
-        self.button6 = ttk.Button(self, text="Apagar",
+        self.button6 = ctk.CTkButton(self, text="Apagar",
                             command=lambda: controller.show_frame(AdminDelete))
         self.button6.grid(row=6, column=3)
 
-        self.button7 = ttk.Button(self, text="Adicionar Usuário",
+        self.button7 = ctk.CTkButton(self, text="Adicionar Usuário",
                         command=lambda: controller.show_frame(AddUser))
         self.button7.grid(row=6, column=4)
 
-        self.button8 = ttk.Button(self, text="Configurações",
+        self.button8 = ctk.CTkButton(self, text="Configurações",
                             command=lambda: controller.show_frame(AdminConfig))
         self.button8.grid(row=6, column=5)
         
@@ -554,35 +537,35 @@ class AdminEdit(ctk.CTkFrame):
         
 
         # 'Nome' entry
-        self.entry1 = tk.Entry(self) 
+        self.entry1 = ctk.CTkEntry(self) 
         self.entry1.insert(0, "Nome")
         self.entry1.grid(row=0, column=0, columnspan=4, sticky='w')
 
         # 'ID' entry
-        self.entry2 = tk.Entry(self) 
+        self.entry2 = ctk.CTkEntry(self) 
         self.entry2.insert(0, "ID")
         self.entry2.grid(row=1, column=0, columnspan=4, sticky='w')
 
         # 'Dosagem' entry
-        self.entry3 = tk.Entry(self) 
+        self.entry3 = ctk.CTkEntry(self) 
         self.entry3.insert(0, "Dosagem")
         self.entry3.grid(row=2, column=0, columnspan=4, sticky='w')
 
         # 'Apresentação' entry
-        self.entry4 = tk.Entry(self) 
+        self.entry4 = ctk.CTkEntry(self) 
         self.entry4.insert(0, "Apresentação")
         self.entry4.grid(row=3, column=0, columnspan=4, sticky='w')
 
         # 'Position' entry
-        self.entry5 = tk.Entry(self) 
+        self.entry5 = ctk.CTkEntry(self) 
         self.entry5.insert(0, "Posição")
         self.entry5.grid(row=4, column=0, columnspan=4, sticky='w')
 
-        self.button1 = ttk.Button(self, text="Submit",
+        self.button1 = ctk.CTkButton(self, text="Submit",
                             command=self.update_listbox)
         self.button1.grid(row=5, column=0, columnspan=3)
 
-        self.button2 = ttk.Button(self, text="Confirm Edit",
+        self.button2 = ctk.CTkButton(self, text="Confirm Edit",
                             command=self.submit_item)
         self.button2.grid(row=5, column=1, columnspan=3)
 
@@ -591,26 +574,26 @@ class AdminEdit(ctk.CTkFrame):
 
         self.listbox.bind("<<ListboxSelect>>", self.edit)
 
-        self.button3 = ttk.Button(self, text="Coletar", 
+        self.button3 = ctk.CTkButton(self, text="Coletar", 
                             command=lambda: controller.show_frame(AdminCollect1))
         self.button3.grid(row=6, column=0)
 
-        self.button4 = ttk.Button(self, text="Registrar",
+        self.button4 = ctk.CTkButton(self, text="Registrar",
                             command=lambda: controller.show_frame(AdminRegister))
         self.button4.grid(row=6, column=1)
 
-        self.button5 = ttk.Button(self, text="Editar", state='disabled')
+        self.button5 = ctk.CTkButton(self, text="Editar", state='disabled')
         self.button5.grid(row=6, column=2)
 
-        self.button6 = ttk.Button(self, text="Apagar",
+        self.button6 = ctk.CTkButton(self, text="Apagar",
                             command=lambda: controller.show_frame(AdminDelete))
         self.button6.grid(row=6, column=3)
 
-        self.button7 = ttk.Button(self, text="Adicionar Usuário",
+        self.button7 = ctk.CTkButton(self, text="Adicionar Usuário",
                         command=lambda: controller.show_frame(AddUser))
         self.button7.grid(row=6, column=4)
 
-        self.button8 = ttk.Button(self, text="Configurações",
+        self.button8 = ctk.CTkButton(self, text="Configurações",
                             command=lambda: controller.show_frame(AdminConfig))
         self.button8.grid(row=6, column=5)
 
@@ -724,35 +707,35 @@ class AdminDelete(ctk.CTkFrame):
         
 
         # 'Nome' entry
-        self.entry1 = tk.Entry(self) 
+        self.entry1 = ctk.CTkEntry(self) 
         self.entry1.insert(0, "Nome")
         self.entry1.grid(row=0, column=0, columnspan=4, sticky='w')
 
         # 'ID' entry
-        self.entry2 = tk.Entry(self) 
+        self.entry2 = ctk.CTkEntry(self) 
         self.entry2.insert(0, "ID")
         self.entry2.grid(row=1, column=0, columnspan=4, sticky='w')
 
         # 'Dosagem' entry
-        self.entry3 = tk.Entry(self) 
+        self.entry3 = ctk.CTkEntry(self) 
         self.entry3.insert(0, "Dosagem")
         self.entry3.grid(row=2, column=0, columnspan=4, sticky='w')
 
         # 'Apresentação' entry
-        self.entry4 = tk.Entry(self) 
+        self.entry4 = ctk.CTkEntry(self) 
         self.entry4.insert(0, "Apresentação")
         self.entry4.grid(row=3, column=0, columnspan=4, sticky='w')
 
         # 'Position' entry
-        self.entry5 = tk.Entry(self) 
+        self.entry5 = ctk.CTkEntry(self) 
         self.entry5.insert(0, "Posição")
         self.entry5.grid(row=4, column=0, columnspan=4, sticky='w')
 
-        self.button1 = ttk.Button(self, text="Submit",
+        self.button1 = ctk.CTkButton(self, text="Submit",
                             command=self.update_listbox)
         self.button1.grid(row=5, column=0, columnspan=3)
 
-        self.button2 = ttk.Button(self, text="Confirm Delete",
+        self.button2 = ctk.CTkButton(self, text="Confirm Delete",
                             command=self.delete)
         self.button2.grid(row=5, column=1, columnspan=3)
 
@@ -761,26 +744,26 @@ class AdminDelete(ctk.CTkFrame):
 
         #self.listbox.bind("<<ListboxSelect>>", self.edit)
 
-        self.button3 = ttk.Button(self, text="Coletar", 
+        self.button3 = ctk.CTkButton(self, text="Coletar", 
                             command=lambda: controller.show_frame(AdminCollect1))
         self.button3.grid(row=6, column=0)
 
-        self.button4 = ttk.Button(self, text="Registrar",
+        self.button4 = ctk.CTkButton(self, text="Registrar",
                             command=lambda: controller.show_frame(AdminRegister))
         self.button4.grid(row=6, column=1)
 
-        self.button5 = ttk.Button(self, text="Editar", 
+        self.button5 = ctk.CTkButton(self, text="Editar", 
                             command=lambda: controller.show_frame(AdminEdit))
         self.button5.grid(row=6, column=2)
 
-        self.button6 = ttk.Button(self, text="Apagar",state='disabled')
+        self.button6 = ctk.CTkButton(self, text="Apagar",state='disabled')
         self.button6.grid(row=6, column=3)
 
-        self.button7 = ttk.Button(self, text="Adicionar Usuário",
+        self.button7 = ctk.CTkButton(self, text="Adicionar Usuário",
                         command=lambda: controller.show_frame(AddUser))
         self.button7.grid(row=6, column=4)
 
-        self.button8 = ttk.Button(self, text="Configurações",
+        self.button8 = ctk.CTkButton(self, text="Configurações",
                             command=lambda: controller.show_frame(AdminConfig))
         self.button8.grid(row=6, column=5)
 
@@ -870,30 +853,30 @@ class AddUser(ctk.CTkFrame):
         self.admBox = ttk.Checkbutton(self, text = "Administrador(a)", variable=self.isAdm)
         self.admBox.grid(row=2, column=1, sticky='w')
 
-        self.button1 = ttk.Button(self, text="Adicionar",
+        self.button1 = ctk.CTkButton(self, text="Adicionar",
                             command=self.submit_user)
         self.button1.grid(row=3, column=0)
 
-        self.button3 = ttk.Button(self, text="Coletar",
+        self.button3 = ctk.CTkButton(self, text="Coletar",
                             command=lambda: controller.show_frame(AdminCollect1))
         self.button3.grid(row=5, column=0)
 
-        self.button4 = ttk.Button(self, text="Registrar",
+        self.button4 = ctk.CTkButton(self, text="Registrar",
                             command=lambda: controller.show_frame(AdminRegister))
         self.button4.grid(row=5, column=1)
 
-        self.button5 = ttk.Button(self, text="Editar",
+        self.button5 = ctk.CTkButton(self, text="Editar",
                             command=lambda: controller.show_frame(AdminEdit))
         self.button5.grid(row=5, column=2)
 
-        self.button6 = ttk.Button(self, text="Apagar",
+        self.button6 = ctk.CTkButton(self, text="Apagar",
                             command=lambda: controller.show_frame(AdminDelete))
         self.button6.grid(row=5, column=3)
 
-        self.button7 = ttk.Button(self, text="Adicionar Usuário", state='disabled')
+        self.button7 = ctk.CTkButton(self, text="Adicionar Usuário", state='disabled')
         self.button7.grid(row=5, column=4)
 
-        self.button8 = ttk.Button(self, text="Configurações",
+        self.button8 = ctk.CTkButton(self, text="Configurações",
                             command=lambda: controller.show_frame(AdminConfig))
         self.button8.grid(row=5, column=5)
 
@@ -910,36 +893,34 @@ class AdminConfig(ctk.CTkFrame):
         
 
         # 'Log-in' button 
-        self.button = ttk.Button(self, text='Log-out', command=lambda: self.logout(controller))
+        self.button = ctk.CTkButton(self, text='Log-out', command=lambda: self.logout(controller))
         self.button.grid(row=1, column=2, columnspan=2)
 
-        self.button3 = ttk.Button(self, text="Coletar", 
+        self.button3 = ctk.CTkButton(self, text="Coletar", 
                             command=lambda: controller.show_frame(AdminCollect1))
         self.button3.grid(row=2, column=0)
 
-        self.button4 = ttk.Button(self, text="Registrar",
+        self.button4 = ctk.CTkButton(self, text="Registrar",
                             command=lambda: controller.show_frame(AdminRegister))
         self.button4.grid(row=2, column=1)
 
-        self.button5 = ttk.Button(self, text="Editar", 
+        self.button5 = ctk.CTkButton(self, text="Editar", 
                             command=lambda: controller.show_frame(AdminEdit))
         self.button5.grid(row=2, column=2)
 
-        self.button6 = ttk.Button(self, text="Apagar", 
+        self.button6 = ctk.CTkButton(self, text="Apagar", 
                             command=lambda: controller.show_frame(AdminDelete))
         self.button6.grid(row=2, column=3)
 
-        self.button7 = ttk.Button(self, text="Adicionar Usuário",
+        self.button7 = ctk.CTkButton(self, text="Adicionar Usuário",
                         command=lambda: controller.show_frame(AddUser))
         self.button7.grid(row=2, column=4)
 
-        self.button8 = ttk.Button(self, text="Configurações", state='disabled')
+        self.button8 = ctk.CTkButton(self, text="Configurações", state='disabled')
         self.button8.grid(row=2, column=5)
 
 
 if __name__ == "__main__":
     from golgi_main import GolgiApp
-    ctk.set_appearance_mode("dark")  # Modes: system (default), light, dark
-    ctk.set_default_color_theme("dark-blue")  # Themes: blue (default), dark-blue, green
     app = GolgiApp()
     app.mainloop()
