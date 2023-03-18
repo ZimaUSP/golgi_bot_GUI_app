@@ -5,7 +5,7 @@ from data_users import golgi_users
 from dataframe import *
 from math import ceil
 from queue import Queue
-from request import list_to_queue, communication
+from request import dict_to_list, communication
 
 LARGE_FONT= ("Verdana", 12)
 
@@ -224,7 +224,7 @@ class AdminCollect2(ctk.CTkFrame):
         return self.collect_list
 
     def collect(self):
-        queue = list_to_queue(self.collect_list)
+        queue = dict_to_list(self.collect_list)
         communication(queue)
 
         return True
