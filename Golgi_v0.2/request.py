@@ -12,24 +12,69 @@ try:
 except:
     import Queue
 
-def communication(values):
+def communication1(values):
     print(values.queue)
     BAUDRATE = 9600
     PORT = 'COM7'
 
-    ser = serial.Serial()
-
-    ser.baudrate = BAUDRATE
-    ser.port = PORT
-    ser.timeout = 0.1
+    ser = serial.Serial(baudrate=BAUDRATE, port=PORT,
+                        timeout=0.1)
+    
+    ser.close()
 
     ser.open()
     
     for i in values.queue:
-        ser.write(bytes(str(i), 'ascii'))
-        time.sleep(5) # 5 segundos
-        print(ser.readline().decode())
+        print(repr(i))
+        ser.write(bytes(str(int(2)), 'ascii'))
+        seq = []
+        joined_seq = ''
+
+        while True:
+            for c in ser.read():
+                seq.append(chr(c)) #convert from ASCII
+                joined_seq = ''.join(str(v) for v in seq) #Make a string from array
+
+                if chr(c) == '\n':
+                    print(joined_seq)
+                    seq = []
+                    break
+
+            if joined_seq == 'STAND-BY':
+                print(joined_seq)
+                break
+
+    print('Fim!')
+
+        #time.sleep(1) # 1 segundos
+
+    ser.close()
+
+    return
+
+def communication2(values):
+    print(values.queue)
+    BAUDRATE = 9600
+    PORT = 'COM7'
+
+    ser = serial.Serial(baudrate=BAUDRATE, port=PORT,
+                        timeout=0.1)
     
+    ser.close()
+
+    ser.open()
+    
+    for i in values.queue:
+        print(str(i))
+        ser.write(bytes(str(int(i)), 'ascii'))
+        
+        while True:
+            print(repr(ser.readline().decode()))
+            if (repr(ser.readline().decode()) == 'STAND-BY\r\n'):
+                break
+
+    print("Fim!")
+
     ser.close()
 
     return
@@ -55,8 +100,7 @@ def list_to_queue(dict):
 if __name__ == '__main__':
     #list_to_queue({17297: 3, 21393: 2, 17312: 4, 19759: 8, 17342: 1})
     q = Queue()
-    values = ['2', '3'] 
-    for value in values:
-        q.put(value)
+    q.put('2')
+    q.put('3')
 
-    communication(q)
+    #communication(q)
