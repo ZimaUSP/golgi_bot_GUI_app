@@ -77,6 +77,22 @@ class GolgiDataFrame():
         self.df = pd.concat([self.df, new_item], axis=0)
         #self.df = self.df.merge(new_item, on='id')
 
+    def update_amount(self, id, amount):
+        """
+        Description: Update the drug stock amount from the dataset
+        Params:
+            id(int): key for the item id
+            amount(int): amount to be subtracted from the current stock
+        """
+
+        initial_amount = self.df.at[id, 'estoque']
+
+        final_amount = initial_amount - amount
+        
+        self.df.at[id, 'estoque']=f'{final_amount}'
+
+        self.save_to_disk()
+
 
     def get_items(self, id = "0", nome = "", dosagem = "", apresentacao = ""):
         """

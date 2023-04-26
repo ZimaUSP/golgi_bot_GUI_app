@@ -5,7 +5,7 @@ from data_users import golgi_users
 from dataframe import *
 from math import ceil
 from queue import Queue
-from request import dict_to_list, communication
+from request_alt import dict_to_list, communication
 
 LARGE_FONT= ("Verdana", 12)
 
@@ -150,7 +150,7 @@ class AdminCollect2(ctk.CTkFrame):
         self.nome = self.data.nome[0]
         self.dose = self.data.dosagem[0]
         self.apresentacao = self.data.apresentacao[0]
-        #self.position = self.data.position[0]
+        self.estoque = self.data.estoque[0]
 
         self.idEntry.insert(0, str(self.id))
         self.nameEntry.insert(0, str(self.nome))
@@ -163,6 +163,8 @@ class AdminCollect2(ctk.CTkFrame):
 
         else:
             self.lbl_value["text"] = "0"
+
+        self.stockLabel.configure(text=f'Quantidade disponível: {self.estoque}')
 
     # update listbox
     def update_listbox(self):
@@ -195,7 +197,8 @@ class AdminCollect2(ctk.CTkFrame):
 
     def increase(self):
         value = int(self.lbl_value.cget("text"))
-        self.lbl_value.configure(text=f"{value + 1}")
+        if value < int(self.estoque):
+            self.lbl_value.configure(text=f"{value + 1}")
 
     def decrease(self):
         value = int(self.lbl_value.cget("text"))
@@ -224,8 +227,15 @@ class AdminCollect2(ctk.CTkFrame):
         return self.collect_list
 
     def collect(self):
+        items = self.collect_list.items()
+        for id, amount in items:
+            golgi_data.update_amount(id, amount)
+        
         queue = dict_to_list(self.collect_list)
-        communication(queue)
+
+        #communication(queue)
+
+        self.stockLabel.configure(text='')
 
         return True
         
@@ -267,6 +277,9 @@ class AdminCollect2(ctk.CTkFrame):
         self.listbox.grid(row=0, column=1, columnspan=4, rowspan=4, sticky='w', padx=10)
 
         self.listbox.bind("<<ListboxSelect>>", self.display)
+
+        self.stockLabel = ctk.CTkLabel(self, text='', font=FONT)
+        self.stockLabel.grid(row=1, column=4, sticky='w')
 
         self.btn_decrease = ctk.CTkButton(master=self, text="-", width=15, command=self.decrease)
         self.btn_decrease.grid(row=2, column=4, sticky='w')
