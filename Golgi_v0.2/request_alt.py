@@ -9,10 +9,6 @@ import serial
 import time
 
 from arduino_communication import ArduinoCommunication
-# try:
-#     from queue import Queue
-# except:
-#     import Queue
 
 def dict_to_list(dict):
     # q = Queue(maxsize = 0)
@@ -28,40 +24,15 @@ def dict_to_list(dict):
 
     return q
 
-# def communication(queue):
-#     BAUDRATE = 9600
-#     PORT = 'COM18'
-
-#     ser = serial.Serial(baudrate=BAUDRATE, port=PORT,
-#                     timeout=0.1)
-
-#     string = ser.readline().decode() # TEM QUE SER READLINE, talvez tenha que alterar os prints do Golgi
-    
-#     for command in queue:
-#         while string != "STAND-BY\r\n": # Aguarda o Golgi estar pronto
-#             string = ser.readline().decode() # TEM QUE SER READLINE, talvez tenha que alterar os prints do Golgi
-
-#             if string != "": 
-#                 print(string)
-
-#         command += '\n' # Deve ser adaptado para o código do ESP 
-#         ser.write(command.encode('ascii')) # Escreve o comando (número) no serial
-
-#         string = "" # Lê os prints do Serial pelo Golgi
-
-#     string = ser.readline().decode() # TEM QUE SER READLINE, talvez tenha que alterar os prints do Golgi
-
-#     if string != "": 
-#         print(string)
-
-#     print("Fim!")
-
 def main():
     # list_to_queue({17297: 3, 21393: 2, 17312: 4, 19759: 8, 17342: 1})
     communication = ArduinoCommunication()
-    communication.connect('COM18')
-    queue = bytes(['2'])
-    communication.send_message(queue)
+    communication.connect('COM7')
+    queue = ['1', '0']
+    for item in queue:
+        item = bytes(item, encoding='utf-8')
+        communication.send_message(item)
+        time.sleep(2)
     
 if __name__ == '__main__':
     main()

@@ -4,7 +4,7 @@ int i = 0;
 
 void setup() {
   Serial.begin(9600);
-  pinMode(13, OUTPUT);
+  pinMode(2, OUTPUT);
 
   Serial.println("STAND-BY");
 }
@@ -14,15 +14,12 @@ void loop() {
    
   if(Serial.available() > 0){
     c = Serial.read();
-
     if(c != '\n'){
-        str[i++] = c;
-    } else {
-      str[i] = '\0';
-      i = 0;
-
+      if(c == '1') digitalWrite(2, HIGH);
+      else if(c == '0') digitalWrite(2, LOW);
+  
       Serial.print("Arduino: ");
-      Serial.println(str);
+      Serial.println(c);
       Serial.println("STAND-BY");
     }
     
