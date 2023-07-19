@@ -23,7 +23,6 @@ class ArduinoCommunication():
         print(message)
         serial_out = self.ser.readline().decode()
         while(serial_out != "STAND-BY\r\n"):
-            print("standby")
             serial_out = self.ser.readline().decode()
             print(serial_out)
         

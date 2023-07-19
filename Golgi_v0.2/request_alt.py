@@ -27,12 +27,14 @@ def dict_to_list(dict):
 def main():
     # list_to_queue({17297: 3, 21393: 2, 17312: 4, 19759: 8, 17342: 1})
     communication = ArduinoCommunication()
-    communication.connect('COM7')
-    queue = ['1', '0']
-    for item in queue:
-        item = bytes(item, encoding='utf-8')
-        communication.send_message(item)
-        time.sleep(2)
+    connect = communication.connect('COM7')
+
+    if connect:
+        queue = ['0']
+        for item in queue:
+            item = bytes(item, encoding='utf-8')
+            communication.send_message(item)
+            time.sleep(2)
     
 if __name__ == '__main__':
     main()
