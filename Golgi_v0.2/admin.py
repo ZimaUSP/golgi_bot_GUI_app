@@ -5,7 +5,7 @@ from data_users import golgi_users
 from dataframe import *
 from math import ceil
 from queue import Queue
-from request import dict_to_list, communication
+from request_alt import dict_to_list, communication
 
 LARGE_FONT= ("Verdana", 12)
 
