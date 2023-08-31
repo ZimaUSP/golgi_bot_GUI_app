@@ -11,7 +11,7 @@ LARGE_FONT= ("Verdana", 12)
 
 FONT = ('Helvetica', 14)
 
-ESP_PORT = 'COM7'
+ESP_PORT = '/dev/ttyUSB0'
 
 # Define button functions
 def reset_password(controller):
@@ -240,7 +240,7 @@ class AdminCollect2(ctk.CTkFrame):
 
         if connect:
             for item in queue:
-                item = bytes(item, encoding='utf-8')
+                item = bytes(str(item), encoding='utf-8')
                 communication.send_message(item)
                 time.sleep(2)
 
@@ -916,3 +916,4 @@ if __name__ == "__main__":
     from golgi_main import GolgiApp
     app = GolgiApp()
     app.mainloop()
+

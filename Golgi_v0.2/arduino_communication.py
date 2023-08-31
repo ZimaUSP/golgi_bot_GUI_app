@@ -21,9 +21,9 @@ class ArduinoCommunication():
     def send_message(self, message):
         self.ser.write(message) 
         print(message)
-        serial_out = self.ser.readline().decode()
-        while(serial_out != "STAND-BY\r\n"):
-            serial_out = self.ser.readline().decode()
+        serial_out = self.ser.readline().decode().strip()
+        while(serial_out != "STAND-BY"):
+            serial_out = self.ser.readline().decode().strip()
             print(serial_out)
-        
+        print(serial_out)
         

@@ -27,7 +27,7 @@ def dict_to_list(dict):
 def main():
     # list_to_queue({17297: 3, 21393: 2, 17312: 4, 19759: 8, 17342: 1})
     communication = ArduinoCommunication()
-    connect = communication.connect('COM7')
+    connect = communication.connect('/dev/ttyUSB0')
 
     if connect:
         queue = ['0']

@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, PhotoImage
 import customtkinter as ctk
 from data_users import golgi_users
 from dataframe import *
@@ -17,7 +17,12 @@ class GolgiApp(ctk.CTk):
         ctk.set_appearance_mode("dark")  # Modes: system (default), light, dark
         ctk.set_default_color_theme("dark-blue")  # Themes: blue (default), dark-blue, green
 
-        self.iconbitmap("Golgi_v0.2/images/logo-gradient.ico")
+        if in_linux:
+            #self.iconbitmap("@Golgi_v0.2/images/logo-gradient.xbm")
+            icon = PhotoImage(file = "Golgi_v0.2/images/icon-logo-gradient.png")
+            self.iconphoto(True, icon)
+        else:
+            self.iconbitmap("@Golgi_v0.2/images/logo-gradient.ico")
 
         self.title('Golgi v0.2')
 
@@ -50,3 +55,4 @@ class GolgiApp(ctk.CTk):
 if __name__ == '__main__':
     app = GolgiApp()
     app.mainloop()
+
