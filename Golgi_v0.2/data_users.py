@@ -42,7 +42,7 @@ class GolgiUsers():
         new_item = pd.DataFrame(item)
         print(new_item)
         new_item = new_item.set_index('nusp')
-        self.df = self.df.append(new_item)
+        self.df = pd.concat([self.df, new_item])
         print(self.df)
     
     def remove_user(self, nusp):
@@ -76,7 +76,7 @@ class GolgiUsers():
         try:
             self.remove_user(nusp)
             new_item = pd.DataFrame(item)
-            self.df = self.df.append(new_item)
+            self.df = pd.concat([self.df, new_item])
         except:
             print("Error editing item")
     

@@ -1,15 +1,17 @@
 import tkinter as tk
-from tkinter import ttk
 import customtkinter as ctk
 from data_users import golgi_users
 from dataframe import *
-from math import ceil
-from queue import Queue
-from request_alt import dict_to_list, communication
+from request_alt import dict_to_list
+import time
+from arduino_communication import ArduinoCommunication
+
 
 LARGE_FONT= ("Verdana", 12)
 
 FONT = ('Helvetica', 14)
+
+ESP_PORT = 'COM7'
 
 # Define button functions
 def reset_password(controller):
@@ -233,7 +235,14 @@ class AdminCollect2(ctk.CTkFrame):
         
         queue = dict_to_list(self.collect_list)
 
-        #communication(queue)
+        communication = ArduinoCommunication()
+        connect = communication.connect(ESP_PORT)
+
+        if connect:
+            for item in queue:
+                item = bytes(item, encoding='utf-8')
+                communication.send_message(item)
+                time.sleep(2)
 
         self.stockLabel.configure(text='')
 
