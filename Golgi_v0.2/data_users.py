@@ -9,7 +9,8 @@
     
 import pandas as pd
 from config import *
-
+from tkinter import *
+from tkinter import messagebox
 
 class GolgiUsers():
     """_summary_
@@ -86,8 +87,10 @@ class GolgiUsers():
         df_search =  df_search.reset_index()
         try:
             nusp = int(float(nusp))
-        except:
-            pass
+        except ValueError:
+            print("O usuario deveria ser um numero inteiro")
+            messagebox.showinfo(title="Erro", message="O usuário deveria ser um número inteiro")
+            return False
         user = df_search[(df_search['nusp'] == nusp)]
         print("user: ")
         print(user)
@@ -97,14 +100,17 @@ class GolgiUsers():
                 print(user.iloc[0]['senha'])
                 if user.iloc[0]['senha'] == senha:
                     return True
+                messagebox.showinfo(title="Erro", message="Senha Inválida")
+                print("Senha Invalida")
                 return False 
             except:
                 print("Error validating")
                 #print(user.iloc[0]['senha'])
             #finally:
             #    print("Cant't access user.iloc[0]['senha']")
-    
-    
+        else:
+            print("Usuario nao encontrado")
+            messagebox.showinfo(title="Erro", message="Usuário não encontrado")
     
     def get_admin(self, nusp):
         print("getting admin")

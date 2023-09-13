@@ -9,7 +9,7 @@
 
 import pandas as pd
 from config import *
-
+from tkinter import messagebox
 
 
 class GolgiDataFrame():
@@ -127,6 +127,7 @@ class GolgiDataFrame():
             dosagem = "NO DOSE"
         if (apresentacao == ""):
             apresentacao = "NO APRES"
+            
         
 
         print("Search parameters: ")
