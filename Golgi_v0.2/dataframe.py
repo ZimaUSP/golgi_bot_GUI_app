@@ -120,64 +120,25 @@ class GolgiDataFrame():
                 print("Invalid ID")
         
         if (id == ""):
-            id = "NO ID"
+            id = -1
         if (nome == ""):
             nome = "NO NOME"
         if (dosagem == ""):
             dosagem = "NO DOSE"
         if (apresentacao == ""):
             apresentacao = "NO APRES"
+
+        print("Search parameter:")
+        print("Nome:", nome)
+        print("ID:", id)
+        print("Dosagem:", dosagem)
+        print("Apresenta√√o:", apresentacao)
             
-        
-
-        print("Search parameters: ")
-        print("Nome: ")
-        print((df_search['nome'].str.contains(nome, case=False)))
-        print("Dosagem: ")
-        print(df_search['dosagem'].str.contains(dosagem, case=False))
-        print("Apresenta√ß√£o: ")
-        print(df_search['apresentacao'].str.contains(apresentacao, case=False))
-
         # Full Match
-        selected_items = df_search[(df_search['nome'].str.contains(nome, case=False)) & (df_search['id'] == id) & (df_search['dosagem'].str.contains(dosagem, case=False)) & (df_search['apresentacao'].str.contains(apresentacao, case=False))]
+        selected_items = df_search[(df_search['nome'].str.contains(nome, case=False)) | (df_search['id'] == id) | (df_search['dosagem'].str.contains(dosagem, case=False)) | (df_search['apresentacao'].str.contains(apresentacao, case=False))]
         print("Full match")
         print(selected_items)
 
-        # 3/4 Match
-        selected_items = pd.concat([
-            selected_items,
-            df_search[(df_search['id'] == id) & (df_search['nome'].str.contains(nome, case=False)) & (~df_search['dosagem'].str.contains(dosagem, case=False)) & (df_search['apresentacao'].str.contains(apresentacao, case=False))],
-            df_search[(df_search['id'] == id) & (df_search['nome'].str.contains(nome, case=False)) & (df_search['dosagem'].str.contains(dosagem, case=False)) & (~df_search['apresentacao'].str.contains(apresentacao, case=False))],
-            df_search[(df_search['id'] == id) & (~df_search['nome'].str.contains(nome, case=False)) & (df_search['dosagem'].str.contains(dosagem, case=False)) & (df_search['apresentacao'].str.contains(apresentacao, case=False))],
-            df_search[(df_search['id'] != id) & (df_search['nome'].str.contains(nome, case=False)) & (df_search['dosagem'].str.contains(dosagem, case=False)) & (df_search['apresentacao'].str.contains(apresentacao, case=False))]
-        ])
-        print("3/4 match")
-        print(selected_items)
-
-        # 2/4 Match
-        selected_items = pd.concat([
-            selected_items,
-            df_search[(df_search['id'] == id) & (df_search['nome'].str.contains(nome, case=False)) & (~df_search['dosagem'].str.contains(dosagem, case=False)) & (~df_search['apresentacao'].str.contains(apresentacao, case=False))],
-            df_search[(df_search['id'] == id) & (~df_search['nome'].str.contains(nome, case=False)) & (~df_search['dosagem'].str.contains(dosagem, case=False)) & (df_search['apresentacao'].str.contains(apresentacao, case=False))],
-            df_search[(df_search['id'] != id) & (df_search['nome'].str.contains(nome, case=False)) & (~df_search['dosagem'].str.contains(dosagem, case=False)) & (df_search['apresentacao'].str.contains(apresentacao, case=False))],
-            df_search[(df_search['id'] == id) & (~df_search['nome'].str.contains(nome, case=False)) & (df_search['dosagem'].str.contains(dosagem, case=False)) & (~df_search['apresentacao'].str.contains(apresentacao, case=False))],
-            df_search[(df_search['id'] != id) & (df_search['nome'].str.contains(nome, case=False)) & (df_search['dosagem'].str.contains(dosagem, case=False)) & (~df_search['apresentacao'].str.contains(apresentacao, case=False))],
-            df_search[(df_search['id'] != id) & (~df_search['nome'].str.contains(nome, case=False)) & (df_search['dosagem'].str.contains(dosagem, case=False)) & (df_search['apresentacao'].str.contains(apresentacao, case=False))]
-        ])
-        print("2/4 match")
-        print(selected_items)
-
-        # 1/4 Match
-        selected_items = pd.concat([
-            selected_items,
-            df_search[(df_search['id'] == id) & (~df_search['nome'].str.contains(nome, case=False)) & (~df_search['dosagem'].str.contains(dosagem, case=False)) & (~df_search['apresentacao'].str.contains(apresentacao, case=False))],
-            df_search[(df_search['id'] != id) & (df_search['nome'].str.contains(nome)) & (~df_search['dosagem'].str.contains(dosagem, case=False)) & (~df_search['apresentacao'].str.contains(apresentacao, case=False))],
-            df_search[(df_search['id'] != id) & (~df_search['nome'].str.contains(nome, case=False)) & (~df_search['dosagem'].str.contains(dosagem, case=False)) & (df_search['apresentacao'].str.contains(apresentacao, case=False))],
-            df_search[(df_search['id'] != id) & (~df_search['nome'].str.contains(nome, case=False)) & (df_search['dosagem'].str.contains(dosagem, case=False)) & (~df_search['apresentacao'].str.contains(apresentacao, case=False))],
-            df_search[(df_search['id'] != id) & (~df_search['nome'].str.contains(nome, case=False)) & (df_search['dosagem'].str.contains(dosagem, case=False)) & (~df_search['apresentacao'].str.contains(apresentacao, case=False))]
-        ])
-        print("1/4 match")
-        print(selected_items)
         selected_items = selected_items.set_index('id')
 
         return selected_items
