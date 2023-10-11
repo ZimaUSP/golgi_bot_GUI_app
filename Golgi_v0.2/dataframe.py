@@ -132,7 +132,7 @@ class GolgiDataFrame():
         print("Nome:", nome)
         print("ID:", id)
         print("Dosagem:", dosagem)
-        print("Apresenta√√o:", apresentacao)
+        print("Apresentacao:", apresentacao)
             
         # Full Match
         selected_items = df_search[(df_search['nome'].str.contains(nome, case=False)) | (df_search['id'] == id) | (df_search['dosagem'].str.contains(dosagem, case=False)) | (df_search['apresentacao'].str.contains(apresentacao, case=False))]
