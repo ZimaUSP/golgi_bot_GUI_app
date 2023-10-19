@@ -26,7 +26,8 @@ class GolgiApp(ctk.CTk):
 
         self.title('Golgi v0.2')
 
-        self.geometry("840x400")
+        self.geometry("940x420")
+        self.minsize(940, 420)
 
         container = ctk.CTkFrame(self)
 
@@ -39,7 +40,13 @@ class GolgiApp(ctk.CTk):
 
         for F in (StartPage, ResetPassword, AdminRegister, AdminConfig, AddUser, AdminCollect1, AdminEdit, AdminCollect2, AdminDelete):
 
-            frame = F(container, self)
+            frame = CTkFrame(container, fg_color="transparent")
+
+            page = F(frame, self)
+            page.pack(fill="both", expand=True)
+            if (F not in {StartPage, ResetPassword} ):
+                menu = Menu(frame, F, self)
+                menu.pack()
 
             self.frames[F] = frame
 
