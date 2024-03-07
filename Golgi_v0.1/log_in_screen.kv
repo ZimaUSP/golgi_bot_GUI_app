@@ -14,6 +14,7 @@
             FloatLayout:
 
                 ActualLogIn:
+                    id:actual_log_in
                     size_hint:0.5, 0.6
                     pos_hint: {'center_x':.5, 'center_y': .5}
 
@@ -27,10 +28,12 @@
 
 
 
-<ActualLogIn@MDBoxLayout>:
+<ActualLogIn>:
+    id: actual_login
     orientation:"vertical"
     
     MDTextField:
+        id: user
         hint_text: "Usuário"
         required: True
         size_hint: 1, 1
@@ -38,6 +41,7 @@
         hint_font_size: app.TEXT_SIZE
         
     MDTextField:
+        id: password
         hint_text: "Senha"
         required: True
         size_hint: 1, 1
@@ -58,7 +62,8 @@
         size_hint: 1, 0.4
         font_size: app.BUTTON_FONT
         on_release:
-            app.root.current = "main_screen"
+            root.on_login()
+            #app.root.current = "main_screen"
 
 <HelpPage@MDBoxLayout>:
     MDLabel:

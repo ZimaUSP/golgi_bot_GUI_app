@@ -3,8 +3,9 @@
 <WindowManager>:
     LogInScreen:
     MainScreen:
-    #CameraScreen:
+    AdminMainScreen:
     EditScreen:
+    CollectScreen:
 
 
 <MainScreen>:
@@ -14,14 +15,19 @@
     MainPage:
         id: main_page
 
-
-<LogInScreen>:
+<AdminMainScreen>:
+    name: "admin_main_screen"
     on_leave: app.previous_screen = self.name
     on_enter: app.current_screen = self.name
+    AdminMainPage:
+        id: admin_main_page
+
+<LogInScreen>:
     name: "log_in_screen"
+    on_leave: app.previous_screen = self.name
+    on_enter: app.current_screen = self.name
     LogInPage:
-
-
+        id:log_in_main_page
 
 
 <EditScreen>:
@@ -30,3 +36,10 @@
     name: "edit_screen"
     EditPage:
         id: edit_page
+
+<CollectScreen>:
+    on_leave: app.previous_screen = self.name
+    on_enter: app.current_screen = self.name
+    name: "collect_screen"
+    CollectPage:
+        id: collect_page

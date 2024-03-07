@@ -1,0 +1,53 @@
+#:kivy 2.0.0
+
+<AddUserPage>:
+    cols:2
+    MDTextField:
+        id: nome
+        size_hint_y: 1
+        hint_text: "Nome"
+        required: True
+        on_text_validate: root.nome = self.text
+    
+    MDTextField:
+        id: nusp
+        size_hint_y: 1
+        hint_text: "N USP"
+        required: True
+        on_text_validate: root.nusp = self.text
+    
+    MDTextField:
+        id: rfid
+        size_hint_y: 1
+        hint_text: "Card ID (RFID)"
+        required: True
+        on_text_validate: root.rfid = self.text
+    
+    MDTextField:
+        id: senha
+        size_hint_y: 1
+        hint_text: "Senha"
+        required: True
+        password: True
+        on_text_validate: root.senha = self.text
+
+    MDTextField:
+        id: senha_verify
+        size_hint_y: 1
+        hint_text: "Confirmar senha"
+        required: True
+        password: True
+        on_text_validate: root.senha_verify = self.text
+
+    MDBoxLayout:
+        orientation: "horizontal"
+        MDLabel:
+            text: "Administrador(a)"
+        MDCheckbox:
+            id: is_new_user_admin
+
+    
+    MDRoundFlatIconButton:
+        icon: root.register_icon
+        text: "Registrar"
+        on_press: root.submit_user()

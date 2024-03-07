@@ -8,7 +8,7 @@
 """
 
 import pandas as pd
-
+from config import *
 
 
 
@@ -17,7 +17,10 @@ class GolgiDataFrame():
     """
     columns = ['id', 'nome', 'dosagem', 'apresentacao', 'position']
     def __init__(self) -> None:
-        self.df = pd.read_csv("Golgi_v0.1\dados\drug_data.csv")
+        if in_linux:
+            self.df = pd.read_csv("Golgi_v0.1/dados/drug_data.csv")
+        else:
+            self.df = pd.read_csv("Golgi_v0.1\dados\drug_data.csv")
         self.df = self.df.set_index('id')
 
     def add_item(self, item):
@@ -68,7 +71,8 @@ class GolgiDataFrame():
                 "position": "ThePosition"
                 }
         """
-        self.df = self.df.drop(key)
+        self.delete_item(key)
+        #self.df = self.df.drop(key)
         new_item = pd.DataFrame(item)
         self.df = self.df.append(new_item)
 
@@ -153,7 +157,10 @@ class GolgiDataFrame():
         """
         Description: saves the dataset to a .csv file
         """
-        self.df.to_csv('Golgi_v0.1\dados\drug_data.csv')#, index=False)
+        if in_linux:
+            self.df.to_csv('Golgi_v0.1/dados/drug_data.csv')#, index=False)
+        else:
+            self.df.to_csv('Golgi_v0.1\dados\drug_data.csv')#, index=False)
 
 
 golgi_data = GolgiDataFrame()

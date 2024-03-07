@@ -1,7 +1,6 @@
 #:kivy 2.0.0
 
-
-<MainPage>:
+<AdminMainPage>:
     orientation:"vertical"
     #adaptive_size: True
     MDBottomNavigation:
@@ -43,6 +42,13 @@
 
             DeletePage:
                 id: delete_page
+        
+        MDBottomNavigationItem:
+            name: "add_user"
+            text: "Adicionar Usuário"
+
+            AddUserPage:
+                id: add_user_page
             
         
         MDBottomNavigationItem:
