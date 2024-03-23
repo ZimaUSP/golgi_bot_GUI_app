@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import Frame, LEFT, RIGHT, BOTTOM, BOTH
 import customtkinter as ctk
 from customtkinter import CTkFrame
+from CTkListbox.CTkListbox import *
 from data_users import golgi_users
 from dataframe import *
 from request_alt import dict_to_list
@@ -171,7 +172,7 @@ class AdminCollect2(ctk.CTkFrame):
         self.id = ""
         self.dose = ""
         self.apresentacao = ""
-        self.nome = self.listbox.get("anchor")
+        self.nome = self.listbox.get()
         #self.nome = self.listbox.get(self.listbox.curselection())
 
         self.data = golgi_data.get_items(id = self.id, nome = self.nome, dosagem=self.dose, apresentacao=self.apresentacao)
@@ -199,7 +200,7 @@ class AdminCollect2(ctk.CTkFrame):
 
     # update listbox
     def update_listbox(self):
-        self.listbox.delete(0, "end")
+        self.listbox.delete("all")
 
         self.id = self.idEntry.get()
         self.nome = self.nameEntry.get()
@@ -221,7 +222,8 @@ class AdminCollect2(ctk.CTkFrame):
         self.data = golgi_data.get_items(id = self.id, nome = self.nome, dosagem=self.dose, apresentacao=self.apresentacao)
 
         for item in self.data.nome:
-            self.listbox.insert("end", item)
+            self.listbox.insert("end", item, update = False)
+        self.listbox.update();
 
         # for i in range(len(self.data.nome)-1):
         #     self.listbox.insert("end", self.data.nome[i])
@@ -240,7 +242,7 @@ class AdminCollect2(ctk.CTkFrame):
         if self.listbox.get("anchor") is None:
             print("Escolha um medicamento!")
             return False
-        
+       
         elif int(self.lbl_value.cget("text")) == 0:
             print("Quantidade inválida!")
 
@@ -311,10 +313,16 @@ class AdminCollect2(ctk.CTkFrame):
         fr_listbox = CTkFrame(fr_collect_data)
         fr_listbox.pack(fill="both", expand=True, side=LEFT)
 
-        self.listbox = tk.Listbox(fr_listbox, width=55)
-        self.listbox.pack(fill="both", expand=True)
+        # self.listbox = tk.Listbox(fr_listbox, width=55)
+        # self.listbox.pack(fill="both", expand=True)
 
+        self.listbox = CTkListbox(fr_listbox, width=55)
+        self.listbox.pack(fill="both", expand=True)
         self.listbox.bind("<<ListboxSelect>>", self.display)
+
+        # fix bug scroll on linux
+        self.listbox.bind_all("<Button-4>", lambda e: self.listbox._parent_canvas.yview("scroll", -1, "units"))
+        self.listbox.bind_all("<Button-5>", lambda e: self.listbox._parent_canvas.yview("scroll", 1, "units"))
 
         # stock
         fr_stock = CTkFrame(fr_collect_data, fg_color="transparent")
