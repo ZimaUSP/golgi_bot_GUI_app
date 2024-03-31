@@ -239,7 +239,7 @@ class AdminCollect2(ctk.CTkFrame):
             self.lbl_value.configure(text=f"{value - 1}")
 
     def add_to_queue(self):
-        if self.listbox.get("anchor") is None:
+        if self.listbox.get() is None:
             print("Escolha um medicamento!")
             return False
        
@@ -250,7 +250,7 @@ class AdminCollect2(ctk.CTkFrame):
             self.collect_list[self.id] = int(self.lbl_value.cget("text"))
             # for i in range(int(self.lbl_value.cget("text"))):
             #     self.collect_list.put(self.id)
-            self.listbox.selection_clear(0, "end")
+            self.listbox.selection_clear()
             #self.lbl_value["text"] = "0"
 
             #print(self.collect_list.queue)
@@ -459,7 +459,7 @@ class AdminEdit(ctk.CTkFrame):
         self.id = ""
         self.dose = ""
         self.apresentacao = ""
-        self.nome = self.listbox.get("anchor")
+        self.nome = self.listbox.get()
         #self.nome = self.listbox.get(self.listbox.curselection())
         
         #print(self.nome)
@@ -598,10 +598,13 @@ class AdminEdit(ctk.CTkFrame):
         fr_listbox = CTkFrame(fr_edit)
         fr_listbox.pack(fill="both", expand=True, padx=10, pady=0, side=LEFT)
 
-        self.listbox = tk.Listbox(fr_listbox, width=60)
+        self.listbox = CTkListbox(fr_listbox, width=60)
         self.listbox.pack(fill="both", expand=True, padx=10, pady=0)
-
         self.listbox.bind("<<ListboxSelect>>", self.edit)
+
+        # fix bug scroll on linux
+        self.listbox.bind_all("<Button-4>", lambda e: self.listbox._parent_canvas.yview("scroll", -1, "units"))
+        self.listbox.bind_all("<Button-5>", lambda e: self.listbox._parent_canvas.yview("scroll", 1, "units"))
 
         fr_search_edit = CTkFrame(self, fg_color="transparent")
         fr_search_edit.pack(padx=10, pady=5)
@@ -655,7 +658,7 @@ class AdminDelete(ctk.CTkFrame):
         self.id = ""
         self.dose = ""
         self.apresentacao = ""
-        self.nome = self.listbox.get("anchor")
+        self.nome = self.listbox.get()
 
         self.data = golgi_data.get_items(id = self.id, nome = self.nome, dosagem=self.dose, apresentacao=self.apresentacao)
         self.data = self.data.reset_index()
@@ -716,7 +719,7 @@ class AdminDelete(ctk.CTkFrame):
         fr_listbox = CTkFrame(fr_delete)
         fr_listbox.pack(fill="both", expand=True, padx=10, pady=0, side=LEFT)
 
-        self.listbox = tk.Listbox(fr_listbox, width=60)
+        self.listbox = CTkListbox(fr_listbox, width=60)
         self.listbox.pack(fill="both", expand=True, padx=10, pady=0)
 
         #self.listbox.bind("<<ListboxSelect>>", self.edit)
