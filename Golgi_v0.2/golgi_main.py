@@ -4,7 +4,7 @@ import customtkinter as ctk
 from data_users import golgi_users
 from dataframe import *
 from math import ceil
-from admin import *
+from pages import *
 
 LARGE_FONT= ("Verdana", 12)
 
@@ -38,7 +38,7 @@ class GolgiApp(ctk.CTk):
 
         self.frames = {}
 
-        for F in (StartPage, ResetPassword, AdminRegister, AdminConfig, AddUser, AdminCollect1, AdminEdit, AdminCollect2, AdminDelete):
+        for F in (StartPage, ResetPassword, Register, Config, AddUser, CollectInfo, Edit, Collect, Delete):
 
             frame = CTkFrame(container, fg_color="transparent")
 
