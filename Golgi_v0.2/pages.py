@@ -132,20 +132,16 @@ class Collect(CTkFrame):
 
     def display(self, event):
 
-        self.id = ""
-        self.dose = ""
-        self.apresentacao = ""
-        self.nome = self.listbox.get()
-        #self.nome = self.listbox.get(self.listbox.curselection())
+        index = self.listbox.curselection()
+        selected = self.data.iloc[index]
+        print(f"selected index: {index}:\n", selected)
+        print(f"name {selected.nome}")
 
-        self.data = golgi_data.get_items(id = self.id, nome = self.nome, dosagem=self.dose, apresentacao=self.apresentacao)
-        self.data = self.data.reset_index()
-
-        self.id = self.data.id[0]
-        self.nome = self.data.nome[0]
-        self.dose = self.data.dosagem[0]
-        self.apresentacao = self.data.apresentacao[0]
-        self.estoque = self.data.estoque[0]
+        self.id = selected.id
+        self.nome = selected.nome
+        self.dose = selected.dosagem
+        self.apresentacao = selected.apresentacao
+        self.estoque = selected.estoque
 
         if self.id in self.collect_list.keys():
             self.lbl_value["text"] = str(int(self.collect_list[self.id]))
@@ -164,19 +160,9 @@ class Collect(CTkFrame):
         self.dose = self.doseEntry.get()
         self.apresentacao = self.presentationEntry.get()
 
-        if self.id == "ID":
-            self.id = ""
-
-        if self.nome == "Nome":
-            self.nome = ""
-
-        if self.dose == "Dose":
-            self.dose = ""
-
-        if self.apresentacao == "Apresentação":
-            self.apresentacao = ""
-
         self.data = golgi_data.get_items(id = self.id, nome = self.nome, dosagem=self.dose, apresentacao=self.apresentacao)
+
+        print("oi:", self.data)
 
         for item in self.data.nome:
             self.listbox.insert("end", item, update = False)

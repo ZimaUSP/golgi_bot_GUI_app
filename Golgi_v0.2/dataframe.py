@@ -139,8 +139,6 @@ class GolgiDataFrame():
         print("Full match")
         print(selected_items)
 
-        selected_items = selected_items.set_index('id')
-
         return selected_items
 
 
