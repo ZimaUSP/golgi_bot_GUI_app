@@ -1,4 +1,4 @@
-in_linux = True
+in_linux = False
 
 LARGE_FONT= ("Verdana", 12)
 

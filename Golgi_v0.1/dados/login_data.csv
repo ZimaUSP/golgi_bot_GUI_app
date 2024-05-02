@@ -1,7 +1,0 @@
-nusp,nome,rfid,senha,admin
-0,admin,0.0,admin,True
-1,n_admin,1.0,senha,False
-3,Pedro,3.0,senha,True
-2,Pedro2,2.0,senha,False
-4,Pedro4,4.0,senha,True
-4,admin2,4,senha,True

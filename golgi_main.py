@@ -17,12 +17,8 @@ class GolgiApp(ctk.CTk):
         ctk.set_appearance_mode("dark")  # Modes: system (default), light, dark
         ctk.set_default_color_theme("dark-blue")  # Themes: blue (default), dark-blue, green
 
-        if in_linux:
-            #self.iconbitmap("@Golgi_v0.2/images/logo-gradient.xbm")
-            icon = PhotoImage(file = "Golgi_v0.2/images/icon-logo-gradient.png")
-            self.iconphoto(True, icon)
-        else:
-            self.iconbitmap("@Golgi_v0.2/images/logo-gradient.ico")
+        icon = PhotoImage(file = "images/icon-logo-gradient.png")
+        self.iconphoto(True, icon)
 
         self.title('Golgi v0.2')
 

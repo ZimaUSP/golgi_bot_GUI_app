@@ -9,7 +9,8 @@
     
 import pandas as pd
 from config import *
-
+from tkinter import *
+from tkinter import messagebox
 
 class GolgiUsers():
     """_summary_
@@ -17,10 +18,7 @@ class GolgiUsers():
     columns = ['nusp','nome','rfid','senha','admin']
     
     def __init__(self) -> None:
-        if in_linux:
-            self.df = pd.read_csv("Golgi_v0.1/dados/login_data.csv")
-        else:
-            self.df = pd.read_csv("Golgi_v0.1\dados\login_data.csv")
+        self.df = pd.read_csv("dados/login_data.csv")
         self.df = self.df.set_index('nusp')
     
     def add_user(self, item):
@@ -41,7 +39,7 @@ class GolgiUsers():
         new_item = pd.DataFrame(item)
         print(new_item)
         new_item = new_item.set_index('nusp')
-        self.df = self.df.append(new_item)
+        self.df = pd.concat([self.df, new_item])
         print(self.df)
     
     def remove_user(self, nusp):
@@ -75,7 +73,7 @@ class GolgiUsers():
         try:
             self.remove_user(nusp)
             new_item = pd.DataFrame(item)
-            self.df = self.df.append(new_item)
+            self.df = pd.concat([self.df, new_item])
         except:
             print("Error editing item")
     
@@ -85,8 +83,10 @@ class GolgiUsers():
         df_search =  df_search.reset_index()
         try:
             nusp = int(float(nusp))
-        except:
-            pass
+        except ValueError:
+            print("O usuario deveria ser um numero inteiro")
+            messagebox.showinfo(title="Erro", message="O usuário deveria ser um número inteiro")
+            return False
         user = df_search[(df_search['nusp'] == nusp)]
         print("user: ")
         print(user)
@@ -96,14 +96,17 @@ class GolgiUsers():
                 print(user.iloc[0]['senha'])
                 if user.iloc[0]['senha'] == senha:
                     return True
+                messagebox.showinfo(title="Erro", message="Senha Inválida")
+                print("Senha Invalida")
                 return False 
             except:
                 print("Error validating")
                 #print(user.iloc[0]['senha'])
             #finally:
             #    print("Cant't access user.iloc[0]['senha']")
-    
-    
+        else:
+            print("Usuario nao encontrado")
+            messagebox.showinfo(title="Erro", message="Usuário não encontrado")
     
     def get_admin(self, nusp):
         print("getting admin")
@@ -126,9 +129,6 @@ class GolgiUsers():
         """
         Description: saves the dataset to a .csv file
         """
-        if in_linux:
-            self.df.to_csv('Golgi_v0.1/dados/login_data.csv')#, index=False)
-        else:
-            self.df.to_csv('Golgi_v0.1\dados\login_data.csv')#, index=False)
-        
+        self.df.to_csv('dados/login_data.csv')#, index=False)
+       
 golgi_users = GolgiUsers()

@@ -17,10 +17,7 @@ class GolgiDataFrame():
     """
     columns = ['id', 'nome', 'dosagem', 'apresentacao', 'position']
     def __init__(self) -> None:
-        if in_linux:
-            self.df = pd.read_csv("Golgi_v0.2/dados/drug_data.csv")
-        else:
-            self.df = pd.read_csv("Golgi_v0.2\dados\drug_data.csv")
+        self.df = pd.read_csv("dados/drug_data.csv")
         self.df = self.df.set_index('id')
 
     def add_item(self, item):
@@ -146,12 +143,8 @@ class GolgiDataFrame():
         """
         Description: saves the dataset to a .csv file
         """
-        if in_linux:
-            self.df.to_csv('Golgi_v0.2/dados/drug_data.csv')#, index=False)
-        else:
-            self.df.to_csv('Golgi_v0.2\dados\drug_data.csv')#, index=False)
-
-
+        self.df.to_csv('dados/drug_data.csv')#, index=False)
+    
 golgi_data = GolgiDataFrame()
 
 '''item = {
