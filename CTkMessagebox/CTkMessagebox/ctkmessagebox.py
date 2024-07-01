@@ -9,7 +9,10 @@ from PIL import Image, ImageTk
 import os
 import sys
 import time
-from typing import Literal
+try:
+    from typing import Literal
+except ImportError:
+    from typing_extensions import Literal
 
 class CTkMessagebox(customtkinter.CTkToplevel):
     ICONS = {

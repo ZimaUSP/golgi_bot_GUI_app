@@ -6,6 +6,7 @@ from data_users import golgi_users
 from CTkListbox.CTkListbox import *
 from dataframe import *
 from config import *
+import time
 
 class AddUser(CTkFrame):
 
