@@ -11,6 +11,7 @@ import pandas as pd
 from config import *
 from tkinter import *
 from tkinter import messagebox
+from CTkMessagebox.CTkMessagebox import *
 
 class GolgiUsers():
     """_summary_
@@ -85,7 +86,7 @@ class GolgiUsers():
             nusp = int(float(nusp))
         except ValueError:
             print("O usuario deveria ser um numero inteiro")
-            messagebox.showinfo(title="Erro", message="O usuário deveria ser um número inteiro")
+            CTkMessagebox(title="Erro", icon="warning", message="O usuário deveria ser um número inteiro")
             return False
         user = df_search[(df_search['nusp'] == nusp)]
         print("user: ")
@@ -96,7 +97,7 @@ class GolgiUsers():
                 print(user.iloc[0]['senha'])
                 if user.iloc[0]['senha'] == senha:
                     return True
-                messagebox.showinfo(title="Erro", message="Senha Inválida")
+                CTkMessagebox(title="Erro", icon="warning", message="Senha Inválida")
                 print("Senha Invalida")
                 return False 
             except:
@@ -106,7 +107,7 @@ class GolgiUsers():
             #    print("Cant't access user.iloc[0]['senha']")
         else:
             print("Usuario nao encontrado")
-            messagebox.showinfo(title="Erro", message="Usuário não encontrado")
+            CTkMessagebox(title="Erro", icon="warning", message="Usuário não encontrado")
     
     def get_admin(self, nusp):
         print("getting admin")

@@ -1,4 +1,6 @@
-import serial
+from CTkMessagebox.CTkMessagebox import *
+from tkinter import messagebox
+from serial import Serial
 import time
 
 class ArduinoCommunication():
@@ -8,13 +10,14 @@ class ArduinoCommunication():
 
     def connect(self, port):
         try:
-            self.ser = serial.Serial(port, self.baudrate) # tenta conectar ao Arduino
+            print("ESP se conectando na porta", port)
+            self.ser = Serial(port, self.baudrate) # tenta conectar ao Arduino
             #self.parent.connected = True # indica que está conectado
             #self.parent.COM_port = port # guarda a porta COM
-            print("ESP conectado na porta", port)
             return True
         
-        except:
+        except Exception as e:
+            print(e)
             print("A conexão falhou!") # se não conseguir conectar, mostra mensagem de erro
             return False
 
