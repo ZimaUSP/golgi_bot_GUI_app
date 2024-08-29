@@ -1,4 +1,4 @@
-from customtkinter import CTkFrame, CTkLabel, CTkEntry, CTkButton, CTkFont, CTkCheckBox
+from customtkinter import CTkFrame, CTkLabel, CTkEntry, CTkButton, CTkFont, CTkCheckBox, CTkImage
 from arduino_communication import ArduinoCommunication
 from tkinter import LEFT, RIGHT, BOTTOM, BOTH, IntVar
 from request_alt import dict_to_list
@@ -6,6 +6,7 @@ from data_users import golgi_users
 from CTkListbox.CTkListbox import *
 from dataframe import *
 from config import *
+from PIL import Image
 import time
 
 class AddUser(CTkFrame):
@@ -212,13 +213,19 @@ class Collect(CTkFrame):
 
         communication = ArduinoCommunication()
         connect = communication.connect(ESP_PORT)
-
         if connect:
+            loading_img = CTkImage(light_image=Image.open("images/icon-logo-gradient.png"))#placeholder de imagem (?) do golgi
+            self.loading_txt = CTkLabel(self, bg_color="gray26", width=100, height=10, text="Por favor, espere enquanto o Golgi coleta o(s) remedio(s)", font=("Verdana", 18))
+            self.loading_txt.place(relx=0.2, rely=0.3, relwidth=0.6, relheight=0.5)
+            self.loading_img = CTkLabel(self, bg_color="gray26", width=100, height=10, text="ahhh", image=loading_img)
+            self.loading_img.place(relx=0.1, rely=0.3, relwidth=0.1, relheight=0.5)
             for item in queue:
                 item = bytes(str(item), encoding='utf-8')
                 communication.send_message(item)
                 time.sleep(2)
-
+            self.loading_txt.destroy()
+            self.loading_img.destroy()
+        
         self.stockLabel.configure(text='')
 
         return True
