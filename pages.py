@@ -248,10 +248,12 @@ class Collect(CTkFrame):
         # 'Nome' entry 1
         self.nameEntry = CTkEntry(fr_data, placeholder_text="Nome") 
         self.nameEntry.pack(padx=5, pady=10)
+        self.nameEntry.bind('<Return>', (lambda func : print(self.update_listbox())))
 
         # 'ID' entry 2
         self.idEntry = CTkEntry(fr_data, placeholder_text="ID") 
         self.idEntry.pack(padx=5, pady=10)
+        self.idEntry.bind('<Return>', (lambda func : print(self.update_listbox())))
 
         # 'Dosagem' entry 3
         self.doseEntry = CTkEntry(fr_data, placeholder_text="Dosagem") 
