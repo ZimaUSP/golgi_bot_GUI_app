@@ -219,6 +219,7 @@ class Collect(CTkFrame):
             self.loading_txt.place(relx=0.2, rely=0.3, relwidth=0.6, relheight=0.5)
             self.loading_img = CTkLabel(self, bg_color="gray26", width=100, height=10, text="ahhh", image=loading_img)
             self.loading_img.place(relx=0.1, rely=0.3, relwidth=0.1, relheight=0.5)
+            self.update()
             for item in queue:
                 item = bytes(str(item), encoding='utf-8')
                 communication.send_message(item)
