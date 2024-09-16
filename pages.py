@@ -228,7 +228,6 @@ class Collect(CTkFrame):
             self.loading_txt.configure(text="O Golgi acabou de concluir seu trabalho")
             self.loading_img.configure(image=load_done_img)
             self.update()
-            print("oii\n")
             time.sleep(1.5)
             self.loading_txt.destroy()
             self.loading_img.destroy()
