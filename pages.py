@@ -214,16 +214,22 @@ class Collect(CTkFrame):
         communication = ArduinoCommunication()
         connect = communication.connect(ESP_PORT)
         if connect:
-            loading_img = CTkImage(light_image=Image.open("images/icon-logo-gradient.png"))#placeholder de imagem (?) do golgi
-            self.loading_txt = CTkLabel(self, bg_color="gray26", width=100, height=10, text="Por favor, espere enquanto o Golgi coleta o(s) remedio(s)", font=("Verdana", 18))
-            self.loading_txt.place(relx=0.2, rely=0.3, relwidth=0.6, relheight=0.5)
-            self.loading_img = CTkLabel(self, bg_color="gray26", width=100, height=10, text="ahhh", image=loading_img)
-            self.loading_img.place(relx=0.1, rely=0.3, relwidth=0.1, relheight=0.5)
+            loading_img = CTkImage(light_image=Image.open("images/mini-golgi-worried.png"), size=(170, 170))#placeholder de imagem (?) do golgi
+            load_done_img = CTkImage(light_image=Image.open("images/mini-golgi-happy.png"), size=(170, 170))#placeholder de imagem (?) do golgi
+            self.loading_txt = CTkLabel(self, bg_color="gray26", width=50, height=10, text="Por favor, espere enquanto o Golgi coleta o(s) remedio(s)", font=("Verdana", 16))
+            self.loading_txt.place(anchor="nw", relx=0.35, rely=0.25, relwidth=0.55, relheight=0.5)
+            self.loading_img = CTkLabel(self, bg_color="gray26", width=100, height=10, text="", image=loading_img)
+            self.loading_img.place(anchor="nw", relx=0.1, rely=0.25, relwidth=0.25, relheight=0.5)
             self.update()
             for item in queue:
                 item = bytes(str(item), encoding='utf-8')
                 communication.send_message(item)
                 time.sleep(2)
+            self.loading_txt.configure(text="O Golgi acabou de concluir seu trabalho")
+            self.loading_img.configure(image=load_done_img)
+            self.update()
+            print("oii\n")
+            time.sleep(1.5)
             self.loading_txt.destroy()
             self.loading_img.destroy()
         
