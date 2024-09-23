@@ -168,7 +168,7 @@ class Collect(CTkFrame):
 
         for item in self.data.nome:
             self.listbox.insert("end", item, update = False)
-        self.listbox.update();
+        self.listbox.update()
 
         # for i in range(len(self.data.nome)-1):
         #     self.listbox.insert("end", self.data.nome[i])
@@ -262,11 +262,13 @@ class Collect(CTkFrame):
 
         # 'Dosagem' entry 3
         self.doseEntry = CTkEntry(fr_data, placeholder_text="Dosagem") 
-        self.doseEntry.pack(padx=5, pady=10);
+        self.doseEntry.pack(padx=5, pady=10)
+        self.doseEntry.bind('<Return>', (lambda func : print(self.update_listbox())))
 
         # 'Apresentação' entry 4
         self.presentationEntry = CTkEntry(fr_data, placeholder_text="Apresentação") 
         self.presentationEntry.pack(padx=5, pady=10)
+        self.presentationEntry.bind('<Return>', (lambda func : print(self.update_listbox())))
         
         # search result
         fr_listbox = CTkFrame(fr_collect_data)
@@ -339,7 +341,7 @@ class Delete(CTkFrame):
 
     # update listbox
     def update_listbox(self):
-        self.listbox.delete(0, "end")
+        self.listbox.delete("all")
 
         self.id = self.idEntry.get()
         self.nome = self.nameEntry.get()
@@ -347,22 +349,11 @@ class Delete(CTkFrame):
         self.apresentacao = self.presentationEntry.get()
         self.posicao = self.positionEntry.get()
 
-        if self.id == "ID":
-            self.id = ""
-
-        if self.nome == "Nome":
-            self.nome = ""
-
-        if self.dose == "Dose":
-            self.dose = ""
-
-        if self.apresentacao == "Apresentação":
-            self.apresentacao = ""
-
         self.data = golgi_data.get_items(id = self.id, nome = self.nome, dosagem=self.dose, apresentacao=self.apresentacao)
 
         for item in self.data.nome:
-            self.listbox.insert("end", item)
+            self.listbox.insert("end", item, update = False)
+        self.listbox.update()
 
         # for i in range(len(self.data.nome)-1):
         #     self.listbox.insert("end", self.data.nome[i])
@@ -375,35 +366,21 @@ class Delete(CTkFrame):
         Returns:
             bool: True if all fields are completed
         """
-        self.id = ""
-        self.dose = ""
-        self.apresentacao = ""
-        self.nome = self.listbox.get()
+        index = self.listbox.curselection()
+        selected = self.data.iloc[index]
+        print(f"selected index: {index}:\n", selected)
+        print(f"name {selected.nome}")
 
-        self.data = golgi_data.get_items(id = self.id, nome = self.nome, dosagem=self.dose, apresentacao=self.apresentacao)
-        self.data = self.data.reset_index()
-
-        self.id = self.data.id[0]
-        self.nome = self.data.nome[0]
-        self.dose = self.data.dosagem[0]
-        self.apresentacao = self.data.apresentacao[0]
-        self.position = self.data.position[0]
+        self.id = selected.id
+        self.nome = selected.nome
+        self.dose = selected.dosagem
+        self.apresentacao = selected.apresentacao
+        self.position = selected.position
 
 
         golgi_data.delete_item(self.id)#int(float(item.id)))
-        golgi_data.save_to_disk()
-
-        self.idEntry.delete(0, "end")
-        self.nameEntry.delete(0, "end")
-        self.doseEntry.delete(0, "end")
-        self.presentationEntry.delete(0, "end")
-        self.positionEntry.delete(0, "end")
-
-        self.idEntry.insert(0, "ID")
-        self.nameEntry.insert(0, "Nome")
-        self.doseEntry.insert(0, "Dosagem")
-        self.presentationEntry.insert(0, "Apresentação")
-        self.positionEntry.insert(0, "Posição")
+        golgi_data.save_to_disk()   
+        self.update_listbox()     
 
 
     def __init__(self, parent, controller):
@@ -419,22 +396,27 @@ class Delete(CTkFrame):
         # 'Nome' entry 1
         self.nameEntry = CTkEntry(fr_data, placeholder_text="Nome") 
         self.nameEntry.pack(padx=5, pady=10)
+        self.nameEntry.bind('<Return>', (lambda func : print(self.update_listbox())))
 
         # 'ID' entry 2
         self.idEntry = CTkEntry(fr_data, placeholder_text="ID") 
         self.idEntry.pack(padx=5, pady=10)
+        self.idEntry.bind('<Return>', (lambda func : print(self.update_listbox())))
 
         # 'Dosagem' entry 3
         self.doseEntry = CTkEntry(fr_data, placeholder_text="Dosagem") 
-        self.doseEntry.pack(padx=5, pady=10);
+        self.doseEntry.pack(padx=5, pady=10)
+        self.doseEntry.bind('<Return>', (lambda func : print(self.update_listbox())))
 
         # 'Apresentação' entry 4
         self.presentationEntry = CTkEntry(fr_data, placeholder_text="Apresentação") 
         self.presentationEntry.pack(padx=5, pady=10)
+        self.presentationEntry.bind('<Return>', (lambda func : print(self.update_listbox())))
 
         # 'Position' entry
         self.positionEntry = CTkEntry(fr_data, placeholder_text="Posição") 
         self.positionEntry.pack(padx=5, pady=10)
+        self.positionEntry.bind('<Return>', (lambda func : print(self.update_listbox())))
 
         fr_listbox = CTkFrame(fr_delete)
         fr_listbox.pack(fill="both", expand=True, padx=10, pady=0, side=LEFT)
@@ -456,30 +438,27 @@ class Delete(CTkFrame):
 class Edit(CTkFrame):
 
     def edit(self, event):
+
+        index = self.listbox.curselection()
+        selected = self.data.iloc[index]
+        print(f"selected index: {index}:\n", selected)
+        print(f"name {selected.nome}")
+        #self.nome = self.listbox.get(self.listbox.curselection())
+        
+        #print(self.nome)
+
+        self.id = selected.id
+        self.nome = selected.nome
+        self.dose = selected.dosagem
+        self.apresentacao = selected.apresentacao
+        self.position = selected.position
+
+        #print(self.id, self.nome, self.dose, self.apresentacao, self.position)
         self.idEntry.delete(0, "end")
         self.nameEntry.delete(0, "end")
         self.doseEntry.delete(0, "end")
         self.presentationEntry.delete(0, "end")
         self.positionEntry.delete(0, "end")
-
-        self.id = ""
-        self.dose = ""
-        self.apresentacao = ""
-        self.nome = self.listbox.get()
-        #self.nome = self.listbox.get(self.listbox.curselection())
-        
-        #print(self.nome)
-
-        self.data = golgi_data.get_items(id = self.id, nome = self.nome, dosagem=self.dose, apresentacao=self.apresentacao)
-        self.data = self.data.reset_index()
-
-        self.id = self.data.id[0]
-        self.nome = self.data.nome[0]
-        self.dose = self.data.dosagem[0]
-        self.apresentacao = self.data.apresentacao[0]
-        self.position = self.data.position[0]
-
-        #print(self.id, self.nome, self.dose, self.apresentacao, self.position)
 
         self.idEntry.insert(0, str(self.id))
         self.nameEntry.insert(0, str(self.nome))
@@ -490,7 +469,7 @@ class Edit(CTkFrame):
 
     # update listbox
     def update_listbox(self):
-        self.listbox.delete(0, "end")
+        self.listbox.delete("all")
 
         self.id = self.idEntry.get()
         self.nome = self.nameEntry.get()
@@ -498,22 +477,11 @@ class Edit(CTkFrame):
         self.apresentacao = self.presentationEntry.get()
         self.posicao = self.positionEntry.get()
 
-        if self.id == "ID":
-            self.id = ""
-
-        if self.nome == "Nome":
-            self.nome = ""
-
-        if self.dose == "Dose":
-            self.dose = ""
-
-        if self.apresentacao == "Apresentação":
-            self.apresentacao = ""
-
         self.data = golgi_data.get_items(id = self.id, nome = self.nome, dosagem=self.dose, apresentacao=self.apresentacao)
 
         for item in self.data.nome:
-            self.listbox.insert("end", item)
+            self.listbox.insert("end", item, update = False)
+        self.listbox.update()
 
         # for i in range(len(self.data.nome)-1):
         #     self.listbox.insert("end", self.data.nome[i])
@@ -584,22 +552,27 @@ class Edit(CTkFrame):
         # 'Nome' entry 1
         self.nameEntry = CTkEntry(fr_data, placeholder_text="Nome") 
         self.nameEntry.pack(padx=5, pady=10)
+        self.nameEntry.bind('<Return>', (lambda func : print(self.update_listbox())))
 
         # 'ID' entry 2
         self.idEntry = CTkEntry(fr_data, placeholder_text="ID") 
         self.idEntry.pack(padx=5, pady=10)
+        self.idEntry.bind('<Return>', (lambda func : print(self.update_listbox())))
 
         # 'Dosagem' entry 3
         self.doseEntry = CTkEntry(fr_data, placeholder_text="Dosagem") 
-        self.doseEntry.pack(padx=5, pady=10);
+        self.doseEntry.pack(padx=5, pady=10)
+        self.doseEntry.bind('<Return>', (lambda func : print(self.update_listbox())))
 
         # 'Apresentação' entry 4
         self.presentationEntry = CTkEntry(fr_data, placeholder_text="Apresentação") 
         self.presentationEntry.pack(padx=5, pady=10)
+        self.presentationEntry.bind('<Return>', (lambda func : print(self.update_listbox())))
 
         # 'Position' entry
         self.positionEntry = CTkEntry(fr_data, placeholder_text="Posição") 
         self.positionEntry.pack(padx=5, pady=10)
+        self.positionEntry.bind('<Return>', (lambda func : print(self.update_listbox())))
 
         fr_listbox = CTkFrame(fr_edit)
         fr_listbox.pack(fill="both", expand=True, padx=10, pady=0, side=LEFT)
