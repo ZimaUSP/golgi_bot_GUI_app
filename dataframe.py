@@ -84,7 +84,7 @@ class GolgiDataFrame():
 
         initial_amount = self.df.at[id, 'estoque']
 
-        final_amount = initial_amount - amount
+        final_amount = int(initial_amount) - amount
         
         self.df.at[id, 'estoque']=f'{final_amount}'
 
