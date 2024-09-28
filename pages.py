@@ -210,7 +210,7 @@ class Collect(CTkFrame):
             golgi_data.update_amount(id, amount)
         
         queue = dict_to_list(self.collect_list)
-
+        self.collect_list = []
         communication = ArduinoCommunication()
         connect = communication.connect(ESP_PORT)
         if connect:
@@ -225,7 +225,6 @@ class Collect(CTkFrame):
                 item = bytes(str(item), encoding='utf-8')
                 communication.send_message(item)
                 time.sleep(2)
-            queue = []
             self.loading_txt.configure(text="O Golgi acabou de concluir seu trabalho")
             self.loading_img.configure(image=load_done_img)
             self.update()
