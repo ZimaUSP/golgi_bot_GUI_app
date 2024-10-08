@@ -4,7 +4,7 @@ LARGE_FONT= ("Verdana", 12)
 
 FONT = ('Helvetica', 14)
 
-ESP_PORT = '/dev/ttyUSB0'
+esp_port = '/dev/ttyUSB0'
 
 # Define button functions
 def reset_password(controller):
