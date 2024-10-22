@@ -315,7 +315,7 @@ class Collect(CTkFrame):
         self.searchButton = CTkButton(fr_search_collect, text="Pesquisar", command=self.update_listbox)
         self.searchButton.pack(padx=10, pady=5, side=LEFT)
 
-        self.collectButton = CTkButton(fr_search_collect, text="Coletar", command=self.collect)
+        self.collectButton = CTkButton(fr_search_collect, text="Coletar", command=self.collect(controller))
         self.collectButton.pack(padx=10, pady=5, side=RIGHT)
         
         # menu
@@ -386,22 +386,31 @@ class Ports(CTkFrame):
         self.textportslbl = CTkLabel(fr_textlabel, text = "PORTS")
         self.textportslbl.pack(expand = True, fill = "both")
 
+        # fix bug scroll on linux
+        self.Portslistbox.bind_all("<Button-4>", lambda e: self.Portslistbox._parent_canvas.yview("scroll", -1, "units"))
+        self.Portslistbox.bind_all("<Button-5>", lambda e: self.Portslistbox._parent_canvas.yview("scroll", 1, "units"))
+
         Listports = serial.tools.list_ports.comports()
         self.PortButton = []
         palavra = "USB"
+        Contador = 0
+
         
         for port in Listports:
             if str(port) == controller.esp_port and palavra in str(port):
                 PortBtn = CTkButton(fr_ports, text = port, fg_color="transparent",text_color = "#98EC98", font = ("Verdana", 12, "underline"), command=lambda p=str(port): self.changeport(controller, p))
-            elif(str(port) == controller.esp_port and not palavra in str(port)):
-                PortBtn = CTkButton(fr_ports, text = port, fg_color="transparent", text_color = "#F96E62", font = ("Verdana", 12, "underline"), command=lambda p=str(port): self.changeport(controller, p))
+                PortBtn.pack(fill = "both", expand = True)
+                self.PortButton.append(PortBtn)
+                Contador = Contador + 1
             elif(palavra in str(port)):
                 PortBtn = CTkButton(fr_ports, text = port, fg_color="transparent", text_color = "#98EC98", font = ("Verdana", 12), command=lambda p=str(port): self.changeport(controller, p))
-            else:
-                PortBtn = CTkButton(fr_ports, text = port, fg_color="transparent", text_color = "#F96E62", font = ("Verdana", 12), command=lambda p=str(port): self.changeport(controller, p))
-
-            PortBtn.pack(fill = "both", expand = True)
-            self.PortButton.append(PortBtn)
+                PortBtn.pack(fill = "both", expand = True)
+                self.PortButton.append(PortBtn)
+                Contador = Contador + 1
+        
+        if(Contador == 0):
+            self.textnaohaports = CTkLabel(fr_textlabel, text="Não há portas disponíveis")
+            self.textnaohaports.pack(expand = True, fill = "both")
         
         
 
