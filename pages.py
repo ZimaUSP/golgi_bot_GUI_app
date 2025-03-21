@@ -398,12 +398,12 @@ class Ports(CTkFrame):
         
         for port in Listports:
             if str(port) == controller.esp_port and palavra in str(port):
-                PortBtn = CTkButton(fr_ports, text = port, fg_color="transparent",text_color = "#98EC98", font = ("Verdana", 12, "underline"), command=lambda p=str(port): self.changeport(controller, p))
+                PortBtn = CTkButton(fr_ports, text = port, fg_color="transparent",text_color = "#98EC98", font = ("Verdana", 12, "underline"), command=lambda p=str(port): self.changeport(controller, p.split()[0]))
                 PortBtn.pack(fill = "both", expand = True)
                 self.PortButton.append(PortBtn)
                 Contador = Contador + 1
             elif(palavra in str(port)):
-                PortBtn = CTkButton(fr_ports, text = port, fg_color="transparent", text_color = "#98EC98", font = ("Verdana", 12), command=lambda p=str(port): self.changeport(controller, p))
+                PortBtn = CTkButton(fr_ports, text = port, fg_color="transparent", text_color = "#98EC98", font = ("Verdana", 12), command=lambda p=str(port): self.changeport(controller, p.split()[0]))
                 PortBtn.pack(fill = "both", expand = True)
                 self.PortButton.append(PortBtn)
                 Contador = Contador + 1
