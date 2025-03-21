@@ -315,7 +315,7 @@ class Collect(CTkFrame):
         self.searchButton = CTkButton(fr_search_collect, text="Pesquisar", command=self.update_listbox)
         self.searchButton.pack(padx=10, pady=5, side=LEFT)
 
-        self.collectButton = CTkButton(fr_search_collect, text="Coletar", command=self.collect(controller))
+        self.collectButton = CTkButton(fr_search_collect, text="Coletar", command=lambda: self.collect(controller))
         self.collectButton.pack(padx=10, pady=5, side=RIGHT)
         
         # menu
