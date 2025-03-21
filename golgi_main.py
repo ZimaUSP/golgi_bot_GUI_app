@@ -12,8 +12,12 @@ class GolgiApp(ctk.CTk):
 
     def __init__(self, *args, **kwargs):
         
-        ctk.CTk.__init__(self, *args, **kwargs)
+        file_path = "dados/current_port.txt"
+        with open(file_path, "r") as file:
+            self.esp_port = file.read()
 
+
+        ctk.CTk.__init__(self, *args, **kwargs)
         ctk.set_appearance_mode("dark")  # Modes: system (default), light, dark
         ctk.set_default_color_theme("dark-blue")  # Themes: blue (default), dark-blue, green
 
@@ -25,18 +29,18 @@ class GolgiApp(ctk.CTk):
         self.geometry("940x420")
         self.minsize(940, 420)
 
-        container = ctk.CTkFrame(self)
+        self.container = ctk.CTkFrame(self)
 
-        container.pack(side="top", fill="both", expand = True)
+        self.container.pack(side="top", fill="both", expand = True)
 
-        container.grid_rowconfigure(0, weight=1)
-        container.grid_columnconfigure(0, weight=1)
+        self.container.grid_rowconfigure(0, weight=1)
+        self.container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
 
-        for F in (StartPage, ResetPassword, Register, Config, AddUser, CollectInfo, Edit, Collect, Delete):
+        for F in (StartPage, ResetPassword, Register, Config, Ports, AddUser, CollectInfo, Edit, Collect, Delete):
 
-            frame = CTkFrame(container, fg_color="transparent")
+            frame = CTkFrame(self.container, fg_color="transparent")
 
             page = F(frame, self)
             page.pack(fill="both", expand=True)
@@ -47,13 +51,56 @@ class GolgiApp(ctk.CTk):
             self.frames[F] = frame
 
             frame.grid(row=0, column=0, sticky="nsew")
-
+            
         self.show_frame(StartPage)
 
     def show_frame(self, cont):
 
         frame = self.frames[cont]
         frame.tkraise()
+    
+    def create_page(self, cont):
+        if cont in self.frames.keys():
+            if self.frames[cont] is None:
+
+                frame = CTkFrame(self.container, fg_color="transparent")
+
+                page = cont(frame, self)
+                page.pack(fill="both", expand=True)
+            
+                if (cont not in {StartPage, ResetPassword} ):
+                    menu = Menu(frame, cont, self)
+                    menu.pack()
+            
+                self.frames[cont] = frame
+
+                frame.grid(row=0, column=0, sticky="nsew")
+        else:
+
+            frame = CTkFrame(self.container, fg_color="transparent")
+
+            page = cont(frame, self)
+            page.pack(fill="both", expand=True)
+            
+            if (cont not in {StartPage, ResetPassword} ):
+                menu = Menu(frame, cont, self)
+                menu.pack()
+            
+            self.frames[cont] = frame
+            frame.grid(row=0, column=0, sticky="nsew")
+            
+
+    def destroy_page(self, cont):
+        for page in self.frames.keys():
+            if page == cont:
+                self.frames[cont] = None
+                break
+    
+    def update_page(self, cont):
+        self.destroy_page(cont)
+        self.create_page(cont)
+
+
 
 if __name__ == '__main__':
     app = GolgiApp()

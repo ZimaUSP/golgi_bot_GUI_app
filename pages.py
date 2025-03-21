@@ -7,6 +7,7 @@ from CTkListbox.CTkListbox import *
 from dataframe import *
 from config import *
 from PIL import Image
+import serial.tools.list_ports
 import time
 
 class AddUser(CTkFrame):
@@ -204,7 +205,7 @@ class Collect(CTkFrame):
 
         return self.collect_list
 
-    def collect(self):
+    def collect(self, controller):
         items = self.collect_list.items()
         for id, amount in items:
             golgi_data.update_amount(id, amount)
@@ -212,7 +213,7 @@ class Collect(CTkFrame):
         queue = dict_to_list(self.collect_list)
 
         communication = ArduinoCommunication()
-        connect = communication.connect(ESP_PORT)
+        connect = communication.connect(controller.esp_port)
         if connect:
             loading_img = CTkImage(light_image=Image.open("images/mini-golgi-worried.png"), size=(170, 170))#placeholder de imagem (?) do golgi
             load_done_img = CTkImage(light_image=Image.open("images/mini-golgi-happy.png"), size=(170, 170))#placeholder de imagem (?) do golgi
@@ -314,7 +315,7 @@ class Collect(CTkFrame):
         self.searchButton = CTkButton(fr_search_collect, text="Pesquisar", command=self.update_listbox)
         self.searchButton.pack(padx=10, pady=5, side=LEFT)
 
-        self.collectButton = CTkButton(fr_search_collect, text="Coletar", command=self.collect)
+        self.collectButton = CTkButton(fr_search_collect, text="Coletar", command=lambda: self.collect(controller))
         self.collectButton.pack(padx=10, pady=5, side=RIGHT)
         
         # menu
@@ -327,6 +328,16 @@ class Config(CTkFrame):
     def logout(self, controller):
         controller.show_frame(StartPage)
 
+    def portspage(self, controller):
+        print(controller.esp_port)
+        controller.update_page(Ports)
+        controller.show_frame(Ports)
+
+    def changebutton(self, controller):
+        self.portsButton.configure(text = "port: " + controller.esp_port)
+
+    
+
     def __init__(self, parent, controller):
         CTkFrame.__init__(self, parent)
 
@@ -336,6 +347,75 @@ class Config(CTkFrame):
         # 'Log-in' button 
         self.logoutButton = CTkButton(fr_config, text='Log-out', command=lambda: self.logout(controller))
         self.logoutButton.pack(padx=10, pady=10)
+
+        # "ports"
+        self.portsButton = CTkButton(fr_config, text= "port: " + controller.esp_port, command=lambda: self.portspage(controller))
+        self.portsButton.pack(padx=10, pady=20)
+
+    
+
+
+class Ports(CTkFrame):
+
+    def changeport(self, controller, port):
+        file_path = "dados/current_port.txt"
+        with open(file_path, "w") as file:
+            file.write(port)
+
+        controller.esp_port = str(port)
+    
+        controller.update_page(Config)
+        controller.show_frame(Config)
+
+
+    def __init__(self, parent, controller):
+        CTkFrame.__init__(self,parent)
+
+        fr_listports = CTkFrame(self, fg_color="transparent")
+        fr_listports.pack(fill="both", expand=True, padx=10, pady=0)
+
+        self.Portslistbox = CTkListbox(fr_listports, width=60)
+        self.Portslistbox.pack(fill="both", expand=True)
+
+        fr_ports = CTkFrame(self.Portslistbox, fg_color = "transparent")
+        fr_ports.pack(fill = "both", expand=True, side = BOTTOM)
+
+        fr_textlabel = CTkFrame(self.Portslistbox, fg_color = "transparent")
+        fr_textlabel.pack(fill = "both", expand = True, side = BOTTOM)
+
+        self.textportslbl = CTkLabel(fr_textlabel, text = "PORTS")
+        self.textportslbl.pack(expand = True, fill = "both")
+
+        # fix bug scroll on linux
+        self.Portslistbox.bind_all("<Button-4>", lambda e: self.Portslistbox._parent_canvas.yview("scroll", -1, "units"))
+        self.Portslistbox.bind_all("<Button-5>", lambda e: self.Portslistbox._parent_canvas.yview("scroll", 1, "units"))
+
+        Listports = serial.tools.list_ports.comports()
+        self.PortButton = []
+        palavra = "USB"
+        Contador = 0
+
+        
+        for port in Listports:
+            if str(port) == controller.esp_port and palavra in str(port):
+                PortBtn = CTkButton(fr_ports, text = port, fg_color="transparent",text_color = "#98EC98", font = ("Verdana", 12, "underline"), command=lambda p=str(port): self.changeport(controller, p))
+                PortBtn.pack(fill = "both", expand = True)
+                self.PortButton.append(PortBtn)
+                Contador = Contador + 1
+            elif(palavra in str(port)):
+                PortBtn = CTkButton(fr_ports, text = port, fg_color="transparent", text_color = "#98EC98", font = ("Verdana", 12), command=lambda p=str(port): self.changeport(controller, p))
+                PortBtn.pack(fill = "both", expand = True)
+                self.PortButton.append(PortBtn)
+                Contador = Contador + 1
+        
+        if(Contador == 0):
+            self.textnaohaports = CTkLabel(fr_textlabel, text="Não há portas disponíveis")
+            self.textnaohaports.pack(expand = True, fill = "both")
+        
+        
+
+        
+        
 
 class Delete(CTkFrame):
 
@@ -749,7 +829,7 @@ class StartPage(CTkFrame):
     def login(self, controller):
         #add popup if wrong password
         user = self.userEntry.get() 
-        password = self.passwordEntry.get();
+        password = self.passwordEntry.get()
         checker = golgi_users.validate(user, password)
         adm = golgi_users.get_admin(user)
 
