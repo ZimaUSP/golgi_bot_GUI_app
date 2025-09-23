@@ -9,6 +9,7 @@ from config import *
 from PIL import Image
 import serial.tools.list_ports
 import time
+import csv
 
 class AddUser(CTkFrame):
 
@@ -223,9 +224,25 @@ class Collect(CTkFrame):
             self.loading_img.place(anchor="nw", relx=0.1, rely=0.25, relwidth=0.25, relheight=0.5)
             self.update()
             for item in queue:
-                item = bytes(str(item), encoding='utf-8')
-                communication.send_message(item)
-                time.sleep(2)
+                #item = bytes(str(item), encoding='utf-8')
+                def encontrar_coordenadas (caminho_csv, id_busca):
+                    with open(caminho_csv, newline='', encoding='utf-8') as arquivo:
+                        leitor = csv.DictReader(arquivo)
+                        for linha in leitor:
+                            if linha['id'] == str(id_busca):
+                                xz = linha['position']
+                                if ' ' in str(xz):
+                                    x_str, z_str = xz.split(' ')
+                                    x = float(x_str.strip())
+                                    z = float(z_str.strip())
+                                    message = bytes(f"coord:{x},{z}", encoding='utf-8')
+                                    communication.send_message(message) #se for por coordenadas
+                                    #message_id = bytes(f"id:{item}}", encoding='utf-8')
+                                    #communication.send_message(message_id) #se for por id
+                                else:
+                                    raise ValueError ("Formato de position inválido")
+                encontrar_coordenadas("dados/drug_data.csv", item)
+            time.sleep(2)
             self.loading_txt.configure(text="O Golgi acabou de concluir seu trabalho")
             self.loading_img.configure(image=load_done_img)
             self.update()
