@@ -5,7 +5,7 @@ Repositório que organiza o código usado na Interface Gráfica (GUI) para o Gol
 
 ## 📌 Características do ambiente utilizado
 
-Este projeto foi desenvolvido em uma Labrador v2, que possui um processador ARM de 32 bits. O sistema operacional utilizado é o Debian 12, com a versão do Python 3.11.x.
+Este projeto foi desenvolvido em uma Labrador v2, que possui um processador ARM de 32 bits. O sistema operacional utilizado é o Debian 12, com a versão do Python 3.11.2.
 
 ![Imagem labrador](readme_images/labrador.png)
 
@@ -87,6 +87,8 @@ python3 golgi_main.py
 Assim, a tela de login do enfermeiro será exibida (para testes, o login era feito com "0" e a senha "admin"). Se for a primeira vez utilizando a interface, depois que o login é efetuado, é importante verificar se a porta de comunicação serial com o Golgi está devidamente selecionada em "Configurações". Nessa tela, deve-se clicar no botão em azul com o nome de alguma porta serial já utilizada no passado (por exemplo, pode estar escrito "port: COM6"), e depois disso, selecionar a devida porta de comunicação serial com o Golgi para que a interface possa se comunicar com o robô.
 
 ![Tela de configurações](readme_images/settings.png)
+
+![Tela mostrando como selecionar porta](readme_images/select_port.png)
 
 Quando as configurações estiverem corretas, já é possível ir até a tela de coleta, onde, em uma primeira parte (opcional), será solicitado o dado do paciente para quem o remédio será coletado, e depois a seleção e a coleta dos remédios poderá ser feita. 
 
