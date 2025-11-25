@@ -223,7 +223,10 @@ class Collect(CTkFrame):
             self.loading_img = CTkLabel(self, bg_color="gray26", width=100, height=10, text="", image=loading_img)
             self.loading_img.place(anchor="nw", relx=0.1, rely=0.25, relwidth=0.25, relheight=0.5)
             self.update()
+            print(len(queue))
+            print("AAAA")
             for item in queue:
+                print(item)
                 #item = bytes(str(item), encoding='utf-8')
                 def encontrar_coordenadas (caminho_csv, id_busca):
                     with open(caminho_csv, newline='', encoding='utf-8') as arquivo:
@@ -242,9 +245,10 @@ class Collect(CTkFrame):
                                 else:
                                     raise ValueError ("Formato de position inválido")
                 encontrar_coordenadas("dados/drug_data.csv", item)
-            time.sleep(2)
+            time.sleep(3)
             self.loading_txt.configure(text="O Golgi acabou de concluir seu trabalho")
             self.loading_img.configure(image=load_done_img)
+            self.collect_list = {}
             self.update()
             time.sleep(1.5)
             self.loading_txt.destroy()

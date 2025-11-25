@@ -1,1 +1,1 @@
-COM6 - USB-SERIAL CH340 (COM6)
+/dev/ttyUSB0
