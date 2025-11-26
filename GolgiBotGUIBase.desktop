@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=GolgiBotGUI
+GenericName=Interface de controle do GolgiBot
+Comment=Interface de controle do GolgiBot
+Exec=sh -c "$HOME/.local/bin/golgi_bot_GUI_app/golgibotgui"
+Icon=images/logo-gradient.png
+Terminal=true
+Type=Application
+Categories=Game;
