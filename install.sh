@@ -7,6 +7,7 @@ INSTALL_DIR=$HOME/.local/bin/golgi_bot_GUI_app
 # Should add more verifications!
 
 echo "Copying files to $INSTALL_DIR..."
+mkdir -p $HOME/.local/bin
 cp -r $CURRENT_DIR $INSTALL_DIR
 cp $CURRENT_DIR/GolgiBotGUIBase.desktop $INSTALL_DIR/GolgiBotGUI.desktop
 echo "Done copying!"
@@ -15,6 +16,7 @@ echo "Generating .desktop entry..."
 echo "Path=$INSTALL_DIR" >> $INSTALL_DIR/GolgiBotGUI.desktop
 echo "Exec=$INSTALL_DIR/golgibotgui" >> $INSTALL_DIR/GolgiBotGUI.desktop
 echo "Icon=$INSTALL_DIR/images/logo-gradient.png" >> $INSTALL_DIR/GolgiBotGUI.desktop
+mkdir -p $HOME/.local/share/applications/
 ln -s $INSTALL_DIR/GolgiBotGUI.desktop $HOME/.local/share/applications/
 echo "Done generating .desktop entry!"
 
