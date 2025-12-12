@@ -1,33 +1,46 @@
-# Interface gráfica do Golgi Bot
-Repositório que organiza o código usado na Interface Gráfica (GUI) para o Golgi Bot, a Automação da Farmácia do Hospital Universitário.
+# Interface Gráfica do Golgi Bot
+
+## Ambiente de Desenvolvimento
+
+O projeto foi desenvolvido em uma **Labrador v2**, equipada com:
+
+- **Processador:** ARM 32 bits  
+- **Sistema Operacional:** Debian 12  
+- **Python:** Versão 3.11.2
+
+<div align="center">
+  <img src="readme_images/labrador.png" alt="Labrador v2" width="400">
+</div>
+
+### Saiba mais sobre a Labrador
+
+A Labrador é uma placa desenvolvida pelo projeto **Caninos Loucos**, uma iniciativa brasileira focada em hardware aberto.  
+Você pode saber mais sobre o projeto, especificações e outros modelos em:
+
+**https://caninosloucos.org/pt/**
 
 ---
 
-## 📌 Características do ambiente utilizado
+## Ambiente Virtual (venv)
 
-Este projeto foi desenvolvido em uma Labrador v2, que possui um processador ARM de 32 bits. O sistema operacional utilizado é o Debian 12, com a versão do Python 3.11.2.
+Este projeto utiliza **venv** para gerenciar bibliotecas e isolar o ambiente.
 
-![Imagem labrador](readme_images/labrador.png)
+### Criando e ativando o ambiente virtual
 
----
-
-## 🔧 Ambiente virtual  
-Este projeto utiliza o `venv` para organizar as bibliotecas utilizadas.
-
-### Instalação e criação do venv
 ```bash
-# Instalar o venv
 sudo apt install python3 python3-venv python3-pip
 
-# Criar e ativar ambiente virtual
 python3 -m venv venv
 source venv/bin/activate
 ```
 
-## 📦 Dependências
+---
 
-As bibliotecas utilizadas nesse projeto, que também estão no arquivo `requirements.txt`, são:
-```bash
+## Dependências
+
+As bibliotecas necessárias (também presentes em `requirements.txt`) são:
+
+```
 customtkinter==5.2.2
 darkdetect==0.8.0
 numpy==2.1.1
@@ -41,59 +54,107 @@ six==1.16.0
 tk==0.1.0
 tzdata==2024.2
 ```
-### 🔹 Instalando as dependências
 
-#### 1. Instalar bibliotecas no ambiente virtual
-Apenas uma das bibliotecas foi instalada no ambiente virtual criado utilizando o pip, pois não está presente nos repositórios do Debian:
+### Instalando dependências
+
+Devido ao processador **ARM de 32 bits**, alguns pacotes (como `numpy`) não podem ser instalados via pip.
+
+#### 1. Instalar a única dependência via pip:
 ```bash
 source venv/bin/activate
 pip install customtkinter
 ```
-As demais bibliotecas foram instaladas diretamente no sistema a partir do APT:
+
+#### 2. Instalar demais dependências via APT:
 ```bash
 sudo apt install python3-packagename
 ```
-Essa abordagem se mostrou necessária devido à limitação do chip de 32 bits, que impossibilita o pacote `numpy`, dependência do `pandas`, de ser instalado a partir do pip. Nota-se, no entanto, que caso uma placa com chip de 64 bits tivesse sido usada, tudo poderia ter sido instalado a partir do pip.
 
-### 🔹 Tornando os pacotes do sistema visíveis no ambiente virtual
+### Permitindo o uso de pacotes do sistema no venv
 
-Por padrão, o ambiente virtual criado com o `venv` não acessa os pacotes do sistema.  
-A configuração responsável por isso está no arquivo:
+Edite o arquivo `venv/pyvenv.cfg`:
 
-📄 `venv/pyvenv.cfg`
-
-Nele, havia a linha:
-```bash
+Antes:
+```
 include-system-site-packages = false
 ```
-Essa linha foi alterada para:
-```bash
+
+Depois:
+```
 include-system-site-packages = true
 ```
-Isso permite que o ambiente virtual utilize os pacotes instalados no sistema.
+
+Isso permite que o ambiente virtual acesse os pacotes instalados via APT.
 
 ---
 
-## ▶️ Como inicializar a interface
+## Integração com o Sistema
 
+Após configurar o ambiente virtual e instalar as dependências, é possível integrar a GUI ao sistema operacional e criar um atalho na área de trabalho.
 
-Para inicializar a interface, basta rodar os seguintes comandos no diretório correto:
+Execute:
+
+```bash
+./install.sh
+```
+
+Para remover a integração:
+
+```bash
+./uninstall.sh
+```
+
+> Os scripts **não** criam o ambiente virtual nem instalam dependências — isso deve ser feito manualmente antes da instalação.
+
+---
+
+## Como Executar a Interface
+
+No diretório do projeto:
+
 ```bash
 source venv/bin/activate
 python3 golgi_main.py
 ```
-![Tela de login](readme_images/login.png)
 
-Assim, a tela de login do enfermeiro será exibida (para testes, o login era feito com "0" e a senha "admin"). Se for a primeira vez utilizando a interface, depois que o login é efetuado, é importante verificar se a porta de comunicação serial com o Golgi está devidamente selecionada em "Configurações". Nessa tela, deve-se clicar no botão em azul com o nome de alguma porta serial já utilizada no passado (por exemplo, pode estar escrito "port: COM6"), e depois disso, selecionar a devida porta de comunicação serial com o Golgi para que a interface possa se comunicar com o robô.
+<div align="center">
+  <img src="readme_images/login.png" alt="Tela de login" width="400">
+</div>
 
-![Tela de configurações](readme_images/settings.png)
+Para testes, o login utilizado foi:
 
-![Tela mostrando como selecionar porta](readme_images/select_port.png)
+- **Usuário:** `0`  
+- **Senha:** `admin`
 
-Quando as configurações estiverem corretas, já é possível ir até a tela de coleta, onde, em uma primeira parte (opcional), será solicitado o dado do paciente para quem o remédio será coletado, e depois a seleção e a coleta dos remédios poderá ser feita. 
+---
 
-![Tela de coleta](readme_images/search.png)
+## Configurando a Porta Serial
 
-A partir dessa tela de coleta, depois de pesquisar um remédio e clicar o nome correspondente da lista, é possível selecionar a quantia desejada do remédio, adicionar esse (e outros) pedido(s) no carrinho e, por fim, clicar no botão de coleta para que o Golgi realize seu trabalho.
+Na primeira execução, é necessário configurar a porta de comunicação com o Golgi Bot:
 
-![Tela de exemplo da coleta](readme_images/ex_collect.png)
+1. Vá até **Configurações**  
+2. Clique no botão azul exibindo uma porta anterior  
+3. Selecione a porta correta na lista exibida
+
+<div align="center">
+  <img src="readme_images/settings.png" width="400">
+  <img src="readme_images/select_port.png" width="400">
+</div>
+
+---
+
+## Tela de Coleta
+
+Após configurar a porta, acesse a tela de **Coleta**:
+
+1. (Opcional) Informe os dados do paciente  
+2. Pesquise o medicamento  
+3. Clique sobre o nome para selecioná-lo  
+4. Escolha a quantidade  
+5. Adicione ao carrinho  
+6. Clique em **Coletar** para que o Golgi execute a operação
+
+<div align="center">
+  <img src="readme_images/search.png" width="400">
+  <img src="readme_images/ex_collect.png" width="400">
+</div>
