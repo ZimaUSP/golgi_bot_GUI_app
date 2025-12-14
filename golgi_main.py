@@ -24,6 +24,7 @@ class GolgiApp(ctk.CTk):
         icon = PhotoImage(file = "images/icon-logo-gradient.png")
         self.iconphoto(True, icon)
 
+        self.attributes('-fullscreen', True)
         self.title('Golgi v0.2')
 
         self.geometry("940x420")
