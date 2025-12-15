@@ -291,24 +291,9 @@ class Collect(CTkFrame):
         self.presentationEntry = CTkEntry(fr_data, placeholder_text="Apresentação") 
         self.presentationEntry.pack(padx=5, pady=10)
         self.presentationEntry.bind('<Return>', (lambda func : print(self.update_listbox())))
-        
-        # search result
-        fr_listbox = CTkFrame(fr_collect_data)
-        fr_listbox.pack(fill="both", expand=True, side=LEFT)
-
-        # self.listbox = tk.Listbox(fr_listbox, width=55)
-        # self.listbox.pack(fill="both", expand=True)
-
-        self.listbox = CTkListbox(fr_listbox, width=55)
-        self.listbox.pack(fill="both", expand=True)
-        self.listbox.bind("<<ListboxSelect>>", self.display)
-
-        # fix bug scroll on linux
-        self.listbox.bind_all("<Button-4>", lambda e: self.listbox._parent_canvas.yview("scroll", -1, "units"))
-        self.listbox.bind_all("<Button-5>", lambda e: self.listbox._parent_canvas.yview("scroll", 1, "units"))
 
         # stock
-        fr_stock = CTkFrame(fr_collect_data, fg_color="transparent")
+        fr_stock = CTkFrame(fr_data, fg_color="transparent")
         fr_stock.pack(padx=10, pady=10, side=LEFT)
 
         self.stockLabel = CTkLabel(fr_stock, text='', font=FONT)
@@ -328,6 +313,21 @@ class Collect(CTkFrame):
 
         self.add_button = CTkButton(fr_qtd, text="Adicionar", command=self.add_to_queue)
         self.add_button.grid(padx=0, pady=5, row=1, column=0, columnspan=3)
+
+         # search result
+        fr_listbox = CTkFrame(fr_collect_data)
+        fr_listbox.pack(fill="both", expand=True, side=LEFT)
+
+        # self.listbox = tk.Listbox(fr_listbox, width=55)
+        # self.listbox.pack(fill="both", expand=True)
+
+        self.listbox = CTkListbox(fr_listbox, width=55)
+        self.listbox.pack(fill="both", expand=True)
+        self.listbox.bind("<<ListboxSelect>>", self.display)
+
+        # fix bug scroll on linux
+        self.listbox.bind_all("<Button-4>", lambda e: self.listbox._parent_canvas.yview("scroll", -1, "units"))
+        self.listbox.bind_all("<Button-5>", lambda e: self.listbox._parent_canvas.yview("scroll", 1, "units"))
 
         # search and collect buttons
         fr_search_collect = CTkFrame(self, fg_color="transparent")

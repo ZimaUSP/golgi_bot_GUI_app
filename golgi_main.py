@@ -27,8 +27,8 @@ class GolgiApp(ctk.CTk):
         self.attributes('-fullscreen', True)
         self.title('Golgi v0.2')
 
-        self.geometry("940x420")
-        self.minsize(940, 420)
+        self.geometry("940x520")
+        self.minsize(940, 520)
 
         self.container = ctk.CTkFrame(self)
 
