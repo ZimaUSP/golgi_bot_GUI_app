@@ -6,6 +6,14 @@ INSTALL_DIR=$HOME/.local/bin/golgi_bot_GUI_app
 # There are currently no verifications whatsoever!
 # Should add more verifications!
 
+echo "Installing dependencies..."
+sudo apt -y install tk python3-tk python3-venv python3-pandas python3-serial
+python3 -m venv venv
+source venv/bin/activate
+python3 -m pip install customtkinter
+sed -i 's/false/true/g' venv/pyvenv.cfg
+echo "Done installing dependencies!"
+
 echo "Copying files to $INSTALL_DIR..."
 mkdir -p $HOME/.local/bin
 cp -r $CURRENT_DIR $INSTALL_DIR

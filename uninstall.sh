@@ -5,6 +5,11 @@ INSTALL_DIR=$HOME/.local/bin/golgi_bot_GUI_app
 # There are currently no verifications whatsoever!
 # Should add more verifications!
 
+echo "Removing dependencies..."
+sudo apt -y remove tk python3-tk python3-venv python3-pandas python3-serial
+sudo apt -y autoremove
+echo "Done removing dependencies!"
+
 echo "Removing installed files..."
 rm -rf $INSTALL_DIR
 echo "Done removing installed files!"
