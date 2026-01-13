@@ -15,7 +15,7 @@ for cmd in python3 sudo sed ln cp mkdir; do
 done
 [[ -d "$CURRENT_DIR" ]] || { echo "Current directory does not exist."; exit 1; }
 
-DEPENDENCIES=(tk python3-tk python3-venv python3-pandas python3-serial)
+DEPENDENCIES=(tk python3-tk python3-venv python3-pandas python3-serial python3-pil.imagetk)
 
 echo "Installing dependencies..."
 sudo apt update
