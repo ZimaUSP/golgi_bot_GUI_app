@@ -645,8 +645,8 @@ class Edit(CTkFrame):
 
             return True
         
-    def imprimir_relatorio():
-        caminho_arquivo = "golgi_bot_GUI_app/relatorio_medicamentos.txt"
+    def imprimir_relatorio(self):
+        caminho_arquivo = "/home/caninos/golgi_bot_GUI_app/relatorio_medicamentos.txt"
         
         # Verifica se o arquivo realmente existe antes de tentar imprimir
         if not os.path.exists(caminho_arquivo):
