@@ -159,3 +159,5 @@ id,nome,dosagem,apresentacao,position,estoque
 17294,ACIDO ACETILSALICILICO 100 MG 1 CP,100 mg,1 cp,dummie,10.0
 17295,ACIDO ACETILSALICILICO 100 MG 2 CP,100 mg,2 cp,dummie,10.0
 2,wqw,2,a,1,
+12,Rir,10 MG,1 CP,"200, 100",200.0
+10,rir,10 mg,1 cp,"400, 100",190

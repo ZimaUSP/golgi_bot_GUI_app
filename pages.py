@@ -10,6 +10,9 @@ from PIL import Image
 import serial.tools.list_ports
 import time
 import csv
+import subprocess
+import os
+
 
 class AddUser(CTkFrame):
 
@@ -245,6 +248,7 @@ class Collect(CTkFrame):
             time.sleep(2)
             self.loading_txt.configure(text="O Golgi acabou de concluir seu trabalho")
             self.loading_img.configure(image=load_done_img)
+            self.collect_list = {}
             self.update()
             time.sleep(1.5)
             self.loading_txt.destroy()
@@ -445,8 +449,9 @@ class Delete(CTkFrame):
         self.dose = self.doseEntry.get()
         self.apresentacao = self.presentationEntry.get()
         self.posicao = self.positionEntry.get()
+        self.estoque = self.stockEntry.get()
 
-        self.data = golgi_data.get_items(id = self.id, nome = self.nome, dosagem=self.dose, apresentacao=self.apresentacao)
+        self.data = golgi_data.get_items(id = self.id, nome = self.nome, dosagem=self.dose, apresentacao=self.apresentacao, estoque=self.estoque)
 
         for item in self.data.nome:
             self.listbox.insert("end", item, update = False)
@@ -454,8 +459,6 @@ class Delete(CTkFrame):
 
         # for i in range(len(self.data.nome)-1):
         #     self.listbox.insert("end", self.data.nome[i])
-
-
 
     def delete(self):
         """Callback function to delete registered item
@@ -473,7 +476,7 @@ class Delete(CTkFrame):
         self.dose = selected.dosagem
         self.apresentacao = selected.apresentacao
         self.position = selected.position
-
+        self.estoque = selected.estoque
 
         golgi_data.delete_item(self.id)#int(float(item.id)))
         golgi_data.save_to_disk()   
@@ -515,6 +518,11 @@ class Delete(CTkFrame):
         self.positionEntry.pack(padx=5, pady=10)
         self.positionEntry.bind('<Return>', (lambda func : print(self.update_listbox())))
 
+        # 'Stock' entry
+        self.stockEntry = CTkEntry(fr_data, placeholder_text="Estoque")
+        self.stockEntry.pack(padx=5, pady=10)
+        self.stockEntry.bind('<Return>', (lambda func : print(self.update_listbox())))
+
         fr_listbox = CTkFrame(fr_delete)
         fr_listbox.pack(fill="both", expand=True, padx=10, pady=0, side=LEFT)
 
@@ -549,6 +557,7 @@ class Edit(CTkFrame):
         self.dose = selected.dosagem
         self.apresentacao = selected.apresentacao
         self.position = selected.position
+        self.estoque = selected.estoque
 
         #print(self.id, self.nome, self.dose, self.apresentacao, self.position)
         self.idEntry.delete(0, "end")
@@ -556,12 +565,14 @@ class Edit(CTkFrame):
         self.doseEntry.delete(0, "end")
         self.presentationEntry.delete(0, "end")
         self.positionEntry.delete(0, "end")
+        self.stockEntry.delete(0, "end")
 
         self.idEntry.insert(0, str(self.id))
         self.nameEntry.insert(0, str(self.nome))
         self.doseEntry.insert(0, str(self.dose))
         self.presentationEntry.insert(0, str(self.apresentacao))
         self.positionEntry.insert(0, str(self.position))
+        self.stockEntry.insert(0, str(self.estoque))
 
 
     # update listbox
@@ -573,6 +584,7 @@ class Edit(CTkFrame):
         self.dose = self.doseEntry.get()
         self.apresentacao = self.presentationEntry.get()
         self.posicao = self.positionEntry.get()
+        self.estoque = self.stockEntry.get()
 
         self.data = golgi_data.get_items(id = self.id, nome = self.nome, dosagem=self.dose, apresentacao=self.apresentacao)
 
@@ -582,8 +594,6 @@ class Edit(CTkFrame):
 
         # for i in range(len(self.data.nome)-1):
         #     self.listbox.insert("end", self.data.nome[i])
-
-
 
     def submit_item(self):
         """Callback function to register edited item
@@ -596,16 +606,18 @@ class Edit(CTkFrame):
         self.dose = self.doseEntry.get()
         self.apresentacao = self.presentationEntry.get()
         self.position = self.positionEntry.get()
+        self.estoque = self.stockEntry.get()
 
-        print(self.id, self.nome, self.dose, self.apresentacao, self.position)
+        print(self.id, self.nome, self.dose, self.apresentacao, self.position, self.estoque)
 
-        if (self.nome == "" or self.id == "" or self.dose == "" or self.apresentacao == "" or self.position == ""):
+        if (self.nome == "" or self.id == "" or self.dose == "" or self.apresentacao == "" or self.position == "" or self.estoque == ""):
             print("Complete form!\n")
             print(self.nome + "\n")
             print(self.id + "\n")
             print(self.position + "\n")
             print(self.dose + "\n")
             print(self.apresentacao + "\n")
+            print(self.estoque + "\n")
             return False
         else:
             item =  [{
@@ -614,6 +626,7 @@ class Edit(CTkFrame):
                 "dosagem": self.dose,
                 "apresentacao": self.apresentacao,
                 "position": self.position,
+                "estoque": self.estoque,
                 }]
 
             print(item)
@@ -625,15 +638,34 @@ class Edit(CTkFrame):
             self.doseEntry.delete(0, "end")
             self.presentationEntry.delete(0, "end")
             self.positionEntry.delete(0, "end")
-
-            self.idEntry.insert(0, "ID")
-            self.nameEntry.insert(0, "Nome")
-            self.doseEntry.insert(0, "Dosagem")
-            self.presentationEntry.insert(0, "Apresentação")
-            self.positionEntry.insert(0, "Posição")
-
+            self.stockEntry.delete(0, "end")
 
             return True
+        
+    def imprimir_relatorio():
+        caminho_arquivo = "golgi_bot_GUI_app/relatorio_medicamentos.txt"
+        
+        # Verifica se o arquivo realmente existe antes de tentar imprimir
+        if not os.path.exists(caminho_arquivo):
+            print(f"Erro: O arquivo {caminho_arquivo} não foi encontrado pelo Python.")
+            return
+
+        print(f"Tentando enviar {caminho_arquivo} para a impressora...")
+        
+        try:            
+            resultado = subprocess.run(
+                ['lp', '-d', 'ImpressoraRobo', caminho_arquivo], 
+                capture_output=True, 
+                text=True, 
+                check=True
+            )
+            print("Sucesso! O CUPS respondeu:")
+            print(resultado.stdout)
+            
+        except subprocess.CalledProcessError as e:
+            print("Falha ao enviar para a impressora.")
+            print("Código do Erro:", e.returncode)
+            print("O que o Linux reclamou (stderr):", e.stderr)
 
 
     def __init__(self, parent, controller):
@@ -671,6 +703,11 @@ class Edit(CTkFrame):
         self.positionEntry.pack(padx=5, pady=10)
         self.positionEntry.bind('<Return>', (lambda func : print(self.update_listbox())))
 
+        # 'Stock' entry
+        self.stockEntry = CTkEntry(fr_data, placeholder_text="Estoque") 
+        self.stockEntry.pack(padx=5, pady=10)
+        self.stockEntry.bind('<Return>', (lambda func : print(self.update_listbox())))
+
         fr_listbox = CTkFrame(fr_edit)
         fr_listbox.pack(fill="both", expand=True, padx=10, pady=0, side=LEFT)
 
@@ -690,6 +727,9 @@ class Edit(CTkFrame):
 
         self.editButton = CTkButton(fr_search_edit, text="Confirm Edit", command=self.submit_item)
         self.editButton.pack(padx=10, pady=5, side=LEFT)
+
+        self.printButton = CTkButton(fr_search_edit, text="Imprimir", command=self.imprimir_relatorio)
+        self.printButton.pack(padx=10, pady=5, side=LEFT)
 
 class Menu(CTkFrame):
 
@@ -750,14 +790,16 @@ class Register(CTkFrame):
         self.dose = self.doseEntry.get()
         self.apresentacao = self.presentationEntry.get()
         self.position = self.positionEntry.get()
+        self.estoque = self.stockEntry.get()
     
         name_ver = self.nome == "" or self.nome == "Nome"
         id_ver = self.id == "" or self.id == "ID"
         dose_ver = self.dose == "" or self.dose == "Dosagem"
         present_ver = self.apresentacao == "" or self.apresentacao == "Apresentação"
         position_ver = self.position == "" or self.position == "Posição"
+        quantidade_ver = self.estoque == "" or self.estoque == "Quantidade"
         
-        if (name_ver and id_ver and dose_ver and present_ver and position_ver):
+        if (name_ver and id_ver and dose_ver and present_ver and position_ver and quantidade_ver):
         # if (self.nome == "" or self.id == "" or self.dose == "" or self.apresentacao == "" or self.position == ""):
             print("Complete form!\n")
             print(self.nome + "\n")
@@ -765,6 +807,7 @@ class Register(CTkFrame):
             print(self.position + "\n")
             print(self.dose + "\n")
             print(self.apresentacao + "\n")
+            print(self.estoque + "\n")
 
             return False
         else:
@@ -775,6 +818,7 @@ class Register(CTkFrame):
                 "dosagem": self.dose,
                 "apresentacao": self.apresentacao,
                 "position": self.position,
+                "estoque": self.estoque,
                 }]
             golgi_data.add_item(item)
             golgi_data.save_to_disk()
@@ -784,12 +828,7 @@ class Register(CTkFrame):
             self.doseEntry.delete(0, "end")
             self.presentationEntry.delete(0, "end")
             self.positionEntry.delete(0, "end")
-
-            self.idEntry.insert(0, "ID")
-            self.nameEntry.insert(0, "Nome")
-            self.doseEntry.insert(0, "Dosagem")
-            self.presentationEntry.insert(0, "Apresentação")
-            self.positionEntry.insert(0, "Posição")
+            self.stockEntry.delete(0, "end")
 
             return True
 
@@ -818,6 +857,10 @@ class Register(CTkFrame):
         # 'Position' entry
         self.positionEntry = CTkEntry(fr_register, placeholder_text="Posição") 
         self.positionEntry.pack(padx=10, pady=10)
+
+        # 'Stock' entry
+        self.stockEntry = CTkEntry(fr_register, placeholder_text="Estoque") 
+        self.stockEntry.pack(padx=10, pady=10)
 
         self.registerButton = CTkButton(fr_register, text="Registrar",
                             command=lambda: self.submit_item())
