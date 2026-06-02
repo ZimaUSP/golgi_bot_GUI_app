@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+INSTALL_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+cd $INSTALL_DIR
+source "$INSTALL_DIR/venv/bin/activate"
+python3 $INSTALL_DIR/golgi_main.py

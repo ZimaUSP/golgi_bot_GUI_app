@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=GolgiBotGUI
+GenericName=Interface de controle do GolgiBot
+Comment=Interface de controle do GolgiBot
+Icon=images/logo-gradient.png
+Terminal=true
+Type=Application
+Categories=Game;
