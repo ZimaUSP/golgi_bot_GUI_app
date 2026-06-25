@@ -1,5 +1,6 @@
 from customtkinter import CTkFrame, CTkLabel, CTkEntry, CTkButton, CTkFont, CTkCheckBox, CTkImage
 from arduino_communication import ArduinoCommunication
+from receipt import ReciboHU
 from tkinter import LEFT, RIGHT, BOTTOM, BOTH, IntVar
 from request_alt import dict_to_list
 from data_users import golgi_users
@@ -13,6 +14,7 @@ import csv
 import subprocess
 import os
 
+dados_pessoais = {}
 
 class AddUser(CTkFrame):
 
@@ -113,6 +115,44 @@ class AddUser(CTkFrame):
 
 class CollectInfo(CTkFrame):
 
+    def submit_dados_pessoais(self):
+        """Callback function to register new item in dataset
+
+        Returns:
+            bool: True if all fields were completed
+        """
+
+        self.id = self.idEntry.get()
+        self.solicitante = self.solicitanteEntry.get()
+        self.paciente = self.pacienteEntry.get()
+    
+        
+        id_ver = self.id == "" or self.id == "ID"
+        solicitante_ver = self.solicitante == "" or self.solicitante == "Solicitante"
+        paciente_ver = self.paciente == "" or self.paciente == "Paciente"
+        
+        if (id_ver and solicitante_ver and paciente_ver):
+            print("Complete form!\n")
+            print(self.id + "\n")
+            print(self.solicitante + "\n")
+            print(self.paciente + "\n")
+
+            return False
+        else:
+            dados_pessoais =  [{
+                "id": self.id,
+                "solicitante": self.solicitante, 
+                "paciente": self.paciente,
+                }]
+            golgi_data.add_dados_pessoais(dados_pessoais)
+            golgi_data.save_to_disk()
+
+            self.idEntry.delete(0, "end")
+            self.solicitanteEntry.delete(0, "end")
+            self.pacienteEntry.delete(0, "end")
+
+            return True
+
     def __init__(self, parent, controller):
         CTkFrame.__init__(self, parent)
 
@@ -125,15 +165,21 @@ class CollectInfo(CTkFrame):
         self.pacienteEntry = CTkEntry(fr_paciente) 
         self.pacienteEntry.grid(row=1, column=2, columnspan=2, sticky='nsew')
 
+        self.solicitanteLabel = CTkLabel(fr_paciente, text="Solicitante", font=LARGE_FONT)
+        self.solicitanteLabel.grid(row=2, column=2, columnspan=2, sticky='w')
+
+        self.solicitanteEntry = CTkEntry(fr_paciente) 
+        self.solicitanteEntry.grid(row=3, column=2, columnspan=2, sticky='nsew')
+
         self.idLabel = CTkLabel(fr_paciente, text="ID", font=LARGE_FONT)
-        self.idLabel.grid(row=2, column=2, columnspan=2, sticky='w')
+        self.idLabel.grid(row=4, column=2, columnspan=2, sticky='w')
 
         self.idEntry = CTkEntry(fr_paciente) 
-        self.idEntry.grid(row=3, column=2, columnspan=2, sticky='nsew')
+        self.idEntry.grid(row=5, column=2, columnspan=2, sticky='nsew')
 
         self.submitButton = CTkButton(fr_paciente, text="Submit",
                             command=lambda: controller.show_frame(Collect))
-        self.submitButton.grid(row=4, column=2, columnspan=2, pady=20) #button1
+        self.submitButton.grid(row=6, column=2, columnspan=2, pady=20) #button1
 
 class Collect(CTkFrame):
 
@@ -211,51 +257,96 @@ class Collect(CTkFrame):
 
     def collect(self, controller):
         items = self.collect_list.items()
+
         for id, amount in items:
             golgi_data.update_amount(id, amount)
-        
+      
         queue = dict_to_list(self.collect_list)
+        dados_item = golgi_data.get_items_by_id(queue)
+        dados_item = dados_item.to_dict(orient="records")
+        print(dados_item)
 
-        communication = ArduinoCommunication()
-        connect = communication.connect(controller.esp_port)
-        if connect:
-            loading_img = CTkImage(light_image=Image.open("images/mini-golgi-worried.png"), size=(170, 170))#placeholder de imagem (?) do golgi
-            load_done_img = CTkImage(light_image=Image.open("images/mini-golgi-happy.png"), size=(170, 170))#placeholder de imagem (?) do golgi
-            self.loading_txt = CTkLabel(self, bg_color="gray26", width=50, height=10, text="Por favor, espere enquanto o Golgi coleta o(s) remedio(s)", font=("Verdana", 16))
-            self.loading_txt.place(anchor="nw", relx=0.35, rely=0.25, relwidth=0.55, relheight=0.5)
-            self.loading_img = CTkLabel(self, bg_color="gray26", width=100, height=10, text="", image=loading_img)
-            self.loading_img.place(anchor="nw", relx=0.1, rely=0.25, relwidth=0.25, relheight=0.5)
-            self.update()
-            print(len(queue))
-            print("AAAA")
-            for item in queue:
-                print(item)
-                #item = bytes(str(item), encoding='utf-8')
-                def encontrar_coordenadas (caminho_csv, id_busca):
-                    with open(caminho_csv, newline='', encoding='utf-8') as arquivo:
-                        leitor = csv.DictReader(arquivo)
-                        for linha in leitor:
-                            if linha['id'] == str(id_busca):
-                                xz = linha['position']
-                                if ' ' in str(xz):
-                                    x_str, z_str = xz.split(' ')
-                                    x = float(x_str.strip())
-                                    z = float(z_str.strip())
-                                    message = bytes(f"coord:{x},{z}", encoding='utf-8')
-                                    communication.send_message(message) #se for por coordenadas
-                                    #message_id = bytes(f"id:{item}}", encoding='utf-8')
-                                    #communication.send_message(message_id) #se for por id
-                                else:
-                                    raise ValueError ("Formato de position inválido")
-                encontrar_coordenadas("dados/drug_data.csv", item)
-            time.sleep(3)
-            self.loading_txt.configure(text="O Golgi acabou de concluir seu trabalho")
-            self.loading_img.configure(image=load_done_img)
-            self.collect_list = {}
-            self.update()
-            time.sleep(1.5)
-            self.loading_txt.destroy()
-            self.loading_img.destroy()
+        dados = dados_pessoais
+        print(dados)
+        dados = {
+            "num_baixa": "1014870",
+            "solicitante": self.solicitante,
+            "operador": "PAULO SERGIO ALVES DE LIMA",
+            "tipo_baixa": "Baixa Outros Setores",
+        }
+
+        DADOS_EXEMPLO = {
+    # Dados do cabeçalho do recibo
+    "num_baixa": "1014870",
+    "solicitante": "LILIAN ABGAIL RIBEIRO DE OLIVEIRA",
+    "operador": "PAULO SERGIO ALVES DE LIMA",
+    "tipo_baixa": "Baixa Outros Setores",
+
+    # Lista de medicamentos 
+    # "itens": [
+    #     {"sgm": "3548",
+    #      "item": "TRAMADOL INJETAVEL 50 MG/ML 1 ML CONTROLADO (CADMAT 292382)",
+    #      "paciente": "Nenhum Nenhum aaaaaa a aaabbb", "unidade": "PS ADULTO OBSERVACAO",
+    #      "produto": "teste mto foda mto gamer", "um": "teste mto foda mto gamer", "qtd": "3,000"},
+    #     {"sgm": "3352",
+    #      "item": "HALOPERIDOL INJETAVEL 5 MG/ML 1 ML CONTROLADO (CADMAT 292196)",
+    #      "paciente": "Nenhum", "unidade": "PS ADULTO OBSERVACAO",
+    #      "produto": "", "um": "", "qtd": "1,000"},
+    #     {"sgm": "3293",
+    #      "item": "FENITOINA INJETAVEL 50 MG/ML 5 ML CONTROLADO (CADMAT 267107)",
+    #      "paciente": "Nenhum", "unidade": "PS ADULTO OBSERVACAO",
+    #      "produto": "", "um": "", "qtd": "1,00"},
+    #     {"sgm": "3244",
+    #      "item": "DIAZEPAM INJETAVEL 5 MG/ML 2 ML CONTROLADO (CADMAT 267194)",
+    #      "paciente": "Nenhum", "unidade": "PS ADULTO OBSERVACAO",
+    #      "produto": "", "um": "", "qtd": "1,00"},
+    # ]
+}
+
+        # communication = ArduinoCommunication()
+        recibo = ReciboHU(dados)
+        # connect = communication.connect(controller.esp_port)
+        # if connect:
+        #     loading_img = CTkImage(light_image=Image.open("images/mini-golgi-worried.png"), size=(170, 170))#placeholder de imagem (?) do golgi
+        #     load_done_img = CTkImage(light_image=Image.open("images/mini-golgi-happy.png"), size=(170, 170))#placeholder de imagem (?) do golgi
+        #     self.loading_txt = CTkLabel(self, bg_color="gray26", width=50, height=10, text="Por favor, espere enquanto o Golgi coleta o(s) remedio(s)", font=("Verdana", 16))
+        #     self.loading_txt.place(anchor="nw", relx=0.35, rely=0.25, relwidth=0.55, relheight=0.5)
+        #     self.loading_img = CTkLabel(self, bg_color="gray26", width=100, height=10, text="", image=loading_img)
+        #     self.loading_img.place(anchor="nw", relx=0.1, rely=0.25, relwidth=0.25, relheight=0.5)
+        #     self.update()
+        #     print(len(queue))
+        #     print("AAAA")
+            # for item in queue:
+            #     print(item)
+            #     #item = bytes(str(item), encoding='utf-8')
+            #     def encontrar_coordenadas (caminho_csv, id_busca):
+            #         with open(caminho_csv, newline='', encoding='utf-8') as arquivo:
+            #             leitor = csv.DictReader(arquivo)
+            #             for linha in leitor:
+            #                 if linha['id'] == str(id_busca):
+            #                     xz = linha['position']
+            #                     if ' ' in str(xz):
+            #                         x_str, z_str = xz.split(' ')
+            #                         x = float(x_str.strip())
+            #                         z = float(z_str.strip())
+            #                         message = bytes(f"coord:{x},{z}", encoding='utf-8')
+            #                         communication.send_message(message) #se for por coordenadas
+            #                         #message_id = bytes(f"id:{item}}", encoding='utf-8')
+            #                         #communication.send_message(message_id) #se for por id
+            #                     else:
+            #                         raise ValueError ("Formato de position inválido")
+            #     encontrar_coordenadas("dados/drug_data.csv", item)
+        time.sleep(3)
+        # self.loading_txt.configure(text="O Golgi acabou de concluir seu trabalho")
+        print("dança gatiho")
+        recibo.gerar_pdf(caminho="recibo_baixa.pdf")
+        print("não danço")
+        # self.loading_img.configure(image=load_done_img)
+        self.collect_list = {}
+        self.update()
+        time.sleep(1.5)
+        # self.loading_txt.destroy()
+        # self.loading_img.destroy()
         
         self.stockLabel.configure(text='')
 

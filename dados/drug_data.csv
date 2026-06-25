@@ -31,8 +31,8 @@ id,nome,dosagem,apresentacao,position,estoque
 17319,CAPTOPRIL 25 MG 2 CP,25 mg,2 cp,dummie,10.0
 17469,CARBONATO DE CALCIO CAPSULA 500 MG 1 CP,500 mg,1 cp,dummie,10.0
 17321,"CARVEDILOL 12,5 MG 1 CP","12,5 mg",1 cp,dummie,10.0
-17322,"CARVEDILOL 3,125 MG 1 CP","3,125 mg",1 cp,dummie,10.0
-17323,"CARVEDILOL 3,125 MG 2 CP","3,125 mg",2 cp,dummie,10.0
+17322,"CARVEDILOL 3,125 MG 1 CP","3,125 mg",1 cp,dummie,9.0
+17323,"CARVEDILOL 3,125 MG 2 CP","3,125 mg",2 cp,dummie,9.0
 17324,CEFALEXINA 500 MG 1 CP,500 mg,1 cp,dummie,10.0
 17325,CETOROLACO 10 MG 1 CP,10 mg,1 cp,dummie,10.0
 19759,CIPROFIBRATO 100 MG 1 CP,100 mg,1 cp,dummie,10.0
@@ -50,8 +50,8 @@ id,nome,dosagem,apresentacao,position,estoque
 17339,CLORTALIDONA 25 MG 1 CP,25 mg,1 cp,dummie,10.0
 17342,"COLCHICINA 0,5 MG 1 CP","0,5 mg",1 cp,dummie,10.0
 17343,COMPLEXO B 1 CP,1 cp,1 cp,dummie,10.0
-17344,DESLORATADINA 5 MG 1 CP,5 mg,1 cp,dummie,10.0
-28634,"DEXAMETASONA 4MG 0,5 CP",4mg,5 cp,dummie,10.0
+17344,DESLORATADINA 5 MG 1 CP,5 mg,1 cp,dummie,9.0
+28634,"DEXAMETASONA 4MG 0,5 CP",4mg,5 cp,dummie,9.0
 17345,DEXAMETASONA 4 MG 1 CP,4 mg,1 cp,dummie,10.0
 17349,DICLOFENACO SODICO 50 MG 1 CP,50 mg,1 cp,dummie,10.0
 17351,"DIGOXINA 0,25 MG 1 CP","0,25 mg",1 cp,dummie,10.0
@@ -59,8 +59,8 @@ id,nome,dosagem,apresentacao,position,estoque
 17353,DILTIAZEM 30 MG 2 CP,30 mg,2 cp,dummie,10.0
 17354,DIMETICONA 40 MG 1 CP,40 mg,1 cp,dummie,10.0
 17355,DIPIRONA +ADIFENINA+PROMETAZINA (500+10+5) MG 1 CP,500+10+5 mg,1 cp,dummie,7.0
-17356,DIPIRONA SODICA 500 MG 1 CP,500 mg,1 cp,dummie,10.0
-17357,DIPIRONA SODICA 500 MG 2 CP,500 mg,2 cp,dummie,10.0
+17356,DIPIRONA SODICA 500 MG 1 CP,500 mg,1 cp,dummie,6.0
+17357,DIPIRONA SODICA 500 MG 2 CP,500 mg,2 cp,dummie,7
 19804,DOMPERIDONA 10MG 1CP,10mg,1cp,dummie,10.0
 17358,DOXAZOSINA 2 MG 1 CP,2 mg,1 cp,dummie,10.0
 27985,DOXICICLINA 100 MG 1CP,100 mg,1cp,dummie,10.0
@@ -69,7 +69,7 @@ id,nome,dosagem,apresentacao,position,estoque
 17361,ENALAPRIL 5 MG 4 CP,5 mg,4 cp,dummie,10.0
 20395,"ERGOMETRINA 0,2 MG 1 CP","0,2 mg",1 cp,dummie,10.0
 17363,ESCOPOLAMINA 10 MG 1 CP,10 mg,1 cp,dummie,10.0
-17362,ESCOPOLAMINA +DIPIRONA DRAGEA (10+250) MG 1 CP,10+250 mg,1 cp,dummie,10.0
+17362,ESCOPOLAMINA +DIPIRONA DRAGEA (10+250) MG 1 CP,10+250 mg,1 cp,dummie,9.0
 28638,ESOMEPRAZOL MAGNESICO 20 MG 1 CP,20 mg,1 cp,dummie,10.0
 17364,ESPIRONOLACTONA 100 MG 1 CP,100 mg,1 cp,dummie,10.0
 17365,ESPIRONOLACTONA 25 MG 1 CP,25 mg,1 cp,dummie,10.0
@@ -132,7 +132,7 @@ id,nome,dosagem,apresentacao,position,estoque
 17426,PENTOXIFILINA 400 MG 1 CP,400 mg,1 cp,dummie,10.0
 17427,PERMANGANATO DE POTASSIO 100 MG 1 CP,100 mg,1 cp,dummie,10.0
 17923,PIRIDOXINA 50 MG 1 CP,50 mg,1 cp,dummie,10.0
-17431,PIRIMETAMINA 25 MG 1 CP,25 mg,1 cp,dummie,10.0
+17431,PIRIMETAMINA 25 MG 1 CP,25 mg,1 cp,dummie,9.0
 17432,PREDNISONA 20 MG 1 CP,20 mg,1 cp,dummie,10.0
 17433,PREDNISONA 20 MG 2 CP,20 mg,2 cp,dummie,10.0
 17434,PREDNISONA 5 MG 1 CP,5 mg,1 cp,dummie,10.0
@@ -160,4 +160,4 @@ id,nome,dosagem,apresentacao,position,estoque
 17295,ACIDO ACETILSALICILICO 100 MG 2 CP,100 mg,2 cp,dummie,10.0
 2,wqw,2,a,1,
 12,Rir,10 MG,1 CP,"200, 100",200.0
-10,rir,10 mg,1 cp,"400, 100",190
+10,rir,10 mg,1 cp,"400, 100",190.0

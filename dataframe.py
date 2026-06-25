@@ -15,7 +15,7 @@ from tkinter import messagebox
 class GolgiDataFrame():
     """Class for the DataSet
     """
-    columns = ['id', 'nome', 'dosagem', 'apresentacao', 'position']
+    columns = ['id', 'nome', 'dosagem', 'apresentacao', 'position', 'estoque']
     def __init__(self) -> None:
         self.df = pd.read_csv("dados/drug_data.csv")
         self.df = self.df.set_index('id')
@@ -31,9 +31,9 @@ class GolgiDataFrame():
                 "nome": "TheName", 
                 "dosagem": "TheDose",
                 "apresentacao": "TheProducer",
-                "position": "ThePosition"
+                "position": "ThePosition",
+                "estoque": "TheStock"
                 }
-
         """
         new_item = pd.DataFrame(item)
         new_item = new_item.set_index('id')
@@ -64,7 +64,8 @@ class GolgiDataFrame():
                 "nome": "TheName", 
                 "dosagem": "TheDose",
                 "apresentacao": "TheProducer",
-                "position": "ThePosition"
+                "position": "ThePosition",
+                "estoque": "TheStock"
                 }
         """
         self.delete_item(key)
@@ -137,7 +138,15 @@ class GolgiDataFrame():
         print(selected_items)
 
         return selected_items
-
+    
+    def get_items_by_id(self, ids):
+        """
+        Description: Retrieve items from the dataframe by their IDs
+        Params:
+            ids(list): List of item IDs to retrieve
+        Return: A pandas dataset with the matching items
+        """
+        return self.df.loc[ids]
 
     def save_to_disk(self):
         """
@@ -152,7 +161,8 @@ golgi_data = GolgiDataFrame()
         "nome": ["TheName"], 
         "dosagem": ["TheDose"],
         "apresentacao": ["TheProducer"],
-        "position": ["ThePosition"]
+        "position": ["ThePosition"],
+        "estoque": ["TheStock"]
         }
 
 df = pd.DataFrame(item)
