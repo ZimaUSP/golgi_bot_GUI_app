@@ -110,7 +110,7 @@ Para remover a integração:
 
 ## Integração de Impressora Wireless
 
-1. Configuração de Rede
+### 1. Configuração de Rede
 
 Conecte a impressora à rede Wi-Fi principal (consultar manual da impressora).
 
@@ -120,7 +120,7 @@ Certifique-se se a impressora possui capacidade de utilizar 5G caso a Labrador e
 
 Descubra e anote o endereço IP local da impressora na rede (ex: 192.168.1.50, consultar manual da impressora).
 
-2. Instalação de Dependências
+### 2. Instalação de Dependências
 A placa Labrador utiliza o CUPS (Common UNIX Printing System) para gerenciar a fila de impressão.
 
 ```bash
@@ -128,7 +128,7 @@ sudo apt-get update
 sudo apt-get install cups hplip
 ```
 
-3. Configuração via Protocolo IPP
+### 3. Configuração via Protocolo IPP
 Para contornar falhas de atributos no assistente nativo da HP (hp-setup) ou bloqueios de permissão na interface web, a impressora deve ser adicionada diretamente ao CUPS forçando o protocolo IPP (Internet Printing Protocol).
 
 Execute o comando abaixo no terminal da Labrador, substituindo <IP_DA_IMPRESSORA> pelo endereço real obtido na etapa de rede:
@@ -137,14 +137,14 @@ Execute o comando abaixo no terminal da Labrador, substituindo <IP_DA_IMPRESSORA
 sudo lpadmin -p ImpressoraRobo -E -v ipp://<IP_DA_IMPRESSORA>/ipp/print -m everywhere
 ```
 
-4. Definição do Destino Padrão
+### 4. Definição do Destino Padrão
 Para evitar o erro lp: Error - No default destination ao executar chamadas simples de impressão diretamente do código, é fundamental avisar ao sistema operacional que esta será a impressora principal do sistema:
 
 ```bash
 sudo lpadmin -d ImpressoraRobo
 ```
 
-5. Validação e Teste
+### 5. Validação e Teste
 Para confirmar se a cadeia de impressão está funcionando, crie um arquivo de texto rápido no terminal simulando a saída de dados do robô:
 
 ```bash
@@ -156,6 +156,8 @@ Em seguida, envie o arquivo para a impressora utilizando o comando de impressão
 ```bash
 lp relatorio_medicamentos.txt
 ```
+
+---
 
 ## Como Executar a Interface
 
