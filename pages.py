@@ -211,7 +211,7 @@ class Collect(CTkFrame):
             golgi_data.update_amount(id, amount)
         
         queue = dict_to_list(self.collect_list)
-
+        self.collect_list = []
         communication = ArduinoCommunication()
         connect = communication.connect(controller.esp_port)
         if connect:
